@@ -179,6 +179,71 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
 
 
 
+
+/* ================= HERO BUILD ANIMATION =================
+   Plays ONCE on load. Not a loop — a loop is the template tell.
+   It animates the AUDIT, not a generic product demo: the title assembles
+   token by token, then the comps arrive and one gets struck out with its
+   reason. That last beat is the thing no competitor can show.
+   Entirely scoped to prefers-reduced-motion:no-preference, so the static
+   page is the default and nothing depends on animation to be readable. */
+@property --pct{syntax:'<number>';initial-value:76;inherits:true}
+
+@media (prefers-reduced-motion:no-preference){
+  @keyframes lrRise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes lrFoil{from{opacity:0;transform:translateX(-100%)}
+                    60%{opacity:.55}
+                    to{opacity:0;transform:translateX(100%)}}
+  @keyframes lrTok{from{background:transparent;box-shadow:inset 0 -1px 0 transparent}
+                   to{background:var(--red-wash);box-shadow:inset 0 -1px 0 var(--cert-red)}}
+  @keyframes lrFill{from{--pct:0}to{--pct:76}}
+  @keyframes lrStrike{from{width:0}to{width:100%}}
+  @keyframes lrPop{from{opacity:0;transform:scale(.75)}to{opacity:1;transform:scale(1)}}
+  @keyframes lrCount{from{opacity:0}to{opacity:1}}
+
+  .anim .outlabel,
+  .anim .cert,
+  .anim .titlebox,
+  .anim .comps,
+  .anim .descbox,
+  .anim .joint{animation:lrRise .42s cubic-bezier(.2,.7,.3,1) both}
+
+  .anim .outlabel:nth-of-type(1){animation-delay:.05s}
+  .anim .cert{animation-delay:.10s}
+  .anim .joint:nth-of-type(1){animation-delay:.55s}
+  .anim .titlebox{animation-delay:.62s}
+  .anim .joint:nth-of-type(2){animation-delay:1.55s}
+  .anim .comps{animation-delay:1.62s}
+  .anim .joint:nth-of-type(3){animation-delay:2.75s}
+  .anim .descbox{animation-delay:2.82s}
+
+  /* foil sweeps the slab once, as it lands */
+  .anim .cert--hero.cert--foil::after{animation:lrFoil .85s ease-out .45s 1}
+
+  /* the title assembles token by token — the RULES landing, in order */
+  .anim .titlebox__str .tok{animation:lrTok .01s linear both}
+  .anim .titlebox__str .tok:nth-of-type(1){animation-delay:.95s}
+  .anim .titlebox__str .tok:nth-of-type(2){animation-delay:1.10s}
+  .anim .titlebox__str .tok:nth-of-type(3){animation-delay:1.25s}
+  .anim .titlebox__str .tok:nth-of-type(4){animation-delay:1.40s}
+  .anim .ruler{animation:lrFill .75s ease-out .95s both}
+  .anim .count{animation:lrCount .3s linear 1.55s both}
+
+  /* comps arrive one at a time */
+  .anim .comps tbody tr{animation:lrRise .3s ease-out both}
+  .anim .comps tbody tr:nth-child(1){animation-delay:1.80s}
+  .anim .comps tbody tr:nth-child(2){animation-delay:1.95s}
+  .anim .comps tbody tr:nth-child(3){animation-delay:2.10s}
+  .anim .comps tbody tr:nth-child(4){animation-delay:2.25s}
+  .anim .comps tbody tr.sumrow{animation-delay:2.55s}
+
+  /* THE BEAT THAT MATTERS: the rejected comp gets struck, and says why */
+  .anim .comps tr.ex .p{text-decoration:none;position:relative}
+  .anim .comps tr.ex .p::after{content:"";position:absolute;left:0;right:auto;top:52%;
+    height:1px;background:currentColor;width:0;animation:lrStrike .28s ease-out 2.35s both}
+  .anim .comps tr.ex .why{animation:lrPop .3s cubic-bezier(.2,1.4,.4,1) 2.45s both}
+}
+
 /* ---- hero output labels + description ---- */
 .outlabel{display:flex;align-items:baseline;gap:9px;margin:0 0 8px;flex-wrap:wrap}
 .outlabel b{font-family:var(--font-grade);font-size:17px;line-height:1;color:var(--cert-red);font-variant-numeric:tabular-nums}
@@ -275,7 +340,7 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
       token the hobby uses. The price comes off real sold comps you can check line by line.</p>
 
     <!-- the hero object IS the product, not a picture of it -->
-    <div class="stack" style="margin:30px 0 26px;max-width:660px">
+    <div class="stack anim" style="margin:30px 0 26px;max-width:660px">
       <div class="outlabel"><span>Reads the card</span></div>
       <div class="cert cert--hero cert--foil" data-grader="psa">
         <div class="cert__id">
@@ -327,7 +392,7 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
     <p class="fine" style="margin:0 0 22px">Illustrative example of the token rules and comp handling — not a customer result.</p>
 
     <div style="display:flex;gap:12px;flex-wrap:wrap">
-      <a class="btn" href="#waitlist">Start free — 5 cards, no card needed</a>
+      <a class="btn" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20free%205%20cards&amp;body=Hi%20%E2%80%94%20I%27d%20like%20to%20try%20ListRight%20on%205%20cards.%0A%0AWhat%20I%20sell%3A%20%0ARoughly%20how%20many%20cards%20a%20month%3A%20%0A" data-cta="free">Start free — 5 cards, no card needed</a>
       <a class="btn btn--ghost" href="#membership">See the $19 founding seat</a>
     </div>
   </section>
@@ -475,7 +540,8 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
     </div>
 
     <!-- TODO: swap href for your Paddle checkout link -->
-    <a class="btn btn--wide" href="#waitlist" data-payment-link style="max-width:520px">Claim a founding seat — $19/mo</a>
+    <!-- TODO: replace href with your Paddle/Stripe payment link when the account is live -->
+    <a class="btn btn--wide" href="mailto:localcardhouse@gmail.com?subject=ListRight%20founding%20seat%20%E2%80%94%20%2419%2Fmo&amp;body=Hi%20%E2%80%94%20I%27d%20like%20a%20founding%20seat.%0A%0A" data-payment-link style="max-width:520px">Claim a founding seat — $19/mo</a>
     <p class="fine" style="margin-top:12px;max-width:520px">Past 500 cards in a month? Email me and I'll raise your cap — I'd rather price it right than have you hit a wall · 5 cards free first, no card required · Cancel anytime · Refund in the first 30 days</p>
 
     <p class="prose" style="margin-top:24px;font-size:15px">Honest status: the engine works and is what I use on my own
@@ -489,29 +555,14 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
     <h2>Get the launch note</h2>
     <p class="prose">One email when it opens. Nothing else.</p>
 
-    <form name="waitlist" method="POST" data-netlify="true" netlify-honeypot="company" style="max-width:520px">
-      <input type="hidden" name="form-name" value="waitlist">
-      <p hidden><label>Leave blank <input name="company"></label></p>
-      <div class="field">
-        <div><label class="fl" for="e1">Email</label><input id="e1" type="email" name="email" required placeholder="you@email.com" autocomplete="email"></div>
-        <button class="btn" type="submit">Keep me posted</button>
-      </div>
-    </form>
+    <a class="btn" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20launch%20note&amp;body=Keep%20me%20posted.%0A%0A">Email me when it opens</a>
 
     <div style="height:38px"></div>
     <h3>Would you use this one?</h3>
     <p class="prose" style="font-size:15px">Deciding what to build after launch. One candidate: measure centering,
       flag corner and edge defects, then tell you whether paying to grade is worth it against what the graded
       comps actually sell for. If you'd use it, say so — that's how I'll decide.</p>
-    <form name="grade-interest" method="POST" data-netlify="true" netlify-honeypot="company2" style="max-width:520px">
-      <input type="hidden" name="form-name" value="grade-interest">
-      <input type="hidden" name="interest" value="grade-screen">
-      <p hidden><label>Leave blank <input name="company2"></label></p>
-      <div class="field">
-        <div><label class="fl" for="e2">Email</label><input id="e2" type="email" name="email" required placeholder="you@email.com" autocomplete="email"></div>
-        <button class="btn btn--ghost" type="submit">I'd use "should I grade this?"</button>
-      </div>
-    </form>
+    <a class="btn btn--ghost" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20I%27d%20use%20%22should%20I%20grade%20this%3F%22&amp;body=I%27d%20use%20a%20%22should%20I%20grade%20this%22%20tool.%0A%0AWhat%20I%27d%20want%20it%20to%20tell%20me%3A%20%0A">I'd use "should I grade this?"</a>
   </section>
 
   <footer>
