@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terms of Service — ListRight</title>
+<meta name="robots" content="index,follow">
+<style>
+/* ========================================================================
+   ListRight design system — "The shine is data"
+   Cert-bar chassis · spectrum edge only when the card is a parallel
+   ===================================================================== */
+:root{
+  --paper:#F7F5EE; --label:#FFFFFF; --well:#EFEBE1; --rail:#F2EFE7;
+  --ink:#14171B; --ink-2:#454A53; --ink-3:#5C626E;
+  --rule:#D8D4CB; --rule-2:#B3ADA1; --rule-strong:#101215;
+  --cert-red:#D41E30; --red-wash:#FDECEE;
+  --pass:#0C7350; --flag:#8A5A00; --flag-wash:#FBF0D8; --link:#0B57A4;
+  --grader-psa:#C8102E; --grader-bgs-silver:#8C929C; --grader-bgs-gold:#9A7212;
+  --grader-cgc:#0B57A4; --grader-sgc:#2B2F36; --gold-text:#7F5D0E;
+  --foil:repeating-linear-gradient(108deg,#1FC4D8 0px,#4E93E8 7px,#B851C0 14px,#E85C7A 21px,#E39A4C 27px,#3CC79E 34px,#1FC4D8 41px);
+  --foil-opacity:.90;
+  --slab-shadow:0 1px 1px rgba(16,18,21,.05),0 10px 24px -16px rgba(16,18,21,.45);
+  --radius:2px; --u:8px; --focus:var(--link);
+  --font-display:"Avenir Next Condensed","Roboto Condensed","Liberation Sans Narrow","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --font-grade:Impact,"Haettenschweiler","Arial Black","Franklin Gothic Heavy","Helvetica Neue",sans-serif;
+  --font-ui:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --font-doc:Georgia,"Times New Roman","Liberation Serif",serif;
+  --edge:var(--grader-psa);
+}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#101419; --label:#1B2028; --well:#161A20; --rail:#131820;
+  --ink:#F5F7FA; --ink-2:#B2B9C4; --ink-3:#8C94A0;
+  --rule:#23272E; --rule-2:#363C45; --rule-strong:#4A515C;
+  --cert-red:#FF5647; --red-wash:#2B0E10;
+  --pass:#4ACF9B; --flag:#F0B429; --flag-wash:#2A2007; --link:#5AA9F0;
+  --grader-psa:#FF4438; --grader-bgs-silver:#C3C8D1; --grader-bgs-gold:#E5B84A;
+  --grader-cgc:#5AA9F0; --grader-sgc:#AAB2BE; --gold-text:#E5B84A;
+  --foil-opacity:.85;
+  --slab-shadow:0 1px 0 rgba(255,255,255,.03),0 14px 34px -20px #000;
+}}
+:root[data-theme="light"]{
+  --paper:#F7F5EE; --label:#FFFFFF; --well:#EFEBE1; --rail:#F2EFE7;
+  --ink:#14171B; --ink-2:#454A53; --ink-3:#5C626E;
+  --rule:#D8D4CB; --rule-2:#B3ADA1; --rule-strong:#101215;
+  --cert-red:#D41E30; --red-wash:#FDECEE; --pass:#0C7350; --flag:#8A5A00;
+  --flag-wash:#FBF0D8; --link:#0B57A4; --grader-psa:#C8102E; --gold-text:#7F5D0E;
+  --foil-opacity:.90;
+  --slab-shadow:0 1px 1px rgba(16,18,21,.05),0 10px 24px -16px rgba(16,18,21,.45);
+}
+:root[data-theme="dark"]{
+  --paper:#101419; --label:#1B2028; --well:#161A20; --rail:#131820;
+  --ink:#F5F7FA; --ink-2:#B2B9C4; --ink-3:#8C94A0;
+  --rule:#23272E; --rule-2:#363C45; --rule-strong:#4A515C;
+  --cert-red:#FF5647; --red-wash:#2B0E10; --pass:#4ACF9B; --flag:#F0B429;
+  --flag-wash:#2A2007; --link:#5AA9F0; --grader-psa:#FF4438; --gold-text:#E5B84A;
+  --foil-opacity:.85;
+  --slab-shadow:0 1px 0 rgba(255,255,255,.03),0 14px 34px -20px #000;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);border-top:4px solid transparent;border-image:var(--foil) 1;color:var(--ink);font:14px/1.5 var(--font-ui);-webkit-font-smoothing:antialiased}
+.wrap{max-width:940px;margin:0 auto;padding:0 20px}
+a{color:var(--link)}
+:where(a,button,input,summary,[tabindex]):focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:var(--radius)}
+
+/* ---- type ---- */
+.disp{font-family:var(--font-display);text-transform:uppercase;font-weight:600;letter-spacing:.04em}
+h1{font:600 clamp(34px,7vw,76px)/.94 var(--font-display);text-transform:uppercase;letter-spacing:.005em;margin:0 0 20px}
+h2{font:600 clamp(23px,3.4vw,36px)/1.05 var(--font-display);text-transform:uppercase;letter-spacing:.02em;margin:0 0 12px}
+h3{font:600 18px/1.2 var(--font-display);text-transform:uppercase;letter-spacing:.05em;margin:0 0 8px}
+.prose{font:17px/1.6 var(--font-doc);color:var(--ink-2);max-width:60ch;margin:0 0 1em}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums lining-nums}
+.fine{font:11px/1.5 var(--font-mono);letter-spacing:.06em;color:var(--ink-3)}
+
+/* ---- top bar ---- */
+.top{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:20px 0;flex-wrap:wrap}
+.wordmark{font:600 20px/1 var(--font-display);text-transform:uppercase;letter-spacing:.06em;box-shadow:inset 0 -3px 0 var(--cert-red);padding-bottom:2px}
+.themebtn{font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em;background:none;border:1px solid var(--rule-2);color:var(--ink-2);padding:6px 9px;border-radius:var(--radius);cursor:pointer}
+
+/* ---- sections ---- */
+section{padding:52px 0;border-top:1px solid var(--rule)}
+.eyebrow{display:flex;gap:10px;align-items:baseline;margin-bottom:18px}
+.eyebrow .no{font:11px/1 var(--font-mono);letter-spacing:.1em;color:var(--ink-3)}
+.eyebrow .nm{font:600 11px/1 var(--font-display);text-transform:uppercase;letter-spacing:.16em;color:var(--ink-2)}
+
+/* ================= THE CERT BAR ================= */
+.cert{position:relative;display:grid;grid-template-columns:1fr auto;gap:14px;
+  padding:14px 14px 20px;background:var(--label);border:1px solid var(--rule-strong);border-radius:var(--radius)}
+.cert::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--edge);border-radius:var(--radius) var(--radius) 0 0}
+.cert--foil::before{background:var(--foil);opacity:var(--foil-opacity)}
+.cert__id{min-width:0}
+.cert__l1,.cert__l2{font:600 15px/1.25 var(--font-display);text-transform:uppercase;letter-spacing:.04em;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cert__l3{font:600 12px/1.3 var(--font-display);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
+.cert__grade{padding-left:14px;min-width:78px;text-align:center;border-left:1px solid var(--rule-strong)}
+.cert__word{font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.14em;color:var(--ink-2)}
+.cert__num{display:block;margin-top:4px;font-family:var(--font-grade);font-size:42px;line-height:.9;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
+.cert__cert{position:absolute;right:12px;bottom:6px;font:10px/1 var(--font-mono);letter-spacing:.08em;color:var(--ink-3)}
+.cert--hero{padding:20px 20px 26px;box-shadow:inset 0 0 0 1px var(--label),inset 0 0 0 2px var(--rule-2),var(--slab-shadow)}
+.cert--hero .cert__num{font-size:clamp(46px,8vw,64px)}
+.cert--hero .cert__l1,.cert--hero .cert__l2{font-size:clamp(16px,2.6vw,20px)}
+.cert--hero.cert--foil::after{content:"";position:absolute;inset:0;pointer-events:none;background:var(--foil);opacity:0;mix-blend-mode:color-dodge;transform:translateX(-30%)}
+@media (prefers-reduced-motion:no-preference){
+  .cert--hero.cert--foil:hover::after{opacity:.18;transform:translateX(30%);transition:opacity .18s linear,transform .4s ease-out}
+}
+
+/* ================= 80-CHAR TITLE BOX ================= */
+.titlebox{background:var(--well);border:1px solid var(--rule);border-radius:var(--radius);padding:14px 14px 0}
+.titlebox__str{font:15px/1.5 var(--font-mono);letter-spacing:.01em;color:var(--ink);word-break:break-word;user-select:all}
+.tok{background:var(--red-wash);box-shadow:inset 0 -1px 0 var(--cert-red);padding:1px 2px;margin:0 -2px;border-radius:1px;color:inherit}
+.tfoot{display:flex;align-items:center;gap:12px;margin-top:12px;padding-bottom:12px}
+.ruler{flex:1;height:6px;border:1px solid var(--rule);
+  background:linear-gradient(90deg,var(--ink) 0 calc(var(--pct)*1%),transparent 0),
+             repeating-linear-gradient(90deg,var(--rule-2) 0 1px,transparent 1px 12.5%)}
+.count{font:12px/1 var(--font-mono);font-variant-numeric:tabular-nums;color:var(--ink-2)}
+
+/* ================= COMPS ================= */
+.comps{width:100%;border-collapse:collapse;font:13px/1.35 var(--font-ui);background:var(--label)}
+.comps th{font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule-strong)}
+.comps td{padding:7px 10px;border-bottom:1px solid var(--rule)}
+.comps .d{font:12px/1 var(--font-mono);color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.comps .p{font:600 14px/1 var(--font-mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
+.comps .t{color:var(--ink);max-width:1px;width:99%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.comps .g{width:18px;color:var(--ink-3);font:12px/1 var(--font-mono)}
+.comps tr.ex td{color:var(--ink-3)}
+.comps tr.ex .p{text-decoration:line-through;color:var(--ink-3)}
+.why{display:inline-block;font:600 9px/1 var(--font-display);text-transform:uppercase;letter-spacing:.1em;
+  background:var(--well);border:1px solid var(--rule-2);border-radius:var(--radius);padding:3px 5px;margin-left:7px;color:var(--ink-2)}
+.sumrow td{background:var(--well);border-top:1px solid var(--rule-strong);border-bottom:0;font:12px/1.4 var(--font-mono);letter-spacing:.04em;color:var(--ink-2)}
+
+/* ================= CHIPS ================= */
+.chip{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;border:1px solid var(--rule-2);
+  border-radius:var(--radius);font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink);background:var(--label);vertical-align:middle}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--dot,var(--rule-2))}
+.chip--psa{--dot:var(--grader-psa)} .chip--bgs{--dot:var(--grader-bgs-silver)}
+.chip--gold{--dot:var(--grader-bgs-gold)} .chip--cgc{--dot:var(--grader-cgc)}
+.ser{font-family:var(--font-mono);font-variant-numeric:tabular-nums lining-nums}
+.ser b{font-weight:700} .ser i{font-style:oblique;color:var(--ink-3)}
+.ser--one{background:#0D0E10;color:#FFD07A;border:1px solid #9A7212;padding:2px 7px;border-radius:var(--radius);font-weight:700}
+
+/* ================= BUTTONS / FORMS ================= */
+.btn{display:inline-flex;align-items:center;justify-content:center;font:600 13px/1 var(--font-display);
+  text-transform:uppercase;letter-spacing:.12em;height:46px;padding:0 24px;border:0;border-radius:var(--radius);
+  background:var(--ink);color:var(--label);box-shadow:inset 0 -3px 0 var(--cert-red);cursor:pointer;
+  text-decoration:none;transition:box-shadow .12s,transform .12s}
+.btn:hover{box-shadow:inset 0 -5px 0 var(--cert-red);transform:translateY(-1px)}
+.btn:active{box-shadow:inset 0 -2px 0 var(--cert-red);transform:none}
+.btn--ghost{background:transparent;color:var(--ink);border:1px solid var(--rule-strong);box-shadow:none}
+.btn--ghost:hover{background:var(--well);box-shadow:none;transform:none}
+.btn--wide{width:100%}
+label.fl{display:block;font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);margin-bottom:6px}
+input[type=email]{height:46px;background:var(--well);border:1px solid var(--rule);border-radius:var(--radius);
+  padding:0 12px;font:15px/1 var(--font-ui);color:var(--ink);width:100%;min-width:0}
+input[type=email]:focus{border-color:var(--ink);box-shadow:inset 0 -2px 0 var(--cert-red)}
+input::placeholder{color:var(--ink-3)}
+.field{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.field>div{flex:1 1 240px}
+
+/* ---- layout helpers ---- */
+.stack{display:grid;gap:0}
+.joint{height:18px;display:grid;place-items:center}
+.joint::before{content:"";width:1px;height:100%;background:var(--rule-2)}
+.two{display:grid;gap:26px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.legend{display:grid;gap:10px;margin-top:18px}
+.legend div{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.legend span.txt{color:var(--ink-2);font:13px/1.5 var(--font-ui);flex:1 1 260px}
+.ledger{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12.5px}
+.ledger td{padding:9px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+.ledger .k{font:600 9px/1.4 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);white-space:nowrap;width:1px;padding-right:14px}
+.ledger .amt{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--ink)}
+footer{padding:34px 0 70px;border-top:1px solid var(--rule);margin-top:52px}
+footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
+
+
+
+
+/* ================= HERO BUILD ANIMATION =================
+   Plays ONCE on load. Not a loop — a loop is the template tell.
+   It animates the AUDIT, not a generic product demo: the title assembles
+   token by token, then the comps arrive and one gets struck out with its
+   reason. That last beat is the thing no competitor can show.
+   Entirely scoped to prefers-reduced-motion:no-preference, so the static
+   page is the default and nothing depends on animation to be readable. */
+@property --pct{syntax:'<number>';initial-value:76;inherits:true}
+
+@media (prefers-reduced-motion:no-preference){
+  @keyframes lrRise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes lrFoil{from{opacity:0;transform:translateX(-100%)}
+                    60%{opacity:.55}
+                    to{opacity:0;transform:translateX(100%)}}
+  @keyframes lrTok{from{background:transparent;box-shadow:inset 0 -1px 0 transparent}
+                   to{background:var(--red-wash);box-shadow:inset 0 -1px 0 var(--cert-red)}}
+  @keyframes lrFill{from{--pct:0}to{--pct:76}}
+  @keyframes lrStrike{from{width:0}to{width:100%}}
+  @keyframes lrPop{from{opacity:0;transform:scale(.75)}to{opacity:1;transform:scale(1)}}
+  @keyframes lrCount{from{opacity:0}to{opacity:1}}
+
+  .anim .outlabel,
+  .anim .cert,
+  .anim .titlebox,
+  .anim .comps,
+  .anim .descbox,
+  .anim .joint{animation:lrRise .42s cubic-bezier(.2,.7,.3,1) both}
+
+  .anim .outlabel:nth-of-type(1){animation-delay:.05s}
+  .anim .cert{animation-delay:.10s}
+  .anim .joint:nth-of-type(1){animation-delay:.55s}
+  .anim .titlebox{animation-delay:.62s}
+  .anim .joint:nth-of-type(2){animation-delay:1.55s}
+  .anim .comps{animation-delay:1.62s}
+  .anim .joint:nth-of-type(3){animation-delay:2.75s}
+  .anim .descbox{animation-delay:2.82s}
+
+  /* foil sweeps the slab once, as it lands */
+  .anim .cert--hero.cert--foil::after{animation:lrFoil .85s ease-out .45s 1}
+
+  /* the title assembles token by token — the RULES landing, in order */
+  .anim .titlebox__str .tok{animation:lrTok .01s linear both}
+  .anim .titlebox__str .tok:nth-of-type(1){animation-delay:.95s}
+  .anim .titlebox__str .tok:nth-of-type(2){animation-delay:1.10s}
+  .anim .titlebox__str .tok:nth-of-type(3){animation-delay:1.25s}
+  .anim .titlebox__str .tok:nth-of-type(4){animation-delay:1.40s}
+  .anim .ruler{animation:lrFill .75s ease-out .95s both}
+  .anim .count{animation:lrCount .3s linear 1.55s both}
+
+  /* comps arrive one at a time */
+  .anim .comps tbody tr{animation:lrRise .3s ease-out both}
+  .anim .comps tbody tr:nth-child(1){animation-delay:1.80s}
+  .anim .comps tbody tr:nth-child(2){animation-delay:1.95s}
+  .anim .comps tbody tr:nth-child(3){animation-delay:2.10s}
+  .anim .comps tbody tr:nth-child(4){animation-delay:2.25s}
+  .anim .comps tbody tr.sumrow{animation-delay:2.55s}
+
+  /* THE BEAT THAT MATTERS: the rejected comp gets struck, and says why */
+  .anim .comps tr.ex .p{text-decoration:none;position:relative}
+  .anim .comps tr.ex .p::after{content:"";position:absolute;left:0;right:auto;top:52%;
+    height:1px;background:currentColor;width:0;animation:lrStrike .28s ease-out 2.35s both}
+  .anim .comps tr.ex .why{animation:lrPop .3s cubic-bezier(.2,1.4,.4,1) 2.45s both}
+}
+
+
+/* ---- the 11, pushed above the fold ---- */
+.only{margin:26px 0 30px;padding:20px 0 4px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.only h3{font:600 12px/1 var(--font-display);text-transform:uppercase;letter-spacing:.16em;
+  color:var(--ink-3);margin:0 0 16px}
+.only h3 b{color:var(--cert-red);font-family:var(--font-grade);font-size:19px;
+  letter-spacing:0;vertical-align:-2px;margin-right:5px}
+.onlygrid{display:grid;gap:8px 22px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  list-style:none;padding:0;margin:0 0 18px}
+.onlygrid li{padding-left:12px;box-shadow:inset 2px 0 0 var(--cert-red);
+  font:14px/1.4 var(--font-ui);color:var(--ink)}
+.onlygrid li span{display:block;font:11.5px/1.35 var(--font-ui);color:var(--ink-3);margin-top:2px}
+
+/* ---- hero output labels + description ---- */
+.outlabel{display:flex;align-items:baseline;gap:9px;margin:0 0 8px;flex-wrap:wrap}
+.outlabel b{font-family:var(--font-grade);font-size:17px;line-height:1;color:var(--cert-red);font-variant-numeric:tabular-nums}
+.outlabel span{font:600 11px/1 var(--font-display);text-transform:uppercase;letter-spacing:.16em;color:var(--ink)}
+.outlabel i{font:11px/1 var(--font-mono);letter-spacing:.05em;color:var(--ink-3);font-style:normal}
+.descbox{background:var(--label);border:1px solid var(--rule);border-radius:var(--radius);
+  padding:15px;font:14.5px/1.6 var(--font-doc);color:var(--ink-2)}
+.descbox strong{color:var(--ink)}
+/* ================= §01 CENTREPIECE ================= */
+.hilite{background:var(--label);border-top:3px solid transparent;border-image:var(--foil) 1;
+  padding:42px 24px 48px;border-radius:var(--radius);box-shadow:var(--slab-shadow);margin-top:8px}
+.scoreboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);border-radius:var(--radius);margin:26px 0 30px;overflow:hidden}
+.score{background:var(--label);padding:16px 14px;text-align:center}
+.score .n{display:block;font-family:var(--font-grade);font-size:40px;line-height:.9;color:var(--ink);
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.score .l{display:block;margin-top:7px;font:600 10px/1.3 var(--font-display);text-transform:uppercase;
+  letter-spacing:.12em;color:var(--ink-3)}
+.vswrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--radius)}
+.vs th.ours{color:var(--ink);position:relative}
+.vs th.ours::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;
+  background:var(--foil);opacity:var(--foil-opacity)}
+.vs td.y{color:var(--ink);font-weight:600;padding-left:30px;position:relative;box-shadow:inset 2px 0 0 var(--cert-red)}
+.vs td:not(.k):not(.y){padding-left:30px;position:relative;color:var(--ink-3)}
+.vs td:not(.k):not(.y)::before{content:"\2013";position:absolute;left:10px;top:10px;color:var(--rule-2);font-weight:700}
+@media (max-width:720px){
+  .hilite{padding:32px 16px 38px}
+  .score .n{font-size:32px}
+}
+
+/* ---- pipeline ---- */
+.pipe{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:0;counter-reset:none}
+.pipe li{display:grid;grid-template-columns:132px 1fr;gap:18px;padding:16px 0;border-top:1px solid var(--rule);align-items:baseline}
+.pipe li:last-child{border-bottom:1px solid var(--rule)}
+.stage{font:600 11px/1.3 var(--font-display);text-transform:uppercase;letter-spacing:.14em;color:var(--ink-3);white-space:nowrap}
+.what{font:15px/1.62 var(--font-doc);color:var(--ink-2)}
+.what b{color:var(--ink);font-weight:700}
+.what .mono{font-size:13px;color:var(--ink)}
+/* ---- comparison ---- */
+.vs{width:100%;border-collapse:collapse;font:14px/1.45 var(--font-ui);min-width:560px;background:var(--label)}
+.vs th{font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);
+  text-align:left;padding:10px;border-bottom:1px solid var(--rule-strong)}
+.vs td{padding:10px;border-bottom:1px solid var(--rule);color:var(--ink-2);vertical-align:top}
+.vs td.k{font:600 10px/1.4 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);white-space:nowrap;width:1px;padding-right:16px}
+.vs tr:hover td{background:var(--well)}
+/* ---- test list ---- */
+.tests{background:var(--well);border:1px solid var(--rule);border-radius:var(--radius);padding:14px;
+  font-size:12.5px;line-height:1.9;color:var(--ink-2);overflow-x:auto;white-space:nowrap}
+@media (max-width:720px){.pipe li{grid-template-columns:1fr;gap:6px}}
+@media (max-width:720px){
+  .cert__num{font-size:34px} .cert--hero .cert__num{font-size:44px}
+  .comps .hidem{display:none}
+}
+
+/* ---- comparison: stacked cards on phones, OUR answer first ---- */
+@media (max-width:720px){
+  .vswrap{overflow-x:visible;border:0;border-radius:0}
+  .vs{min-width:0 !important;width:100% !important;display:block;background:transparent}
+  .vs thead{display:none}
+  .vs tbody{display:block}
+  .vs tr{display:flex;flex-direction:column;background:var(--label);border:1px solid var(--rule);
+    border-radius:var(--radius);margin-bottom:10px;padding:12px}
+  .vs tr:hover td{background:transparent}
+  .vs td{display:block;border:0;padding:0;max-width:none;width:auto}
+  .vs td.k{order:1;width:auto;padding:0 0 9px;font:600 10px/1.4 var(--font-display);
+    text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3)}
+  .vs td.y{order:2;padding:0 0 0 11px;margin-bottom:8px;color:var(--ink);font-weight:600;
+    box-shadow:inset 2px 0 0 var(--cert-red);position:static}
+  .vs td:not(.k):not(.y){order:3;padding:0 0 0 11px;color:var(--ink-3);
+    box-shadow:inset 2px 0 0 var(--rule-2);position:static}
+  .vs td.y::before{content:"ListRight";position:static;display:block;margin-bottom:3px;
+    font:600 9px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em;color:var(--cert-red)}
+  .vs td:not(.k):not(.y)::before{content:"Most card tools";position:static;display:block;margin-bottom:3px;
+    font:600 9px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3)}
+}
+</style>
+<style>
+  .doc{max-width:74ch;margin:0 auto}
+  .doc h2{font-size:clamp(22px,3vw,30px);margin:34px 0 10px}
+  .doc h3{font-size:15px;margin:26px 0 6px}
+  .doc p,.doc li{font:16px/1.65 var(--font-doc);color:var(--ink-2)}
+  .doc li{margin-bottom:7px}
+  .doc strong{color:var(--ink)}
+  .doc a{color:var(--link)}
+  .fill{background:var(--flag-wash);color:var(--ink);padding:1px 5px;border-radius:2px;
+        font-family:var(--font-mono);font-size:.88em;box-shadow:inset 0 -1px 0 var(--flag)}
+  .backlink{display:inline-block;margin-bottom:26px;font:600 11px/1 var(--font-display);
+        text-transform:uppercase;letter-spacing:.14em;color:var(--ink-3);text-decoration:none}
+  .backlink:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><span class="wordmark">ListRight</span></div>
+  <section style="border-top:0;padding-top:8px" class="doc">
+    <a class="backlink" href="/">&larr; Back to ListRight</a>
+    <h1 style="font-size:clamp(28px,5vw,52px)">Terms of Service</h1>
+    <p class="fine" style="margin:-10px 0 30px">Last updated 25 July 2026</p>
+
+    <p><strong>ListRight is operated by <span class="fill">[YOUR FULL LEGAL NAME]</span>, a sole proprietor based in Houston, Texas.</strong>
+       Registered address: <span class="fill">[YOUR STREET ADDRESS, Houston, TX ZIP]</span>. Contact: <a href="mailto:support@listrightapp.com">support@listrightapp.com</a>.</p>
+    <p>These Terms govern your use of ListRight (the &ldquo;Service&rdquo;), available at listrightapp.com.
+       By creating an account or subscribing, you agree to them.</p>
+
+    <h2>What the Service is</h2>
+    <p>ListRight is web-based subscription software that helps trading-card sellers prepare marketplace
+       listings. It generates a suggested listing title, a price estimate derived from public sold-listing
+       data, and a listing description.</p>
+    <p><strong>ListRight is a listing-preparation tool, not a marketplace.</strong> We do not buy, sell,
+       ship, store, authenticate, appraise, or process payment for any trading card. We are not a broker,
+       dealer, auctioneer, or grading company. All output is a suggestion for you to review before you
+       publish anything.</p>
+
+    <h2>What your subscription includes</h2>
+    <p>Access is delivered electronically and becomes available immediately after successful payment,
+       through your account on listrightapp.com. <strong>No physical goods are shipped.</strong>
+       A paid subscription includes:</p>
+    <ul>
+      <li>Card identification from a photograph</li>
+      <li>A generated marketplace listing title, budgeted to the 80-character limit</li>
+      <li>A price estimate built from public sold-listing data, shown with the underlying comparable sales</li>
+      <li>A generated listing description</li>
+      <li>Centering measurement from a photograph</li>
+      <li>Up to 500 cards analysed per calendar month</li>
+    </ul>
+
+    <h2>Billing</h2>
+    <p>The subscription is <strong>US$19 per month</strong> and <strong>renews automatically each month
+       until you cancel.</strong> Payment is processed by Paddle.com Market Limited, which acts as the
+       merchant of record for your purchase. Your card details are handled by Paddle and are never stored
+       on our servers.</p>
+    <p>You may cancel at any time, from your account or by emailing <a href="mailto:support@listrightapp.com">support@listrightapp.com</a>.
+       Cancellation stops all future charges. You keep access until the end of the period you have paid for.</p>
+    <p>Refunds are covered by our <a href="/refunds.html">Refund Policy</a>.</p>
+
+    <h2>Acceptable use</h2>
+    <p>You agree not to resell or redistribute the Service, attempt to circumvent usage limits, use the
+       Service unlawfully, or upload content you do not have the right to upload. Trading-card images and
+       names are frequently protected by third-party trademark and copyright; you are responsible for
+       ensuring you hold the rights to any image you submit and to any listing you publish.</p>
+
+    <h2>Accuracy, and no warranty</h2>
+    <p><strong>Price estimates and generated titles are suggestions, not appraisals, and not financial
+       advice.</strong> They are derived from public sold-listing data that may be incomplete or
+       mismatched. You are solely responsible for reviewing every title, description and price before
+       listing an item.</p>
+    <p>The Service is provided &ldquo;as is&rdquo;, without warranty of any kind, express or implied,
+       including merchantability, fitness for a particular purpose, and non-infringement.</p>
+
+    <h2>Limitation of liability</h2>
+    <p>To the maximum extent permitted by law, our total liability arising out of or relating to the
+       Service is limited to the amount you paid in the twelve months preceding the claim. We are not
+       liable for indirect, incidental, special, or consequential damages, including lost profits or
+       lost sales.</p>
+
+    <h2>Suspension and termination</h2>
+    <p>We may suspend or terminate an account that breaches these Terms. You may stop using the Service
+       and cancel at any time.</p>
+
+    <h2>Changes</h2>
+    <p>We may update these Terms. Material changes will be notified by email or on this page before they
+       take effect. Continued use after that constitutes acceptance.</p>
+
+    <h2>Governing law</h2>
+    <p>These Terms are governed by the laws of the State of Texas, United States, without regard to its
+       conflict-of-laws rules.</p>
+
+    <h2>Contact</h2>
+    <p><span class="fill">[YOUR FULL LEGAL NAME]</span> &mdash; <span class="fill">[YOUR STREET ADDRESS, Houston, TX ZIP]</span> &mdash; <a href="mailto:support@listrightapp.com">support@listrightapp.com</a></p>
+
+  </section>
+  <footer>
+    <p><a href="/">ListRight</a> &nbsp;·&nbsp; <a href="/terms.html">Terms of Service</a>
+       &nbsp;·&nbsp; <a href="/privacy.html">Privacy Policy</a>
+       &nbsp;·&nbsp; <a href="/refunds.html">Refund Policy</a></p>
+    <p>Not affiliated with, endorsed by, or sponsored by eBay, Whatnot, PSA, BGS, CGC, SGC or TAG.</p>
+  </footer>
+</div>
+</body>
+</html>
