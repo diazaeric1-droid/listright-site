@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ListRight — the title the hobby writes, priced off comps you can audit</title>
+<meta name="description" content="Reads the card, writes the eBay title the way the hobby writes it — print run, RC, 1st Bowman, parallel, grade, cert — and prices it off real sold comps you can check line by line.">
+<meta property="og:title" content="Get the title right. Get paid what it's worth.">
+<meta property="og:description" content="The correct eBay title, and a price off sold comps you can audit — including the ones we threw out.">
+<meta property="og:type" content="website">
+
+<style>
+/* ========================================================================
+   ListRight design system — "The shine is data"
+   Cert-bar chassis · spectrum edge only when the card is a parallel
+   ===================================================================== */
+:root{
+  --paper:#F7F5EE; --label:#FFFFFF; --well:#EFEBE1; --rail:#F2EFE7;
+  --ink:#14171B; --ink-2:#454A53; --ink-3:#5C626E;
+  --rule:#D8D4CB; --rule-2:#B3ADA1; --rule-strong:#101215;
+  --cert-red:#D41E30; --red-wash:#FDECEE;
+  --pass:#0C7350; --flag:#8A5A00; --flag-wash:#FBF0D8; --link:#0B57A4;
+  --grader-psa:#C8102E; --grader-bgs-silver:#8C929C; --grader-bgs-gold:#9A7212;
+  --grader-cgc:#0B57A4; --grader-sgc:#2B2F36; --gold-text:#7F5D0E;
+  --foil:repeating-linear-gradient(108deg,#1FC4D8 0px,#4E93E8 7px,#B851C0 14px,#E85C7A 21px,#E39A4C 27px,#3CC79E 34px,#1FC4D8 41px);
+  --foil-opacity:.90;
+  --slab-shadow:0 1px 1px rgba(16,18,21,.05),0 10px 24px -16px rgba(16,18,21,.45);
+  --radius:2px; --u:8px; --focus:var(--link);
+  --font-display:"Avenir Next Condensed","Roboto Condensed","Liberation Sans Narrow","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --font-grade:Impact,"Haettenschweiler","Arial Black","Franklin Gothic Heavy","Helvetica Neue",sans-serif;
+  --font-ui:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --font-doc:Georgia,"Times New Roman","Liberation Serif",serif;
+  --edge:var(--grader-psa);
+}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#101419; --label:#1B2028; --well:#161A20; --rail:#131820;
+  --ink:#F5F7FA; --ink-2:#B2B9C4; --ink-3:#8C94A0;
+  --rule:#23272E; --rule-2:#363C45; --rule-strong:#4A515C;
+  --cert-red:#FF5647; --red-wash:#2B0E10;
+  --pass:#4ACF9B; --flag:#F0B429; --flag-wash:#2A2007; --link:#5AA9F0;
+  --grader-psa:#FF4438; --grader-bgs-silver:#C3C8D1; --grader-bgs-gold:#E5B84A;
+  --grader-cgc:#5AA9F0; --grader-sgc:#AAB2BE; --gold-text:#E5B84A;
+  --foil-opacity:.85;
+  --slab-shadow:0 1px 0 rgba(255,255,255,.03),0 14px 34px -20px #000;
+}}
+:root[data-theme="light"]{
+  --paper:#F7F5EE; --label:#FFFFFF; --well:#EFEBE1; --rail:#F2EFE7;
+  --ink:#14171B; --ink-2:#454A53; --ink-3:#5C626E;
+  --rule:#D8D4CB; --rule-2:#B3ADA1; --rule-strong:#101215;
+  --cert-red:#D41E30; --red-wash:#FDECEE; --pass:#0C7350; --flag:#8A5A00;
+  --flag-wash:#FBF0D8; --link:#0B57A4; --grader-psa:#C8102E; --gold-text:#7F5D0E;
+  --foil-opacity:.90;
+  --slab-shadow:0 1px 1px rgba(16,18,21,.05),0 10px 24px -16px rgba(16,18,21,.45);
+}
+:root[data-theme="dark"]{
+  --paper:#101419; --label:#1B2028; --well:#161A20; --rail:#131820;
+  --ink:#F5F7FA; --ink-2:#B2B9C4; --ink-3:#8C94A0;
+  --rule:#23272E; --rule-2:#363C45; --rule-strong:#4A515C;
+  --cert-red:#FF5647; --red-wash:#2B0E10; --pass:#4ACF9B; --flag:#F0B429;
+  --flag-wash:#2A2007; --link:#5AA9F0; --grader-psa:#FF4438; --gold-text:#E5B84A;
+  --foil-opacity:.85;
+  --slab-shadow:0 1px 0 rgba(255,255,255,.03),0 14px 34px -20px #000;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);border-top:4px solid transparent;border-image:var(--foil) 1;color:var(--ink);font:14px/1.5 var(--font-ui);-webkit-font-smoothing:antialiased}
+.wrap{max-width:940px;margin:0 auto;padding:0 20px}
+a{color:var(--link)}
+:where(a,button,input,summary,[tabindex]):focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:var(--radius)}
+
+/* ---- type ---- */
+.disp{font-family:var(--font-display);text-transform:uppercase;font-weight:600;letter-spacing:.04em}
+h1{font:600 clamp(34px,7vw,76px)/.94 var(--font-display);text-transform:uppercase;letter-spacing:.005em;margin:0 0 20px}
+h2{font:600 clamp(23px,3.4vw,36px)/1.05 var(--font-display);text-transform:uppercase;letter-spacing:.02em;margin:0 0 12px}
+h3{font:600 18px/1.2 var(--font-display);text-transform:uppercase;letter-spacing:.05em;margin:0 0 8px}
+.prose{font:17px/1.6 var(--font-doc);color:var(--ink-2);max-width:60ch;margin:0 0 1em}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums lining-nums}
+.fine{font:11px/1.5 var(--font-mono);letter-spacing:.06em;color:var(--ink-3)}
+
+/* ---- top bar ---- */
+.top{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:20px 0;flex-wrap:wrap}
+.wordmark{font:600 20px/1 var(--font-display);text-transform:uppercase;letter-spacing:.06em;box-shadow:inset 0 -3px 0 var(--cert-red);padding-bottom:2px}
+.themebtn{font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em;background:none;border:1px solid var(--rule-2);color:var(--ink-2);padding:6px 9px;border-radius:var(--radius);cursor:pointer}
+
+/* ---- sections ---- */
+section{padding:52px 0;border-top:1px solid var(--rule)}
+.eyebrow{display:flex;gap:10px;align-items:baseline;margin-bottom:18px}
+.eyebrow .no{font:11px/1 var(--font-mono);letter-spacing:.1em;color:var(--ink-3)}
+.eyebrow .nm{font:600 11px/1 var(--font-display);text-transform:uppercase;letter-spacing:.16em;color:var(--ink-2)}
+
+/* ================= THE CERT BAR ================= */
+.cert{position:relative;display:grid;grid-template-columns:1fr auto;gap:14px;
+  padding:14px 14px 20px;background:var(--label);border:1px solid var(--rule-strong);border-radius:var(--radius)}
+.cert::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--edge);border-radius:var(--radius) var(--radius) 0 0}
+.cert--foil::before{background:var(--foil);opacity:var(--foil-opacity)}
+.cert__id{min-width:0}
+.cert__l1,.cert__l2{font:600 15px/1.25 var(--font-display);text-transform:uppercase;letter-spacing:.04em;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cert__l3{font:600 12px/1.3 var(--font-display);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
+.cert__grade{padding-left:14px;min-width:78px;text-align:center;border-left:1px solid var(--rule-strong)}
+.cert__word{font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.14em;color:var(--ink-2)}
+.cert__num{display:block;margin-top:4px;font-family:var(--font-grade);font-size:42px;line-height:.9;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
+.cert__cert{position:absolute;right:12px;bottom:6px;font:10px/1 var(--font-mono);letter-spacing:.08em;color:var(--ink-3)}
+.cert--hero{padding:20px 20px 26px;box-shadow:inset 0 0 0 1px var(--label),inset 0 0 0 2px var(--rule-2),var(--slab-shadow)}
+.cert--hero .cert__num{font-size:clamp(46px,8vw,64px)}
+.cert--hero .cert__l1,.cert--hero .cert__l2{font-size:clamp(16px,2.6vw,20px)}
+.cert--hero.cert--foil::after{content:"";position:absolute;inset:0;pointer-events:none;background:var(--foil);opacity:0;mix-blend-mode:color-dodge;transform:translateX(-30%)}
+@media (prefers-reduced-motion:no-preference){
+  .cert--hero.cert--foil:hover::after{opacity:.18;transform:translateX(30%);transition:opacity .18s linear,transform .4s ease-out}
+}
+
+/* ================= 80-CHAR TITLE BOX ================= */
+.titlebox{background:var(--well);border:1px solid var(--rule);border-radius:var(--radius);padding:14px 14px 0}
+.titlebox__str{font:15px/1.5 var(--font-mono);letter-spacing:.01em;color:var(--ink);word-break:break-word;user-select:all}
+.tok{background:var(--red-wash);box-shadow:inset 0 -1px 0 var(--cert-red);padding:1px 2px;margin:0 -2px;border-radius:1px;color:inherit}
+.tfoot{display:flex;align-items:center;gap:12px;margin-top:12px;padding-bottom:12px}
+.ruler{flex:1;height:6px;border:1px solid var(--rule);
+  background:linear-gradient(90deg,var(--ink) 0 calc(var(--pct)*1%),transparent 0),
+             repeating-linear-gradient(90deg,var(--rule-2) 0 1px,transparent 1px 12.5%)}
+.count{font:12px/1 var(--font-mono);font-variant-numeric:tabular-nums;color:var(--ink-2)}
+
+/* ================= COMPS ================= */
+.comps{width:100%;border-collapse:collapse;font:13px/1.35 var(--font-ui);background:var(--label)}
+.comps th{font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule-strong)}
+.comps td{padding:7px 10px;border-bottom:1px solid var(--rule)}
+.comps .d{font:12px/1 var(--font-mono);color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.comps .p{font:600 14px/1 var(--font-mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
+.comps .t{color:var(--ink);max-width:1px;width:99%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.comps .g{width:18px;color:var(--ink-3);font:12px/1 var(--font-mono)}
+.comps tr.ex td{color:var(--ink-3)}
+.comps tr.ex .p{text-decoration:line-through;color:var(--ink-3)}
+.why{display:inline-block;font:600 9px/1 var(--font-display);text-transform:uppercase;letter-spacing:.1em;
+  background:var(--well);border:1px solid var(--rule-2);border-radius:var(--radius);padding:3px 5px;margin-left:7px;color:var(--ink-2)}
+.sumrow td{background:var(--well);border-top:1px solid var(--rule-strong);border-bottom:0;font:12px/1.4 var(--font-mono);letter-spacing:.04em;color:var(--ink-2)}
+
+/* ================= CHIPS ================= */
+.chip{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;border:1px solid var(--rule-2);
+  border-radius:var(--radius);font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink);background:var(--label);vertical-align:middle}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--dot,var(--rule-2))}
+.chip--psa{--dot:var(--grader-psa)} .chip--bgs{--dot:var(--grader-bgs-silver)}
+.chip--gold{--dot:var(--grader-bgs-gold)} .chip--cgc{--dot:var(--grader-cgc)}
+.ser{font-family:var(--font-mono);font-variant-numeric:tabular-nums lining-nums}
+.ser b{font-weight:700} .ser i{font-style:oblique;color:var(--ink-3)}
+.ser--one{background:#0D0E10;color:#FFD07A;border:1px solid #9A7212;padding:2px 7px;border-radius:var(--radius);font-weight:700}
+
+/* ================= BUTTONS / FORMS ================= */
+.btn{display:inline-flex;align-items:center;justify-content:center;font:600 13px/1 var(--font-display);
+  text-transform:uppercase;letter-spacing:.12em;height:46px;padding:0 24px;border:0;border-radius:var(--radius);
+  background:var(--ink);color:var(--label);box-shadow:inset 0 -3px 0 var(--cert-red);cursor:pointer;
+  text-decoration:none;transition:box-shadow .12s,transform .12s}
+.btn:hover{box-shadow:inset 0 -5px 0 var(--cert-red);transform:translateY(-1px)}
+.btn:active{box-shadow:inset 0 -2px 0 var(--cert-red);transform:none}
+.btn--ghost{background:transparent;color:var(--ink);border:1px solid var(--rule-strong);box-shadow:none}
+.btn--ghost:hover{background:var(--well);box-shadow:none;transform:none}
+.btn--wide{width:100%}
+label.fl{display:block;font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);margin-bottom:6px}
+input[type=email]{height:46px;background:var(--well);border:1px solid var(--rule);border-radius:var(--radius);
+  padding:0 12px;font:15px/1 var(--font-ui);color:var(--ink);width:100%;min-width:0}
+input[type=email]:focus{border-color:var(--ink);box-shadow:inset 0 -2px 0 var(--cert-red)}
+input::placeholder{color:var(--ink-3)}
+.field{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.field>div{flex:1 1 240px}
+
+/* ---- layout helpers ---- */
+.stack{display:grid;gap:0}
+.joint{height:18px;display:grid;place-items:center}
+.joint::before{content:"";width:1px;height:100%;background:var(--rule-2)}
+.two{display:grid;gap:26px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.legend{display:grid;gap:10px;margin-top:18px}
+.legend div{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.legend span.txt{color:var(--ink-2);font:13px/1.5 var(--font-ui);flex:1 1 260px}
+.ledger{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12.5px}
+.ledger td{padding:9px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+.ledger .k{font:600 9px/1.4 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);white-space:nowrap;width:1px;padding-right:14px}
+.ledger .amt{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--ink)}
+footer{padding:34px 0 70px;border-top:1px solid var(--rule);margin-top:52px}
+footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
+
+
+
+/* ---- hero output labels + description ---- */
+.outlabel{display:flex;align-items:baseline;gap:9px;margin:0 0 8px;flex-wrap:wrap}
+.outlabel b{font-family:var(--font-grade);font-size:17px;line-height:1;color:var(--cert-red);font-variant-numeric:tabular-nums}
+.outlabel span{font:600 11px/1 var(--font-display);text-transform:uppercase;letter-spacing:.16em;color:var(--ink)}
+.outlabel i{font:11px/1 var(--font-mono);letter-spacing:.05em;color:var(--ink-3);font-style:normal}
+.descbox{background:var(--label);border:1px solid var(--rule);border-radius:var(--radius);
+  padding:15px;font:14.5px/1.6 var(--font-doc);color:var(--ink-2)}
+.descbox strong{color:var(--ink)}
+/* ================= §01 CENTREPIECE ================= */
+.hilite{background:var(--label);border-top:3px solid transparent;border-image:var(--foil) 1;
+  padding:42px 24px 48px;border-radius:var(--radius);box-shadow:var(--slab-shadow);margin-top:8px}
+.scoreboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);border-radius:var(--radius);margin:26px 0 30px;overflow:hidden}
+.score{background:var(--label);padding:16px 14px;text-align:center}
+.score .n{display:block;font-family:var(--font-grade);font-size:40px;line-height:.9;color:var(--ink);
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.score .l{display:block;margin-top:7px;font:600 10px/1.3 var(--font-display);text-transform:uppercase;
+  letter-spacing:.12em;color:var(--ink-3)}
+.vswrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--radius)}
+.vs th.ours{color:var(--ink);position:relative}
+.vs th.ours::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;
+  background:var(--foil);opacity:var(--foil-opacity)}
+.vs td.y{color:var(--ink);font-weight:600;padding-left:30px;position:relative;box-shadow:inset 2px 0 0 var(--cert-red)}
+.vs td:not(.k):not(.y){padding-left:30px;position:relative;color:var(--ink-3)}
+.vs td:not(.k):not(.y)::before{content:"\2013";position:absolute;left:10px;top:10px;color:var(--rule-2);font-weight:700}
+@media (max-width:720px){
+  .hilite{padding:32px 16px 38px}
+  .score .n{font-size:32px}
+}
+
+/* ---- pipeline ---- */
+.pipe{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:0;counter-reset:none}
+.pipe li{display:grid;grid-template-columns:132px 1fr;gap:18px;padding:16px 0;border-top:1px solid var(--rule);align-items:baseline}
+.pipe li:last-child{border-bottom:1px solid var(--rule)}
+.stage{font:600 11px/1.3 var(--font-display);text-transform:uppercase;letter-spacing:.14em;color:var(--ink-3);white-space:nowrap}
+.what{font:15px/1.62 var(--font-doc);color:var(--ink-2)}
+.what b{color:var(--ink);font-weight:700}
+.what .mono{font-size:13px;color:var(--ink)}
+/* ---- comparison ---- */
+.vs{width:100%;border-collapse:collapse;font:14px/1.45 var(--font-ui);min-width:560px;background:var(--label)}
+.vs th{font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);
+  text-align:left;padding:10px;border-bottom:1px solid var(--rule-strong)}
+.vs td{padding:10px;border-bottom:1px solid var(--rule);color:var(--ink-2);vertical-align:top}
+.vs td.k{font:600 10px/1.4 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);white-space:nowrap;width:1px;padding-right:16px}
+.vs tr:hover td{background:var(--well)}
+/* ---- test list ---- */
+.tests{background:var(--well);border:1px solid var(--rule);border-radius:var(--radius);padding:14px;
+  font-size:12.5px;line-height:1.9;color:var(--ink-2);overflow-x:auto;white-space:nowrap}
+@media (max-width:720px){.pipe li{grid-template-columns:1fr;gap:6px}}
+@media (max-width:720px){
+  .cert__num{font-size:34px} .cert--hero .cert__num{font-size:44px}
+  .comps .hidem{display:none}
+}
+
+/* ---- comparison: stacked cards on phones, OUR answer first ---- */
+@media (max-width:720px){
+  .vswrap{overflow-x:visible;border:0;border-radius:0}
+  .vs{min-width:0 !important;width:100% !important;display:block;background:transparent}
+  .vs thead{display:none}
+  .vs tbody{display:block}
+  .vs tr{display:flex;flex-direction:column;background:var(--label);border:1px solid var(--rule);
+    border-radius:var(--radius);margin-bottom:10px;padding:12px}
+  .vs tr:hover td{background:transparent}
+  .vs td{display:block;border:0;padding:0;max-width:none;width:auto}
+  .vs td.k{order:1;width:auto;padding:0 0 9px;font:600 10px/1.4 var(--font-display);
+    text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3)}
+  .vs td.y{order:2;padding:0 0 0 11px;margin-bottom:8px;color:var(--ink);font-weight:600;
+    box-shadow:inset 2px 0 0 var(--cert-red);position:static}
+  .vs td:not(.k):not(.y){order:3;padding:0 0 0 11px;color:var(--ink-3);
+    box-shadow:inset 2px 0 0 var(--rule-2);position:static}
+  .vs td.y::before{content:"ListRight";position:static;display:block;margin-bottom:3px;
+    font:600 9px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em;color:var(--cert-red)}
+  .vs td:not(.k):not(.y)::before{content:"Most card tools";position:static;display:block;margin-bottom:3px;
+    font:600 9px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3)}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <span class="wordmark">ListRight</span>
+    <div style="display:flex;gap:12px;align-items:center">
+      <span class="fine">CERT No. 0000001 · FOUNDING SERIES</span>
+      <button class="themebtn" id="theme" type="button">Theme</button>
+    </div>
+  </div>
+
+  <!-- ================== HERO ================== -->
+  <section style="border-top:0;padding-top:14px">
+    <h1>Get the title right.<br>Get paid what<br>it's worth.</h1>
+    <p class="prose">Photograph a card and get the three things eBay asks you for — <strong>title</strong>,
+      <strong>price</strong> and <strong>description</strong> — ready to paste. The title carries every value
+      token the hobby uses. The price comes off real sold comps you can check line by line.</p>
+
+    <!-- the hero object IS the product, not a picture of it -->
+    <div class="stack" style="margin:30px 0 26px;max-width:660px">
+      <div class="outlabel"><span>Reads the card</span></div>
+      <div class="cert cert--hero cert--foil" data-grader="psa">
+        <div class="cert__id">
+          <div class="cert__l1">2018 Panini Prizm</div>
+          <div class="cert__l2">#280 Luka Doncic</div>
+          <div class="cert__l3">Silver Prizm · RC</div>
+        </div>
+        <div class="cert__grade">
+          <span class="cert__word">Gem MT</span>
+          <span class="cert__num">10</span>
+        </div>
+        <span class="cert__cert">CERT 47182930</span>
+      </div>
+
+      <div class="joint"></div>
+
+      <div class="outlabel"><b>01</b><span>eBay title</span><i>80-char limit enforced</i></div>
+      <div class="titlebox" style="--pct:76">
+        <div class="titlebox__str">2018 Panini Prizm <span class="tok">#280</span> Luka Doncic <span class="tok">Silver Prizm</span> <span class="tok">RC</span> <span class="tok">PSA 10</span> Gem Mint</div>
+        <div class="tfoot"><div class="ruler"></div><span class="count">61/80</span></div>
+      </div>
+
+      <div class="joint"></div>
+
+      <div class="outlabel"><b>02</b><span>Price</span><i>From sold comps, shown below</i></div>
+      <table class="comps">
+        <thead><tr><th class="g"></th><th>Date</th><th style="text-align:right">Price</th><th>Sold listing</th></tr></thead>
+        <tbody>
+          <tr><td class="g">●</td><td class="d">2026-07-11</td><td class="p">$96.00</td><td class="t">2018 Prizm Luka Doncic Silver #280 PSA 10</td></tr>
+          <tr><td class="g">●</td><td class="d">2026-07-04</td><td class="p">$88.50</td><td class="t">Luka Doncic 2018 Panini Prizm Silver RC PSA 10</td></tr>
+          <tr class="ex"><td class="g">○</td><td class="d">2026-07-02</td><td class="p">$31.00</td><td class="t">2018 Prizm Luka Doncic #280 base <span class="why">Wrong parallel</span></td></tr>
+          <tr><td class="g">●</td><td class="d">2026-06-28</td><td class="p">$84.00</td><td class="t">Doncic Silver Prizm rookie PSA 10 Gem Mint</td></tr>
+          <tr class="sumrow"><td colspan="4">n=14 · MEDIAN $84.00 · IQR $71–$96 · 90D · 2 EXCLUDED</td></tr>
+        </tbody>
+      </table>
+
+      <div class="joint"></div>
+
+      <div class="outlabel"><b>03</b><span>Description</span><i>No external links — eBay policy</i></div>
+      <div class="descbox">2018 Panini Prizm #280 Luka Doncic — Silver Prizm Rookie Card, graded
+        <strong>PSA 10 Gem Mint</strong>. Certification number 47182930, verified against PSA's population
+        report: 1,842 graded PSA 10, none higher. Card is sealed in its original PSA holder and has not been
+        removed. Ships double-boxed with tracking and insurance.</div>
+    </div>
+
+    <p class="prose" style="margin:22px 0 6px;font-size:18px;max-width:62ch">
+      <strong>Price this off the base-card comp and you list an $84 card at $31.</strong>
+      That struck-through row is the one ListRight refused to price on — and the $53 gap is why.</p>
+    <p class="fine" style="margin:0 0 22px">Illustrative example of the token rules and comp handling — not a customer result.</p>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <a class="btn" href="#waitlist">Start free — 5 cards, no card needed</a>
+      <a class="btn btn--ghost" href="#membership">See the $19 founding seat</a>
+    </div>
+  </section>
+
+  <!-- ================== §01 THE COMPARISON — CENTREPIECE ================== -->
+  <section class="hilite">
+    <div class="eyebrow"><span class="no">§ 01</span><span class="nm">How it compares</span></div>
+    <h2>Eleven things other<br>card tools don't do</h2>
+    <p class="prose">You have options. Most of them scan a card and hand you a number — the scanning was
+      never the hard part. Here is exactly where they stop and this keeps going.</p>
+
+    <div class="scoreboard">
+      <div class="score"><span class="n">$53</span><span class="l">Gap on one mispriced card</span></div>
+      <div class="score"><span class="n">15M</span><span class="l">Sold comps read</span></div>
+    </div>
+
+    <div class="vswrap">
+    <table class="vs">
+      <thead><tr>
+        <th></th>
+        <th>Most card tools</th>
+        <th class="ours">ListRight</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="k">Price source</td><td>A market feed or their own database</td><td class="y">eBay sold listings — what buyers actually paid</td></tr>
+        <tr><td class="k">Accepted Best Offers</td><td>Hidden by eBay, so invisible</td><td class="y">Read and included</td></tr>
+        <tr><td class="k">Multi-card lots</td><td>Counted as comps</td><td class="y">Stripped before pricing</td></tr>
+        <tr><td class="k">Graded vs raw</td><td>Mixed together</td><td class="y">Separated</td></tr>
+        <tr><td class="k">Numbered parallels</td><td>Matched to base cards</td><td class="y">Matched to numbered parallels</td></tr>
+        <tr><td class="k">Title tokens</td><td>AI-written or typed by hand</td><td class="y">Rule-based and unit-tested</td></tr>
+        <tr><td class="k">1st Bowman</td><td>Often tagged as a rookie</td><td class="y">Its own token — never RC</td></tr>
+        <tr><td class="k">Rejected comps</td><td>Not shown</td><td class="y">Shown, struck, with the reason</td></tr>
+        <tr><td class="k">Description</td><td>You write it, or paste a template</td><td class="y">Written for you, policy-safe</td></tr>
+        <tr><td class="k">The price</td><td>One number</td><td class="y">Median, IQR range, n, confidence</td></tr>
+        <tr><td class="k">Character limit</td><td>You find out when eBay truncates</td><td class="y">Budgeted to 80 before you see it</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p class="prose" style="margin-top:24px;font-size:15px">Those title rules aren't a claim —
+      they're <strong>75 tests</strong>, and they read like the hobby talks:</p>
+    <div class="tests mono">
+      test_first_bowman_adds_1st_before_brand<br>
+      test_no_rc_token_when_not_a_rookie<br>
+      test_print_run_tolerates_full_serial_and_punctuation<br>
+      test_variety_not_duplicated_when_brand_contains_it<br>
+      test_listing_title_keeps_grade_even_with_long_brand<br>
+      test_listing_description_has_no_urls
+    </div>
+    <p class="fine" style="margin-top:12px">That last one exists because eBay treats external links in a
+      listing as a policy violation.</p>
+  </section>
+
+  <!-- ================== §02 THE TITLE ================== -->
+  <section>
+    <div class="eyebrow"><span class="no">§ 02</span><span class="nm">The title</span></div>
+    <h2>Buyers search "Auto." Not "Autograph."</h2>
+    <p class="prose">Miss the token a buyer actually types and your card doesn't appear in the search that
+      would have sold it. Every card app writes a title. ListRight writes it from <em>rules</em> — the same
+      value tokens, in the hobby's order, inside the 80-character limit, every single time.</p>
+
+    <div class="legend">
+      <div><span class="ser"><b>/250</b></span><span class="txt"><strong>Print run.</strong> The denominator is the information — a /25 is a different card from a /250. Always in the title.</span></div>
+      <div><span class="chip">RC</span><span class="txt"><strong>Rookie card.</strong> Only when the card actually carries the RC mark. A 1st Bowman prospect is <em>not</em> a rookie — a mistake that costs money in both directions.</span></div>
+      <div><span class="chip">1st Bowman</span><span class="txt"><strong>First Bowman.</strong> Its own token, placed before the brand so it reads "1st Bowman Chrome."</span></div>
+      <div><span class="chip chip--psa">PSA 10</span><span class="txt"><strong>Grade.</strong> The single strongest value token on a slab, and it leads the title.</span></div>
+      <div><span class="ser ser--one">1/1</span><span class="txt"><strong>One of one.</strong> A different class of object from a /250 — and never styled like one.</span></div>
+      <div><span class="chip chip--gold">SIR</span><span class="txt"><strong>Special Illustration Rare.</strong> Two gold stars, not one. Resolving SIR vs IR before you list is the difference between two very different prices.</span></div>
+    </div>
+  </section>
+
+  <!-- ================== §02 THE PRICE ================== -->
+  <section>
+    <div class="eyebrow"><span class="no">§ 03</span><span class="nm">The price</span></div>
+    <h2>Priced off sold comps.<br>Not a "market price."</h2>
+    <div class="two">
+      <div>
+        <h3>What everyone else does</h3>
+        <p class="prose" style="font-size:15px">Card tools price off a market feed — TCGplayer, or their own database. It's a number, and you're asked to trust it.</p>
+      </div>
+      <div>
+        <h3>What ListRight does</h3>
+        <p class="prose" style="font-size:15px">Reads what the card <em>actually sold for</em> on eBay. Strips lots, separates graded from raw, drops outliers, and gives you a median with a range — then shows you every comp behind it.</p>
+      </div>
+    </div>
+    <p class="prose" style="margin-top:6px"><strong>Including the ones it threw out.</strong> That hollow row in the example above —
+      struck price, "wrong parallel" — is a comp ListRight refused to price on. No other tool shows you its own rejects.</p>
+  </section>
+
+  <!-- ================== §03 THE PIPELINE ================== -->
+  <section>
+    <div class="eyebrow"><span class="no">§ 04</span><span class="nm">What runs on every card</span></div>
+    <h2>Seven stages.<br>No guessing at any of them.</h2>
+    <p class="prose">This is the whole pipeline. Nothing here is a language model being asked politely to
+      produce a good title — the identification is structured, and everything after it is deterministic code
+      with tests.</p>
+
+    <ol class="pipe">
+      <li><span class="stage">01 · Read</span><span class="what"><b>Front and back.</b> HEIC and JPEG, EXIF rotation corrected, decompression-bomb guarded, downscaled to 1600px before anything sees it. The back resolves year, set and serial the front can't.</span></li>
+      <li><span class="stage">02 · Identify</span><span class="what"><b>Structured extraction, not prose.</b> Twenty fields come back typed — sport, year, brand, set, player, team, card number, parallel, insert, serial, print run, grader, grade, cert — each with a confidence. The model fills a schema; it doesn't write a sentence and hope.</span></li>
+      <li><span class="stage">03 · Tokens</span><span class="what"><b>Rules override the model.</b> A legible serial derives the print run whether the card reads <span class="mono">074/250</span>, <span class="mono">/250</span> or <span class="mono">250</span>. A 1st Bowman prospect is forced to <em>not</em> be a rookie, because it isn't one — a distinction most tools get wrong in both directions.</span></li>
+      <li><span class="stage">04 · Title &amp; description</span><span class="what"><b>An 80-character budget, spent by priority — plus the description.</b> Grade, player and year are never dropped. Then RC, 1st Bowman and the print run — short, high-signal — outrank the long brand string and the card number. Duplicate variety text is removed when the brand already contains it, and ALL-CAPS grader fields are re-cased without breaking <span class="mono">RC</span>, <span class="mono">PSA</span>, <span class="mono">SP</span> or <span class="mono">SSP</span>. The description is written alongside it, with population context and <em>no external links</em> — eBay treats those as a policy violation.</span></li>
+      <li><span class="stage">05 · Comps</span><span class="what"><b>Real eBay sold listings</b> — 15M+ of them, including <strong>accepted Best Offer prices that eBay hides from you</strong>. That's the truest record of what a card actually trades for, and most tools never see it.</span></li>
+      <li><span class="stage">06 · Segment</span><span class="what"><b>The step that decides whether the number means anything.</b> Multi-card lots stripped out. Graded separated from raw. Serial-numbered parallels matched to serial-numbered parallels. Currencies split. Stale sales aged out. A comp set that skips this is just an average of unrelated cards.</span></li>
+      <li><span class="stage">07 · Price</span><span class="what"><b>Median, not mean</b> — one shill sale can't drag it. Range is the interquartile band, so the middle half of real sales. Confidence is computed from sample size <em>and</em> spread, and it's always shown with the numbers behind it, never as a bare adjective.</span></li>
+    </ol>
+
+    <p class="fine" style="margin-top:20px">Graded slabs additionally verify against PSA's public API — identity and population, by cert number.</p>
+  </section>
+
+  <!-- ================== §05 THE PROOF ================== -->
+  <section>
+    <div class="eyebrow"><span class="no">§ 05</span><span class="nm">The proof</span></div>
+    <h2>The same card, titled two ways</h2>
+    <table class="ledger">
+      <tr><td class="k">Typical</td><td>2023 Bowman Chrome Jackson Holliday Refractor Auto</td><td class="amt">50 ch</td></tr>
+      <tr><td class="k">ListRight</td><td>PSA 10 Jackson Holliday 2023 <span class="tok">1st Bowman</span> Chrome Auto Refractor <span class="tok">/499</span></td><td class="amt">78 ch</td></tr>
+      <tr><td class="k">Typical</td><td>Charizard ex Special Illustration Rare 151</td><td class="amt">42 ch</td></tr>
+      <tr><td class="k">ListRight</td><td>Charizard ex <span class="tok">SIR</span> 151 #199 PSA 10 Pokemon Scarlet &amp; Violet 2023</td><td class="amt">71 ch</td></tr>
+      <tr><td class="k">Typical</td><td>Luka Doncic Prizm Silver rookie graded</td><td class="amt">38 ch</td></tr>
+      <tr><td class="k">ListRight</td><td>2018 Panini Prizm #280 Luka Doncic <span class="tok">Silver Prizm</span> <span class="tok">RC</span> <span class="tok">PSA 10</span></td><td class="amt">61 ch</td></tr>
+    </table>
+    <p class="fine" style="margin-top:14px">Illustrative pairs showing the token rules. Not customer results — there aren't any yet.</p>
+  </section>
+
+  <!-- ================== §04 MEMBERSHIP ================== -->
+  <section id="membership">
+    <div class="eyebrow"><span class="no">§ 06</span><span class="nm">The membership</span></div>
+    <h2>Founding series</h2>
+    <p class="prose">Try five cards free, no card required. If it earns a seat, twenty-five people get it at $19 — cheaper than it will ever be again, permanently — and get to tell me what to build next.</p>
+
+    <div style="max-width:520px;margin:24px 0 18px">
+      <div class="cert cert--hero" data-grader="psa">
+        <div class="cert__id">
+          <div class="cert__l1">Founding Membership</div>
+          <div class="cert__l2">500 Scans · Monthly</div>
+          <div class="cert__l3">Was $39 · Locked for life</div>
+        </div>
+        <div class="cert__grade">
+          <span class="cert__word">USD</span>
+          <span class="cert__num">19</span>
+        </div>
+        <span class="cert__cert">SERIES 1 · 25 SEATS</span>
+      </div>
+    </div>
+
+    <!-- TODO: swap href for your Paddle checkout link -->
+    <a class="btn btn--wide" href="#waitlist" data-payment-link style="max-width:520px">Claim a founding seat — $19/mo</a>
+    <p class="fine" style="margin-top:12px;max-width:520px">Past 500 cards in a month? Email me and I'll raise your cap — I'd rather price it right than have you hit a wall · 5 cards free first, no card required · Cancel anytime · Refund in the first 30 days</p>
+
+    <p class="prose" style="margin-top:24px;font-size:15px">Honest status: the engine works and is what I use on my own
+      cards. The hosted version is early — you'll be using a beta and talking to me directly. It does <strong>not</strong>
+      publish to eBay or Whatnot yet; you copy the title and price into your listing. That's next.</p>
+  </section>
+
+  <!-- ================== WAITLIST + PROBE ================== -->
+  <section id="waitlist">
+    <div class="eyebrow"><span class="no">§ 07</span><span class="nm">Not yet</span></div>
+    <h2>Get the launch note</h2>
+    <p class="prose">One email when it opens. Nothing else.</p>
+
+    <form name="waitlist" method="POST" data-netlify="true" netlify-honeypot="company" style="max-width:520px">
+      <input type="hidden" name="form-name" value="waitlist">
+      <p hidden><label>Leave blank <input name="company"></label></p>
+      <div class="field">
+        <div><label class="fl" for="e1">Email</label><input id="e1" type="email" name="email" required placeholder="you@email.com" autocomplete="email"></div>
+        <button class="btn" type="submit">Keep me posted</button>
+      </div>
+    </form>
+
+    <div style="height:38px"></div>
+    <h3>Would you use this one?</h3>
+    <p class="prose" style="font-size:15px">Deciding what to build after launch. One candidate: measure centering,
+      flag corner and edge defects, then tell you whether paying to grade is worth it against what the graded
+      comps actually sell for. If you'd use it, say so — that's how I'll decide.</p>
+    <form name="grade-interest" method="POST" data-netlify="true" netlify-honeypot="company2" style="max-width:520px">
+      <input type="hidden" name="form-name" value="grade-interest">
+      <input type="hidden" name="interest" value="grade-screen">
+      <p hidden><label>Leave blank <input name="company2"></label></p>
+      <div class="field">
+        <div><label class="fl" for="e2">Email</label><input id="e2" type="email" name="email" required placeholder="you@email.com" autocomplete="email"></div>
+        <button class="btn btn--ghost" type="submit">I'd use "should I grade this?"</button>
+      </div>
+    </form>
+  </section>
+
+  <footer>
+    <p>Not affiliated with, endorsed by, or sponsored by eBay, Whatnot, PSA, BGS, CGC, SGC or TAG.
+      Comps are eBay sold listings; prices are estimates, not appraisals. Always review a title and
+      price before you list.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var r = document.documentElement, k = 'lr-theme', saved = null;
+  try { saved = localStorage.getItem(k); } catch(e){}
+  if (saved) r.setAttribute('data-theme', saved);
+  document.getElementById('theme').addEventListener('click', function(){
+    var dark = r.getAttribute('data-theme') === 'dark'
+      || (!r.getAttribute('data-theme') && matchMedia('(prefers-color-scheme:dark)').matches);
+    var next = dark ? 'light' : 'dark';
+    r.setAttribute('data-theme', next);
+    try { localStorage.setItem(k, next); } catch(e){}
+  });
+})();
+</script>
+</body>
+</html>
