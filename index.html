@@ -244,6 +244,19 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
   .anim .comps tr.ex .why{animation:lrPop .3s cubic-bezier(.2,1.4,.4,1) 2.45s both}
 }
 
+
+/* ---- the 11, pushed above the fold ---- */
+.only{margin:26px 0 30px;padding:20px 0 4px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.only h3{font:600 12px/1 var(--font-display);text-transform:uppercase;letter-spacing:.16em;
+  color:var(--ink-3);margin:0 0 16px}
+.only h3 b{color:var(--cert-red);font-family:var(--font-grade);font-size:19px;
+  letter-spacing:0;vertical-align:-2px;margin-right:5px}
+.onlygrid{display:grid;gap:8px 22px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  list-style:none;padding:0;margin:0 0 18px}
+.onlygrid li{padding-left:12px;box-shadow:inset 2px 0 0 var(--cert-red);
+  font:14px/1.4 var(--font-ui);color:var(--ink)}
+.onlygrid li span{display:block;font:11.5px/1.35 var(--font-ui);color:var(--ink-3);margin-top:2px}
+
 /* ---- hero output labels + description ---- */
 .outlabel{display:flex;align-items:baseline;gap:9px;margin:0 0 8px;flex-wrap:wrap}
 .outlabel b{font-family:var(--font-grade);font-size:17px;line-height:1;color:var(--cert-red);font-variant-numeric:tabular-nums}
@@ -339,6 +352,23 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
       <strong>price</strong> and <strong>description</strong> — ready to paste. The title carries every value
       token the hobby uses. The price comes off real sold comps you can check line by line.</p>
 
+    <div class="only">
+      <h3><b>11</b> things no other card tool does</h3>
+      <ul class="onlygrid">
+      <li>Priced off eBay <em>sold</em> listings<span>Not a market feed you're asked to trust</span></li>
+      <li>Reads accepted Best Offers<span>The prices eBay hides from everyone else</span></li>
+      <li>Shows the comps it rejected<span>Struck through, with the reason</span></li>
+      <li>Strips multi-card lots<span>A lot is not a comp for your single</span></li>
+      <li>Separates graded from raw<span>Never averaged together</span></li>
+      <li>Matches numbered parallels<span>A Silver is not a base card</span></li>
+      <li>Title tokens by rule, not guess<span>75 unit tests behind them</span></li>
+      <li>1st Bowman is never tagged RC<span>The mislabel that costs money both ways</span></li>
+      <li>Budgets the 80-char limit<span>Before eBay truncates it for you</span></li>
+      <li>Median, IQR, n and confidence<span>Not one number with no working shown</span></li>
+      <li>Writes the description too<span>No external links — eBay policy</span></li>
+      </ul>
+    </div>
+
     <!-- the hero object IS the product, not a picture of it -->
     <div class="stack anim" style="margin:30px 0 26px;max-width:660px">
       <div class="outlabel"><span>Reads the card</span></div>
@@ -395,7 +425,8 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
       <a class="btn" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20free%205%20cards&amp;body=Hi%20%E2%80%94%20I%27d%20like%20to%20try%20ListRight%20on%205%20cards.%0A%0AWhat%20I%20sell%3A%20%0ARoughly%20how%20many%20cards%20a%20month%3A%20%0A" data-cta="free">Start free — 5 cards, no card needed</a>
       <a class="btn btn--ghost" href="#membership">See the $19 founding seat</a>
     </div>
-  </section>
+  
+</section>
 
   <!-- ================== §01 THE COMPARISON — CENTREPIECE ================== -->
   <section class="hilite">
