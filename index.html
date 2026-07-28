@@ -732,6 +732,19 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
 </div>
 
 <script>
+// attribution: ?src=<channel> rides through to Stripe as client_reference_id,
+// so the webhook can say WHICH post/DM produced each paying customer.
+(function(){
+  try {
+    var src = new URLSearchParams(location.search).get('src');
+    if (!src) return;
+    src = src.replace(/[^\w-]/g, '').slice(0, 60);
+    document.querySelectorAll('[data-payment-link]').forEach(function(a){
+      a.href += (a.href.indexOf('?') > -1 ? '&' : '?') + 'client_reference_id=' + src;
+    });
+  } catch(e){}
+})();
+
 (function(){
   var r = document.documentElement, k = 'lr-theme', saved = null;
   try { saved = localStorage.getItem(k); } catch(e){}
