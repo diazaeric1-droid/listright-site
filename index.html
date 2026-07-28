@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ListRight — the title the hobby writes, priced off comps you can audit</title>
 <meta name="description" content="ListRight is web-based subscription software that helps trading-card sellers create accurate marketplace listings. Reads the card, writes the eBay title the way the hobby writes it — print run, RC, 1st Bowman, parallel, grade, cert — and prices it off real sold comps you can check line by line.">
-<meta property="og:title" content="Get the title right. Get paid what it's worth.">
+<meta property="og:title" content="Price the exact card — not the look-alikes.">
 <meta property="og:description" content="The correct eBay title, and a price off sold comps you can audit — including the ones we threw out.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://listrightapp.com/">
@@ -189,7 +189,7 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
    reason. That last beat is the thing no competitor can show.
    Entirely scoped to prefers-reduced-motion:no-preference, so the static
    page is the default and nothing depends on animation to be readable. */
-@property --pct{syntax:'<number>';initial-value:76;inherits:true}
+@property --pct{syntax:'<number>';initial-value:83;inherits:true}
 
 @media (prefers-reduced-motion:no-preference){
   @keyframes lrRise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
@@ -198,7 +198,7 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
                     to{opacity:0;transform:translateX(100%)}}
   @keyframes lrTok{from{background:transparent;box-shadow:inset 0 -1px 0 transparent}
                    to{background:var(--red-wash);box-shadow:inset 0 -1px 0 var(--cert-red)}}
-  @keyframes lrFill{from{--pct:0}to{--pct:76}}
+  @keyframes lrFill{from{--pct:0}to{--pct:83}}
   @keyframes lrStrike{from{width:0}to{width:100%}}
   @keyframes lrPop{from{opacity:0;transform:scale(.75)}to{opacity:1;transform:scale(1)}}
   @keyframes lrCount{from{opacity:0}to{opacity:1}}
@@ -334,6 +334,78 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
   .vs td:not(.k):not(.y)::before{content:"Most card tools";position:static;display:block;margin-bottom:3px;
     font:600 9px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3)}
 }
+
+/* ================= 3D GRADING SCENE ================= */
+.scene{display:grid;grid-template-columns:minmax(150px,1fr) auto minmax(150px,1fr);gap:16px;
+  align-items:center;margin:38px 0 10px;perspective:1300px}
+.chipcol{display:flex;flex-direction:column;gap:9px;min-width:0}
+.chipcol--l{align-items:flex-end;text-align:right}
+.chipcol--r{align-items:flex-start}
+.chip3{font:11px/1.45 var(--font-ui);background:var(--label);border:1px solid var(--rule);
+  border-left:2px solid var(--rule-2);border-radius:var(--radius);padding:7px 10px;
+  color:var(--ink-3);box-shadow:var(--slab-shadow);max-width:214px}
+.chip3 b{display:block;font:600 10px/1 var(--font-display);text-transform:uppercase;
+  letter-spacing:.12em;color:var(--ink);margin-bottom:3px}
+.chip3--ok{border-left-color:var(--pass)}
+.chip3--ok b{color:var(--pass)}
+.chip3--no{border-left-color:var(--cert-red)}
+.chip3--no b{color:var(--cert-red)}
+.card3d{position:relative;width:min(250px,66vw);aspect-ratio:63/88;margin-top:26px;
+  transform-style:preserve-3d;transform:rotateY(-16deg) rotateX(5deg)}
+.card3d__face{position:absolute;inset:0;border-radius:10px;overflow:hidden;
+  background:linear-gradient(155deg,#2E333C,#171A20 46%,#242932 78%,#31363F);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.09),0 30px 52px -22px rgba(0,0,0,.6)}
+.card3d__face::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(115deg,transparent 0 14px,rgba(255,255,255,.05) 14px 16px)}
+.card3d__face::after{content:"";position:absolute;inset:0 0 auto 0;height:4px;
+  background:var(--foil);opacity:.9}
+.c3-badge{position:absolute;top:19%;right:13%;z-index:1;font:600 11px/1 var(--font-display);
+  text-transform:uppercase;letter-spacing:.08em;color:#0E1116;padding:5px 7px;border-radius:2px;
+  background:linear-gradient(160deg,#F3D06B,#C89A2C)}
+.c3-photo{position:absolute;inset:15% 9% 25%;border-radius:4px;
+  background:radial-gradient(120% 90% at 30% 12%,#4E93E8 0%,#20344E 48%,#101722 100%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+.c3-sig{position:absolute;left:6%;bottom:5%;width:72%;height:auto;
+  filter:drop-shadow(0 1px 0 rgba(0,0,0,.4))}
+.c3-plate{position:absolute;left:9%;right:9%;bottom:7%;text-align:center}
+.c3-name{display:block;font:600 18px/1.1 var(--font-display);text-transform:uppercase;
+  letter-spacing:.06em;color:#F2F4F8}
+.c3-sub{display:block;margin-top:3px;font:600 8.5px/1.2 var(--font-display);
+  text-transform:uppercase;letter-spacing:.14em;color:#98A1AE}
+.c3-scan{position:absolute;left:-8%;right:-8%;top:-6%;height:44px;opacity:0;pointer-events:none;
+  transform:translateZ(30px);
+  background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--cert-red) 45%,transparent) 80%,var(--cert-red) 95%,transparent)}
+.c3-verdict{position:absolute;left:-15%;right:-15%;top:-30px;transform:translateZ(46px);
+  padding:10px 12px 12px;box-shadow:var(--slab-shadow)}
+.c3-verdict .cert__l1{font-size:13px}
+.c3-verdict .cert__l3{font-size:9.5px;letter-spacing:.08em}
+.c3-verdict .cert__grade{min-width:60px;padding-left:10px}
+.c3-verdict .cert__num{font-size:28px}
+@media (prefers-reduced-motion:no-preference){
+  @keyframes c3in{from{opacity:0;transform:rotateY(56deg) rotateX(8deg) scale(.92)}
+                  to{opacity:1;transform:rotateY(-16deg) rotateX(5deg) scale(1)}}
+  @keyframes c3float{0%,100%{transform:rotateY(-16deg) rotateX(5deg)}
+                     50%{transform:rotateY(-7deg) rotateX(2deg) translateY(-7px)}}
+  @keyframes c3scan{0%{opacity:0;top:-6%}12%{opacity:1}88%{opacity:1}100%{opacity:0;top:100%}}
+  @keyframes c3drop{from{opacity:0;transform:translateZ(46px) translateY(-26px)}
+                    to{opacity:1;transform:translateZ(46px) translateY(0)}}
+  .scene .card3d{animation:c3in .8s cubic-bezier(.2,.7,.3,1) both,c3float 9s ease-in-out 3.4s infinite}
+  .scene .c3-scan{animation:c3scan 1.5s ease-in-out .9s 1}
+  .scene .chip3{animation:lrPop .34s cubic-bezier(.2,1.4,.4,1) both}
+  .scene .s1{animation-delay:1.05s}.scene .s2{animation-delay:1.25s}
+  .scene .s3{animation-delay:1.45s}.scene .s4{animation-delay:1.65s}
+  .scene .s5{animation-delay:2.0s}.scene .s6{animation-delay:2.2s}.scene .s7{animation-delay:2.45s}
+  .scene .c3-verdict{animation:c3drop .5s cubic-bezier(.2,1.2,.3,1) 2.85s both}
+}
+@media (max-width:720px){
+  .scene{grid-template-columns:1fr;justify-items:center;gap:16px;margin-top:24px}
+  .card3d{order:1;margin-top:34px}
+  .chipcol--l{order:2}
+  .chipcol--r{order:3}
+  .chipcol,.chipcol--l,.chipcol--r{flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:stretch;text-align:left}
+  .chip3{max-width:172px}
+  .c3-verdict{left:-8%;right:-8%}
+}
 </style>
 </head>
 <body>
@@ -347,17 +419,59 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
     </div>
   </div>
 
-  <!-- ================== HERO ================== -->
+  <!-- ================== HERO — 3D GRADING SCENE ================== -->
   <section style="border-top:0;padding-top:14px">
-    <h1>Get the title right.<br>Get paid what<br>it's worth.</h1>
-    <p class="prose">Photograph a card and get the three things eBay asks you for — <strong>title</strong>,
-      <strong>price</strong> and <strong>description</strong> — ready to paste. The title carries every value
-      token the hobby uses. The price comes off real sold comps you can check line by line.</p>
+    <h1>Price the exact card.<br>Not the look-alikes.</h1>
+    <p class="prose">Photograph a card. ListRight drafts the eBay <strong>title</strong>, pulls the real
+      <strong>sold comps</strong>, and shows every comp it kept or rejected — so you review the
+      <strong>price</strong> before you list.</p>
     <p class="fine" style="max-width:66ch;line-height:1.7;margin:-6px 0 0">
       ListRight is web-based subscription software for trading-card sellers. It is a listing-preparation
       tool — it does not buy, sell, ship or process payment for any card, and no physical goods are shipped.</p>
 
-    <div class="only">
+    <!-- the card goes through the audit, grading-machine style -->
+    <div class="scene" aria-hidden="true">
+      <div class="chipcol chipcol--l">
+        <span class="chip3 chip3--ok s1"><b>Identified</b>2024 Chrome &middot; Prospect Autograph</span>
+        <span class="chip3 chip3--ok s2"><b>&ldquo;Autograph&rdquo; &check;</b>The token buyers actually search</span>
+        <span class="chip3 chip3--ok s3"><b>1st &ne; RC</b>A prospect card is never tagged rookie</span>
+        <span class="chip3 s4"><b>No serial</b>Base card &rarr; base comps only</span>
+      </div>
+      <div class="card3d">
+        <div class="card3d__face">
+          <span class="c3-badge">1st</span>
+          <div class="c3-photo">
+            <svg class="c3-sig" viewBox="0 0 120 40"><path d="M8 28 C20 6,30 34,42 18 S70 8,74 24 M70 26 C82 10,96 30,112 16" fill="none" stroke="#4E93E8" stroke-width="2.4" stroke-linecap="round"/></svg>
+          </div>
+          <div class="c3-plate"><span class="c3-name">K. Nakoa</span><span class="c3-sub">Shortstop &middot; Prospect Autograph</span></div>
+        </div>
+        <span class="c3-scan"></span>
+        <div class="c3-verdict cert">
+          <div class="cert__id">
+            <div class="cert__l1">ListRight Audit</div>
+            <div class="cert__l3">n=12 &middot; IQR $64&ndash;$92 &middot; raw singles</div>
+          </div>
+          <div class="cert__grade">
+            <span class="cert__word">List at</span>
+            <span class="cert__num">$78</span>
+          </div>
+        </div>
+      </div>
+      <div class="chipcol chipcol--r">
+        <span class="chip3 chip3--no s5"><b>&#10005; Lot of 5 &middot; $88</b>A lot is not a comp for your single</span>
+        <span class="chip3 chip3--no s6"><b>&#10005; PSA 10 slab &middot; $140</b>Graded sale &mdash; you&rsquo;re selling raw</span>
+        <span class="chip3 chip3--ok s7"><b>&check; 12 raw singles kept</b>Median $78 &middot; middle half $64&ndash;$92</span>
+      </div>
+    </div>
+    <p class="fine" style="margin:14px 0 24px">Illustrative audit with round numbers — not a customer result.
+      Every exclusion shown (multi-card lots, graded-vs-raw) is a rule that ships today.</p>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <a class="btn" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20free%205%20cards&amp;body=Hi%20%E2%80%94%20I%27d%20like%20to%20try%20ListRight%20on%205%20cards.%0A%0AWhat%20I%20sell%3A%20%0ARoughly%20how%20many%20cards%20a%20month%3A%20%0A" data-cta="free">Start free — 5 cards, no card needed</a>
+      <a class="btn btn--ghost" href="#membership">See the $19 founding seat</a>
+    </div>
+
+    <div class="only" style="margin-top:34px">
       <h3><b>11</b> things no other card tool does</h3>
       <ul class="onlygrid">
       <li>Priced off eBay <em>sold</em> listings<span>Not a market feed you're asked to trust</span></li>
@@ -365,7 +479,7 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
       <li>Shows the comps it rejected<span>Struck through, with the reason</span></li>
       <li>Strips multi-card lots<span>A lot is not a comp for your single</span></li>
       <li>Separates graded from raw<span>Never averaged together</span></li>
-      <li>Matches numbered parallels<span>A Silver is not a base card</span></li>
+      <li>Serial parallels matched<span>A /99 is priced off /99 comps — or it tells you</span></li>
       <li>Title tokens by rule, not guess<span>75 unit tests behind them</span></li>
       <li>1st Bowman is never tagged RC<span>The mislabel that costs money both ways</span></li>
       <li>Budgets the 80-char limit<span>Before eBay truncates it for you</span></li>
@@ -373,64 +487,6 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
       <li>Writes the description too<span>No external links — eBay policy</span></li>
       </ul>
     </div>
-
-    <!-- the hero object IS the product, not a picture of it -->
-    <div class="stack anim" style="margin:30px 0 26px;max-width:660px">
-      <div class="outlabel"><span>Reads the card</span></div>
-      <div class="cert cert--hero cert--foil" data-grader="psa">
-        <div class="cert__id">
-          <div class="cert__l1">2018 Panini Prizm</div>
-          <div class="cert__l2">#280 Luka Doncic</div>
-          <div class="cert__l3">Silver Prizm · RC</div>
-        </div>
-        <div class="cert__grade">
-          <span class="cert__word">Gem MT</span>
-          <span class="cert__num">10</span>
-        </div>
-        <span class="cert__cert">CERT 47182930</span>
-      </div>
-
-      <div class="joint"></div>
-
-      <div class="outlabel"><b>01</b><span>eBay title</span><i>80-char limit enforced</i></div>
-      <div class="titlebox" style="--pct:76">
-        <div class="titlebox__str">2018 Panini Prizm <span class="tok">#280</span> Luka Doncic <span class="tok">Silver Prizm</span> <span class="tok">RC</span> <span class="tok">PSA 10</span> Gem Mint</div>
-        <div class="tfoot"><div class="ruler"></div><span class="count">61/80</span></div>
-      </div>
-
-      <div class="joint"></div>
-
-      <div class="outlabel"><b>02</b><span>Price</span><i>From sold comps, shown below</i></div>
-      <table class="comps">
-        <thead><tr><th class="g"></th><th>Date</th><th style="text-align:right">Price</th><th>Sold listing</th></tr></thead>
-        <tbody>
-          <tr><td class="g">●</td><td class="d">2026-07-11</td><td class="p">$96.00</td><td class="t">2018 Prizm Luka Doncic Silver #280 PSA 10</td></tr>
-          <tr><td class="g">●</td><td class="d">2026-07-04</td><td class="p">$88.50</td><td class="t">Luka Doncic 2018 Panini Prizm Silver RC PSA 10</td></tr>
-          <tr class="ex"><td class="g">○</td><td class="d">2026-07-02</td><td class="p">$31.00</td><td class="t">2018 Prizm Luka Doncic #280 base <span class="why">Wrong parallel</span></td></tr>
-          <tr><td class="g">●</td><td class="d">2026-06-28</td><td class="p">$84.00</td><td class="t">Doncic Silver Prizm rookie PSA 10 Gem Mint</td></tr>
-          <tr class="sumrow"><td colspan="4">n=14 · MEDIAN $84.00 · IQR $71–$96 · 90D · 2 EXCLUDED</td></tr>
-        </tbody>
-      </table>
-
-      <div class="joint"></div>
-
-      <div class="outlabel"><b>03</b><span>Description</span><i>No external links — eBay policy</i></div>
-      <div class="descbox">2018 Panini Prizm #280 Luka Doncic — Silver Prizm Rookie Card, graded
-        <strong>PSA 10 Gem Mint</strong>. Certification number 47182930, verified against PSA's population
-        report: 1,842 graded PSA 10, none higher. Card is sealed in its original PSA holder and has not been
-        removed. Ships double-boxed with tracking and insurance.</div>
-    </div>
-
-    <p class="prose" style="margin:22px 0 6px;font-size:18px;max-width:62ch">
-      <strong>Price this off the base-card comp and you list an $84 card at $31.</strong>
-      That struck-through row is the one ListRight refused to price on — and the $53 gap is why.</p>
-    <p class="fine" style="margin:0 0 22px">Illustrative example of the token rules and comp handling — not a customer result.</p>
-
-    <div style="display:flex;gap:12px;flex-wrap:wrap">
-      <a class="btn" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20free%205%20cards&amp;body=Hi%20%E2%80%94%20I%27d%20like%20to%20try%20ListRight%20on%205%20cards.%0A%0AWhat%20I%20sell%3A%20%0ARoughly%20how%20many%20cards%20a%20month%3A%20%0A" data-cta="free">Start free — 5 cards, no card needed</a>
-      <a class="btn btn--ghost" href="#membership">See the $19 founding seat</a>
-    </div>
-  
 </section>
 
   <!-- ================== §01 THE COMPARISON — CENTREPIECE ================== -->
@@ -442,7 +498,7 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
 
     <div class="scoreboard">
       <div class="score"><span class="n">$53</span><span class="l">Gap on one mispriced card</span></div>
-      <div class="score"><span class="n">15M</span><span class="l">Sold comps read</span></div>
+      <div class="score"><span class="n">40</span><span class="l">Sold comps pulled per card</span></div>
     </div>
 
     <div class="vswrap">
@@ -457,7 +513,7 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
         <tr><td class="k">Accepted Best Offers</td><td>Hidden by eBay, so invisible</td><td class="y">Read and included</td></tr>
         <tr><td class="k">Multi-card lots</td><td>Counted as comps</td><td class="y">Stripped before pricing</td></tr>
         <tr><td class="k">Graded vs raw</td><td>Mixed together</td><td class="y">Separated</td></tr>
-        <tr><td class="k">Numbered parallels</td><td>Matched to base cards</td><td class="y">Matched to numbered parallels</td></tr>
+        <tr><td class="k">Serial parallels</td><td>Ignored — priced like base cards</td><td class="y">/99 comps for a /99 card — flagged when comps are thin</td></tr>
         <tr><td class="k">Title tokens</td><td>AI-written or typed by hand</td><td class="y">Rule-based and unit-tested</td></tr>
         <tr><td class="k">1st Bowman</td><td>Often tagged as a rookie</td><td class="y">Its own token — never RC</td></tr>
         <tr><td class="k">Rejected comps</td><td>Not shown</td><td class="y">Shown, struck, with the reason</td></tr>
@@ -482,9 +538,68 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
       listing as a policy violation.</p>
   </section>
 
+  <!-- ================== §02 THE OUTPUT ================== -->
+  <section>
+    <div class="eyebrow"><span class="no">§ 02</span><span class="nm">The output</span></div>
+    <h2>What comes back on every card</h2>
+    <p class="prose">Three things, ready to paste — and the comp table that justifies the number,
+      including the rows it refused to use.</p>
+
+    <div class="stack" style="margin:30px 0 26px;max-width:660px">
+      <div class="outlabel"><span>Reads the card</span></div>
+      <div class="cert cert--hero cert--foil" data-grader="psa">
+        <div class="cert__id">
+          <div class="cert__l1">2018 Panini Prizm</div>
+          <div class="cert__l2">#280 Luka Doncic</div>
+          <div class="cert__l3">Silver Prizm · RC</div>
+        </div>
+        <div class="cert__grade">
+          <span class="cert__word">Gem MT</span>
+          <span class="cert__num">10</span>
+        </div>
+        <span class="cert__cert">CERT 47182930</span>
+      </div>
+
+      <div class="joint"></div>
+
+      <div class="outlabel"><b>01</b><span>eBay title</span><i>80-char limit enforced</i></div>
+      <div class="titlebox" style="--pct:83">
+        <div class="titlebox__str">2018 Panini Prizm <span class="tok">#280</span> Luka Doncic <span class="tok">Silver Prizm</span> <span class="tok">RC</span> <span class="tok">PSA 10</span> Gem Mint</div>
+        <div class="tfoot"><div class="ruler"></div><span class="count">66/80</span></div>
+      </div>
+
+      <div class="joint"></div>
+
+      <div class="outlabel"><b>02</b><span>Price</span><i>From sold comps, shown below</i></div>
+      <table class="comps">
+        <thead><tr><th class="g"></th><th>Date</th><th style="text-align:right">Price</th><th>Sold listing</th></tr></thead>
+        <tbody>
+          <tr><td class="g">●</td><td class="d">2026-07-11</td><td class="p">$96.00</td><td class="t">2018 Prizm Luka Doncic Silver #280 PSA 10</td></tr>
+          <tr><td class="g">●</td><td class="d">2026-07-04</td><td class="p">$88.50</td><td class="t">Luka Doncic 2018 Panini Prizm Silver RC PSA 10</td></tr>
+          <tr class="ex"><td class="g">○</td><td class="d">2026-07-02</td><td class="p">$31.00</td><td class="t">2018 Prizm Luka Doncic Silver #280 — raw <span class="why">Raw · not PSA 10</span></td></tr>
+          <tr><td class="g">●</td><td class="d">2026-06-28</td><td class="p">$84.00</td><td class="t">Doncic Silver Prizm rookie PSA 10 Gem Mint</td></tr>
+          <tr class="sumrow"><td colspan="4">n=14 · MEDIAN $84.00 · IQR $71–$96 · 90D · 2 EXCLUDED</td></tr>
+        </tbody>
+      </table>
+
+      <div class="joint"></div>
+
+      <div class="outlabel"><b>03</b><span>Description</span><i>No external links — eBay policy</i></div>
+      <div class="descbox">2018 Panini Prizm #280 Luka Doncic — Silver Prizm Rookie Card, graded
+        <strong>PSA 10 Gem Mint</strong>. Certification number 47182930, verified against PSA's population
+        report: 1,842 graded PSA 10, none higher. Card is sealed in its original PSA holder and has not been
+        removed. Ships double-boxed with tracking and insurance.</div>
+    </div>
+
+    <p class="prose" style="margin:22px 0 6px;font-size:18px;max-width:62ch">
+      <strong>Price a PSA 10 off raw sales and you list an $84 card at $31.</strong>
+      That struck-through row is one ListRight refused to price on — graded and raw are never averaged together.</p>
+    <p class="fine" style="margin:0 0 6px">Illustrative example of the token rules and comp handling — not a customer result.</p>
+  </section>
+
   <!-- ================== §02 THE TITLE ================== -->
   <section>
-    <div class="eyebrow"><span class="no">§ 02</span><span class="nm">The title</span></div>
+    <div class="eyebrow"><span class="no">§ 03</span><span class="nm">The title</span></div>
     <h2>Buyers search "Auto." Not "Autograph."</h2>
     <p class="prose">Miss the token a buyer actually types and your card doesn't appear in the search that
       would have sold it. Every card app writes a title. ListRight writes it from <em>rules</em> — the same
@@ -496,13 +611,12 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
       <div><span class="chip">1st Bowman</span><span class="txt"><strong>First Bowman.</strong> Its own token, placed before the brand so it reads "1st Bowman Chrome."</span></div>
       <div><span class="chip chip--psa">PSA 10</span><span class="txt"><strong>Grade.</strong> The single strongest value token on a slab, and it leads the title.</span></div>
       <div><span class="ser ser--one">1/1</span><span class="txt"><strong>One of one.</strong> A different class of object from a /250 — and never styled like one.</span></div>
-      <div><span class="chip chip--gold">SIR</span><span class="txt"><strong>Special Illustration Rare.</strong> Two gold stars, not one. Resolving SIR vs IR before you list is the difference between two very different prices.</span></div>
     </div>
   </section>
 
   <!-- ================== §02 THE PRICE ================== -->
   <section>
-    <div class="eyebrow"><span class="no">§ 03</span><span class="nm">The price</span></div>
+    <div class="eyebrow"><span class="no">§ 04</span><span class="nm">The price</span></div>
     <h2>Priced off sold comps.<br>Not a "market price."</h2>
     <div class="two">
       <div>
@@ -515,12 +629,12 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
       </div>
     </div>
     <p class="prose" style="margin-top:6px"><strong>Including the ones it threw out.</strong> That hollow row in the example above —
-      struck price, "wrong parallel" — is a comp ListRight refused to price on. No other tool shows you its own rejects.</p>
+      struck price, "raw — not PSA 10" — is a comp ListRight refused to price on. No other tool shows you its own rejects.</p>
   </section>
 
   <!-- ================== §03 THE PIPELINE ================== -->
   <section>
-    <div class="eyebrow"><span class="no">§ 04</span><span class="nm">What runs on every card</span></div>
+    <div class="eyebrow"><span class="no">§ 05</span><span class="nm">What runs on every card</span></div>
     <h2>Seven stages.<br>No guessing at any of them.</h2>
     <p class="prose">This is the whole pipeline. Nothing here is a language model being asked politely to
       produce a good title — the identification is structured, and everything after it is deterministic code
@@ -531,7 +645,7 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
       <li><span class="stage">02 · Identify</span><span class="what"><b>Structured extraction, not prose.</b> Twenty fields come back typed — sport, year, brand, set, player, team, card number, parallel, insert, serial, print run, grader, grade, cert — each with a confidence. The model fills a schema; it doesn't write a sentence and hope.</span></li>
       <li><span class="stage">03 · Tokens</span><span class="what"><b>Rules override the model.</b> A legible serial derives the print run whether the card reads <span class="mono">074/250</span>, <span class="mono">/250</span> or <span class="mono">250</span>. A 1st Bowman prospect is forced to <em>not</em> be a rookie, because it isn't one — a distinction most tools get wrong in both directions.</span></li>
       <li><span class="stage">04 · Title &amp; description</span><span class="what"><b>An 80-character budget, spent by priority — plus the description.</b> Grade, player and year are never dropped. Then RC, 1st Bowman and the print run — short, high-signal — outrank the long brand string and the card number. Duplicate variety text is removed when the brand already contains it, and ALL-CAPS grader fields are re-cased without breaking <span class="mono">RC</span>, <span class="mono">PSA</span>, <span class="mono">SP</span> or <span class="mono">SSP</span>. The description is written alongside it, with population context and <em>no external links</em> — eBay treats those as a policy violation.</span></li>
-      <li><span class="stage">05 · Comps</span><span class="what"><b>Real eBay sold listings</b> — 15M+ of them, including <strong>accepted Best Offer prices that eBay hides from you</strong>. That's the truest record of what a card actually trades for, and most tools never see it.</span></li>
+      <li><span class="stage">05 · Comps</span><span class="what"><b>Real eBay sold listings</b> — 40 pulled per card, including <strong>accepted Best Offer prices that eBay hides from you</strong>. That's the truest record of what a card actually trades for, and most tools never see it.</span></li>
       <li><span class="stage">06 · Segment</span><span class="what"><b>The step that decides whether the number means anything.</b> Multi-card lots stripped out. Graded separated from raw. Serial-numbered parallels matched to serial-numbered parallels. Currencies split. Stale sales aged out. A comp set that skips this is just an average of unrelated cards.</span></li>
       <li><span class="stage">07 · Price</span><span class="what"><b>Median, not mean</b> — one shill sale can't drag it. Range is the interquartile band, so the middle half of real sales. Confidence is computed from sample size <em>and</em> spread, and it's always shown with the numbers behind it, never as a bare adjective.</span></li>
     </ol>
@@ -541,22 +655,22 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
 
   <!-- ================== §05 THE PROOF ================== -->
   <section>
-    <div class="eyebrow"><span class="no">§ 05</span><span class="nm">The proof</span></div>
+    <div class="eyebrow"><span class="no">§ 06</span><span class="nm">The proof</span></div>
     <h2>The same card, titled two ways</h2>
     <table class="ledger">
       <tr><td class="k">Typical</td><td>2023 Bowman Chrome Jackson Holliday Refractor Auto</td><td class="amt">50 ch</td></tr>
-      <tr><td class="k">ListRight</td><td>PSA 10 Jackson Holliday 2023 <span class="tok">1st Bowman</span> Chrome Auto Refractor <span class="tok">/499</span></td><td class="amt">78 ch</td></tr>
-      <tr><td class="k">Typical</td><td>Charizard ex Special Illustration Rare 151</td><td class="amt">42 ch</td></tr>
-      <tr><td class="k">ListRight</td><td>Charizard ex <span class="tok">SIR</span> 151 #199 PSA 10 Pokemon Scarlet &amp; Violet 2023</td><td class="amt">71 ch</td></tr>
+      <tr><td class="k">ListRight</td><td>PSA 10 Jackson Holliday 2023 <span class="tok">1st Bowman</span> Chrome Auto Refractor <span class="tok">/499</span></td><td class="amt">66 ch</td></tr>
+      <tr><td class="k">Typical</td><td>maui ahuna bowman auto</td><td class="amt">22 ch</td></tr>
+      <tr><td class="k">ListRight</td><td>2023 Bowman Draft Chrome Maui Ahuna <span class="tok">1st Bowman</span> <span class="tok">Autograph</span> <span class="tok">#CDA-MAH</span> SF Giants</td><td class="amt">75 ch</td></tr>
       <tr><td class="k">Typical</td><td>Luka Doncic Prizm Silver rookie graded</td><td class="amt">38 ch</td></tr>
-      <tr><td class="k">ListRight</td><td>2018 Panini Prizm #280 Luka Doncic <span class="tok">Silver Prizm</span> <span class="tok">RC</span> <span class="tok">PSA 10</span></td><td class="amt">61 ch</td></tr>
+      <tr><td class="k">ListRight</td><td>2018 Panini Prizm #280 Luka Doncic <span class="tok">Silver Prizm</span> <span class="tok">RC</span> <span class="tok">PSA 10</span></td><td class="amt">57 ch</td></tr>
     </table>
-    <p class="fine" style="margin-top:14px">Illustrative pairs showing the token rules. Not customer results — there aren't any yet.</p>
+    <p class="fine" style="margin-top:14px">Illustrative pairs showing the token rules. The Ahuna title is a real engine output (live run, 2026-07-28). Not customer results — there aren't any yet.</p>
   </section>
 
   <!-- ================== §04 MEMBERSHIP ================== -->
   <section id="membership">
-    <div class="eyebrow"><span class="no">§ 06</span><span class="nm">The membership</span></div>
+    <div class="eyebrow"><span class="no">§ 07</span><span class="nm">The membership</span></div>
     <h2>Founding series</h2>
     <p class="prose">Try five cards free, no card required. If it earns a seat, twenty-five people get it at $19 — cheaper than it will ever be again, permanently — and get to tell me what to build next.</p>
 
@@ -592,7 +706,7 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
 
   <!-- ================== WAITLIST + PROBE ================== -->
   <section id="waitlist">
-    <div class="eyebrow"><span class="no">§ 07</span><span class="nm">Not yet</span></div>
+    <div class="eyebrow"><span class="no">§ 08</span><span class="nm">Not yet</span></div>
     <h2>Get the launch note</h2>
     <p class="prose">One email when it opens. Nothing else.</p>
 
