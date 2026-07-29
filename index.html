@@ -1,903 +1,561 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ListRight — what your card really sells for, with receipts</title>
-<meta name="description" content="ListRight is web-based subscription software that helps trading-card sellers create accurate marketplace listings. Reads the card, writes the eBay title the way the hobby writes it — print run, RC, 1st Bowman, parallel, grade, cert — and prices it off real sold comps you can check line by line.">
-<meta property="og:title" content="Price the exact card — not the look-alikes.">
-<meta property="og:description" content="Live run: slab comps said $409.65 — the raw Charizard sells at $355. ListRight prices your exact card off real eBay solds and shows every comp it kept or rejected.">
+<title>ListRight — Make money on both sides of the trade</title>
+<style>
+  :root{
+    --ink:#0b0b0e;
+    --ink2:#111118;
+    --paper:#f4f1ea;
+    --line:rgba(244,241,234,.14);
+    --sell:#ff3b4e;
+    --sell-deep:#b3121f;
+    --buy:#2fe07a;
+    --buy-deep:#0e8f4a;
+    --amber:#ffb020;
+    --gray:#8b8b95;
+    --disp:'Avenir Next Condensed','Arial Narrow','Helvetica Neue',Arial,system-ui,sans-serif;
+    --body:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{overflow-x:clip}
+  body{background:var(--ink);color:var(--paper);font-family:var(--body);line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  img{max-width:100%}
+  .disp{font-family:var(--disp);text-transform:uppercase;letter-spacing:.01em;line-height:.92;font-weight:800}
+  .mono{font-family:var(--mono)}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+  /* ---------- top bar ---------- */
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);position:relative;z-index:20;background:var(--ink)}
+  .logo{font-family:var(--disp);font-weight:800;font-size:1.35rem;letter-spacing:.04em;text-transform:uppercase}
+  .logo .l{color:var(--sell)} .logo .r{color:var(--buy)}
+  .topbar .tag{font-size:.8rem;color:var(--gray);display:none}
+  @media(min-width:700px){.topbar .tag{display:block}}
+  .btn{display:inline-block;font-family:var(--disp);text-transform:uppercase;font-weight:800;letter-spacing:.05em;text-decoration:none;padding:12px 22px;border-radius:6px;font-size:1rem;text-align:center;border:2px solid transparent;cursor:pointer}
+  .btn-sell{background:var(--sell);color:#fff}
+  .btn-sell:hover{background:#ff5565}
+  .btn-buy{background:var(--buy);color:#062b16}
+  .btn-buy:hover{background:#57e896}
+  .btn-ghost{border-color:var(--paper);color:var(--paper);background:transparent}
+  .btn-sm{padding:8px 16px;font-size:.85rem}
+
+  /* ---------- hero split ---------- */
+  .hero{position:relative;display:grid;grid-template-columns:1fr 1fr;min-height:78vh}
+  .half{padding:56px 32px 64px;display:flex;flex-direction:column;justify-content:center;gap:22px;position:relative;overflow:clip}
+  .half-sell{background:linear-gradient(160deg,#1c0509 0%,#2a070d 55%,#12030a 100%);border-right:1px solid rgba(255,59,78,.25)}
+  .half-buy{background:linear-gradient(200deg,#03180d 0%,#062b16 55%,#02120a 100%)}
+  .half::before{content:"";position:absolute;inset:auto -20% -35% auto;width:70%;aspect-ratio:1;border-radius:50%;filter:blur(60px);opacity:.25;pointer-events:none}
+  .half-sell::before{background:var(--sell)}
+  .half-buy::before{background:var(--buy);inset:auto auto -35% -20%}
+  .kicker{font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.28em;font-size:.8rem}
+  .half-sell .kicker{color:var(--sell)}
+  .half-buy .kicker{color:var(--buy)}
+  .hero h1{font-size:clamp(2.6rem,6.4vw,5rem)}
+  .hero h1 .accent-sell{color:var(--sell)}
+  .hero h1 .accent-buy{color:var(--buy)}
+  .hero .sub{color:#d8d4ca;font-size:.98rem;max-width:34ch}
+  .flow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .flow .arrow{font-family:var(--disp);font-weight:800;font-size:1.6rem;color:var(--gray)}
+  .cardshape{width:86px;height:120px;border-radius:9px;background:linear-gradient(150deg,#3a3a46,#1c1c24 60%);border:2px solid #55555f;position:relative;flex:none;box-shadow:0 10px 24px rgba(0,0,0,.5)}
+  .cardshape::before{content:"";position:absolute;inset:9px 9px 38px;border-radius:5px;background:linear-gradient(135deg,#6b6b78,#2e2e38)}
+  .cardshape::after{content:"";position:absolute;left:9px;right:9px;bottom:10px;height:20px;border-radius:4px;background:#2e2e38}
+  .ticket{background:var(--paper);color:var(--ink);border-radius:8px;padding:12px 18px;flex:none;box-shadow:0 10px 24px rgba(0,0,0,.5)}
+  .ticket .t-label{font-family:var(--disp);text-transform:uppercase;font-weight:800;font-size:.68rem;letter-spacing:.18em;color:#666}
+  .ticket .t-num{font-family:var(--disp);font-weight:800;font-size:2.6rem;line-height:1}
+  .ticket .t-sub{font-size:.72rem;color:#555}
+  .stamp{display:inline-block;font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.08em;border:4px solid currentColor;border-radius:8px;padding:8px 18px;font-size:2rem;line-height:1;transform:rotate(-5deg);flex:none}
+  .stamp small{display:block;font-size:.85rem;letter-spacing:.15em}
+  .st-deal{color:var(--buy)}
+  .st-fair{color:var(--paper)}
+  .st-over{color:var(--sell)}
+  .st-verify{color:var(--amber)}
+  .st-none{color:var(--gray)}
+
+  /* seam medallion */
+  .seam{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:10;width:132px;height:132px;border-radius:50%;background:var(--ink);border:3px solid var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 0 0 8px var(--ink),0 18px 40px rgba(0,0,0,.6)}
+  .seam .dollar{font-family:var(--disp);font-weight:800;font-size:3.2rem;line-height:1;background:linear-gradient(90deg,var(--sell) 48%,var(--buy) 52%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .seam .both{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:.62rem;letter-spacing:.3em;color:var(--gray)}
+
+  @media(max-width:760px){
+    .hero{display:flex;flex-direction:column;min-height:0}
+    .half{padding:44px 20px 52px}
+    .half-sell{order:1;border-right:none;border-bottom:1px solid rgba(255,59,78,.25)}
+    .seam{order:2;position:static;transform:none;margin:-40px auto;z-index:10;width:112px;height:112px}
+    .half-buy{order:3;padding-top:64px}
+    .hero h1{font-size:clamp(2.6rem,11vw,4rem)}
+  }
+
+  /* ---------- marquee ---------- */
+  .marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:clip;background:var(--ink2);padding:12px 0;white-space:nowrap}
+  .marquee-track{display:inline-block;animation:slide 26s linear infinite;font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.14em;font-size:1rem;color:var(--gray)}
+  .marquee-track b{color:var(--paper)}
+  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){.marquee-track{animation:none}}
+
+  /* ---------- sections ---------- */
+  section{padding:72px 0;border-bottom:1px solid var(--line)}
+  .sec-label{font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.28em;font-size:.78rem;margin-bottom:12px}
+  h2{font-family:var(--disp);font-weight:800;text-transform:uppercase;line-height:.95;font-size:clamp(2rem,5.4vw,3.4rem);margin-bottom:14px}
+  .lede{color:#c9c5bb;max-width:60ch;font-size:1.02rem}
+
+  /* how it works */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+  .step{border:1px solid var(--line);border-radius:10px;padding:22px;background:var(--ink2)}
+  .step .num{font-family:var(--disp);font-weight:800;font-size:2.6rem;line-height:1;background:linear-gradient(90deg,var(--sell),var(--buy));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .step h3{font-family:var(--disp);text-transform:uppercase;font-weight:800;font-size:1.25rem;margin:10px 0 6px}
+  .step p{font-size:.9rem;color:#c9c5bb}
+  @media(max-width:760px){.steps{grid-template-columns:1fr}}
+
+  /* sell stripe */
+  .stripe-sell{background:linear-gradient(180deg,#160408 0%,var(--ink) 100%)}
+  .stripe-sell .sec-label{color:var(--sell)}
+  .split2{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start;margin-top:32px}
+  @media(max-width:820px){.split2{grid-template-columns:1fr}}
+  .receipt{background:#0f0f14;border:1px solid var(--line);border-radius:10px;overflow:clip}
+  .receipt-head{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .receipt-head .rt{font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.12em;font-size:.95rem}
+  .pill{font-family:var(--mono);font-size:.7rem;padding:3px 9px;border-radius:99px;border:1px solid currentColor}
+  .pill-hi{color:var(--buy)}
+  .rrow{display:flex;gap:12px;align-items:baseline;padding:11px 18px;border-bottom:1px solid rgba(244,241,234,.07);font-size:.86rem}
+  .rrow:last-child{border-bottom:none}
+  .rrow .mark{font-family:var(--disp);font-weight:800;flex:none;width:74px;font-size:.78rem;letter-spacing:.1em}
+  .mk-keep{color:var(--buy)} .mk-cut{color:var(--sell)}
+  .rrow .why{color:#c9c5bb}
+  .rrow .why b{color:var(--paper)}
+  .receipt-foot{padding:16px 18px;background:#14141b;display:flex;gap:22px;flex-wrap:wrap}
+  .stat .s-num{font-family:var(--disp);font-weight:800;font-size:1.7rem;line-height:1}
+  .stat .s-lab{font-size:.68rem;color:var(--gray);text-transform:uppercase;letter-spacing:.12em}
+  .titlecard{background:var(--paper);color:var(--ink);border-radius:10px;padding:20px}
+  .titlecard .tc-lab{font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.18em;font-size:.68rem;color:#8a2028}
+  .titlecard .tc-title{font-family:var(--mono);font-size:.92rem;margin:8px 0 4px;word-break:break-word}
+  .titlecard .tc-meta{font-size:.74rem;color:#666}
+  .callout{margin-top:18px;border-left:4px solid var(--sell);padding:12px 16px;background:rgba(255,59,78,.06);border-radius:0 8px 8px 0}
+  .callout .c-num{font-family:var(--disp);font-weight:800;font-size:2rem;color:var(--sell);line-height:1}
+  .callout p{font-size:.86rem;color:#c9c5bb;margin-top:4px}
+
+  /* buy stripe */
+  .stripe-buy{background:linear-gradient(180deg,#03150c 0%,var(--ink) 100%)}
+  .stripe-buy .sec-label{color:var(--buy)}
+  .board{margin-top:32px;border:1px solid var(--line);border-radius:10px;overflow:clip;background:#0f0f14}
+  .brow{display:grid;grid-template-columns:110px 1fr auto;gap:14px;align-items:center;padding:16px 18px;border-bottom:1px solid rgba(244,241,234,.07)}
+  .brow:last-child{border-bottom:none}
+  .brow .ask{font-family:var(--disp);font-weight:800;font-size:1.7rem;line-height:1}
+  .brow .ask small{display:block;font-size:.6rem;letter-spacing:.18em;color:var(--gray)}
+  .brow .rule{font-size:.82rem;color:#c9c5bb}
+  .bstamp{font-family:var(--disp);font-weight:800;text-transform:uppercase;border:3px solid currentColor;border-radius:6px;padding:5px 12px;font-size:1.15rem;line-height:1.1;transform:rotate(-3deg);text-align:center;justify-self:end}
+  .bstamp small{display:block;font-size:.68rem;letter-spacing:.1em}
+  @media(max-width:600px){.brow{grid-template-columns:84px 1fr auto;gap:10px;padding:14px 12px}.brow .ask{font-size:1.3rem}.brow .rule{font-size:.74rem}.bstamp{font-size:.95rem;padding:4px 9px}}
+  .tryit{margin-top:26px;background:#0f0f14;border:1px dashed rgba(47,224,122,.4);border-radius:10px;padding:20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .tryit label{font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;color:var(--buy)}
+  .tryit input{background:var(--ink);border:1px solid var(--line);color:var(--paper);font-family:var(--disp);font-weight:800;font-size:1.4rem;padding:8px 12px;border-radius:6px;width:130px}
+  .tryit input:focus{outline:2px solid var(--buy)}
+  #tryout{min-height:52px;display:flex;align-items:center}
+  .trynote{width:100%;font-size:.7rem;color:var(--gray)}
+
+  /* psa stripe */
+  .ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:end;margin-top:36px;min-height:300px}
+  .rung{display:flex;flex-direction:column;justify-content:flex-end;gap:0}
+  .rung .r-price{font-family:var(--disp);font-weight:800;font-size:clamp(1.05rem,3.4vw,1.9rem);line-height:1.1}
+  .rung .r-bar{border-radius:6px 6px 0 0;margin-top:8px;display:flex;flex-direction:column;justify-content:flex-start;padding:10px 6px;border:1px solid var(--line);border-bottom:none}
+  .rung .r-grade{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:.8rem;letter-spacing:.08em}
+  .rung .r-n{font-family:var(--mono);font-size:.64rem;color:var(--gray)}
+  .b1{height:72px;background:linear-gradient(180deg,#2a2a33,#17171e)}
+  .b2{height:96px;background:linear-gradient(180deg,#33333d,#17171e)}
+  .b3{height:132px;background:linear-gradient(180deg,#3d3d49,#17171e)}
+  .b4{height:240px;background:linear-gradient(180deg,var(--buy-deep),#062b16);border-color:rgba(47,224,122,.5)!important}
+  .b4 .r-grade{color:var(--buy)}
+  .gapline{margin-top:14px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .gapline .g-num{font-family:var(--disp);font-weight:800;font-size:clamp(2.2rem,6vw,3.6rem);color:var(--buy);line-height:1}
+  .gapline p{font-size:.9rem;color:#c9c5bb}
+  .prescreen{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:760px){.prescreen{grid-template-columns:1fr}}
+  .ps-card{border:1px solid var(--line);border-radius:10px;padding:22px;background:var(--ink2)}
+  .ps-card h3{font-family:var(--disp);text-transform:uppercase;font-weight:800;font-size:1.2rem;margin-bottom:8px}
+  .ps-card p{font-size:.9rem;color:#c9c5bb}
+  .ps-badge{display:inline-block;margin-top:12px;font-family:var(--disp);font-weight:800;text-transform:uppercase;border:3px solid var(--amber);color:var(--amber);border-radius:6px;padding:6px 14px;font-size:1.2rem;transform:rotate(-2deg)}
+  .beta{font-family:var(--mono);font-size:.66rem;color:var(--amber);border:1px solid var(--amber);border-radius:99px;padding:2px 8px;vertical-align:middle}
+
+  /* pricing */
+  .prices{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:36px}
+  @media(max-width:720px){.prices{grid-template-columns:1fr}}
+  .price-card{border-radius:12px;padding:28px;border:1px solid var(--line);display:flex;flex-direction:column;gap:14px}
+  .price-free{background:var(--ink2)}
+  .price-paid{background:linear-gradient(160deg,#191922,#0f0f14);border:2px solid;border-image:linear-gradient(90deg,var(--sell),var(--buy)) 1}
+  .price-card .p-name{font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.14em;font-size:.85rem;color:var(--gray)}
+  .p-num{font-family:var(--disp);font-weight:800;font-size:3.4rem;line-height:1}
+  .p-num small{font-size:1.1rem;color:var(--gray)}
+  .p-was{color:var(--gray);text-decoration:line-through;font-size:1.1rem;margin-left:8px}
+  .price-card ul{list-style:none;font-size:.9rem;color:#c9c5bb;display:flex;flex-direction:column;gap:8px}
+  .price-card li::before{content:"■ ";font-size:.6rem;vertical-align:2px}
+  .price-free li::before{color:var(--sell)}
+  .price-paid li::before{color:var(--buy)}
+  .founding{font-family:var(--mono);font-size:.7rem;color:var(--amber)}
+
+  /* fine print + footer */
+  .fine{padding:34px 0;border-bottom:1px solid var(--line)}
+  .fine p{font-family:var(--mono);font-size:.72rem;color:var(--gray);max-width:88ch}
+  footer{padding:34px 20px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;align-items:center}
+  footer nav{display:flex;gap:18px;flex-wrap:wrap}
+  footer a{color:var(--gray);font-size:.8rem;text-decoration:none}
+  footer a:hover{color:var(--paper)}
+  footer .noaff{font-size:.72rem;color:var(--gray)}
+</style>
+<meta name="description" content="Make money on both sides of the trade. ListRight prices the exact card off real eBay sold comps — every comp kept or rejected with the reason — and scores any asking price DEAL / FAIR / OVER before you bid.">
+<meta property="og:title" content="ListRight — sell it right, buy it right.">
+<meta property="og:description" content="Live run: 40 comps audited, 5 thrown out with reasons, median $355 confidence HIGH. Every price comes with the receipt — both directions.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://listrightapp.com/">
 <link rel="canonical" href="https://listrightapp.com/">
-
-<style>
-/* ========================================================================
-   ListRight design system — "The shine is data"
-   Cert-bar chassis · spectrum edge only when the card is a parallel
-   ===================================================================== */
-:root{
-  --paper:#F7F5EE; --label:#FFFFFF; --well:#EFEBE1; --rail:#F2EFE7;
-  --ink:#14171B; --ink-2:#454A53; --ink-3:#5C626E;
-  --rule:#D8D4CB; --rule-2:#B3ADA1; --rule-strong:#101215;
-  --cert-red:#D41E30; --red-wash:#FDECEE;
-  --pass:#0C7350; --flag:#8A5A00; --flag-wash:#FBF0D8; --link:#0B57A4;
-  --grader-psa:#C8102E; --grader-bgs-silver:#8C929C; --grader-bgs-gold:#9A7212;
-  --grader-cgc:#0B57A4; --grader-sgc:#2B2F36; --gold-text:#7F5D0E;
-  --foil:repeating-linear-gradient(108deg,#1FC4D8 0px,#4E93E8 7px,#B851C0 14px,#E85C7A 21px,#E39A4C 27px,#3CC79E 34px,#1FC4D8 41px);
-  --foil-opacity:.90;
-  --slab-shadow:0 1px 1px rgba(16,18,21,.05),0 10px 24px -16px rgba(16,18,21,.45);
-  --radius:2px; --u:8px; --focus:var(--link);
-  --font-display:"Avenir Next Condensed","Roboto Condensed","Liberation Sans Narrow","Arial Narrow","Helvetica Neue",Arial,sans-serif;
-  --font-grade:Impact,"Haettenschweiler","Arial Black","Franklin Gothic Heavy","Helvetica Neue",sans-serif;
-  --font-ui:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
-  --font-doc:Georgia,"Times New Roman","Liberation Serif",serif;
-  --edge:var(--grader-psa);
-}
-@media (prefers-color-scheme:dark){:root{
-  --paper:#101419; --label:#1B2028; --well:#161A20; --rail:#131820;
-  --ink:#F5F7FA; --ink-2:#B2B9C4; --ink-3:#8C94A0;
-  --rule:#23272E; --rule-2:#363C45; --rule-strong:#4A515C;
-  --cert-red:#FF5647; --red-wash:#2B0E10;
-  --pass:#4ACF9B; --flag:#F0B429; --flag-wash:#2A2007; --link:#5AA9F0;
-  --grader-psa:#FF4438; --grader-bgs-silver:#C3C8D1; --grader-bgs-gold:#E5B84A;
-  --grader-cgc:#5AA9F0; --grader-sgc:#AAB2BE; --gold-text:#E5B84A;
-  --foil-opacity:.85;
-  --slab-shadow:0 1px 0 rgba(255,255,255,.03),0 14px 34px -20px #000;
-}}
-:root[data-theme="light"]{
-  --paper:#F7F5EE; --label:#FFFFFF; --well:#EFEBE1; --rail:#F2EFE7;
-  --ink:#14171B; --ink-2:#454A53; --ink-3:#5C626E;
-  --rule:#D8D4CB; --rule-2:#B3ADA1; --rule-strong:#101215;
-  --cert-red:#D41E30; --red-wash:#FDECEE; --pass:#0C7350; --flag:#8A5A00;
-  --flag-wash:#FBF0D8; --link:#0B57A4; --grader-psa:#C8102E; --gold-text:#7F5D0E;
-  --foil-opacity:.90;
-  --slab-shadow:0 1px 1px rgba(16,18,21,.05),0 10px 24px -16px rgba(16,18,21,.45);
-}
-:root[data-theme="dark"]{
-  --paper:#101419; --label:#1B2028; --well:#161A20; --rail:#131820;
-  --ink:#F5F7FA; --ink-2:#B2B9C4; --ink-3:#8C94A0;
-  --rule:#23272E; --rule-2:#363C45; --rule-strong:#4A515C;
-  --cert-red:#FF5647; --red-wash:#2B0E10; --pass:#4ACF9B; --flag:#F0B429;
-  --flag-wash:#2A2007; --link:#5AA9F0; --grader-psa:#FF4438; --gold-text:#E5B84A;
-  --foil-opacity:.85;
-  --slab-shadow:0 1px 0 rgba(255,255,255,.03),0 14px 34px -20px #000;
-}
-
-*{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--paper);border-top:4px solid transparent;border-image:var(--foil) 1;color:var(--ink);font:14px/1.5 var(--font-ui);-webkit-font-smoothing:antialiased}
-.wrap{max-width:940px;margin:0 auto;padding:0 20px}
-a{color:var(--link)}
-:where(a,button,input,summary,[tabindex]):focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:var(--radius)}
-
-/* ---- type ---- */
-.disp{font-family:var(--font-display);text-transform:uppercase;font-weight:600;letter-spacing:.04em}
-h1{font:600 clamp(34px,7vw,64px)/.94 var(--font-display);text-transform:uppercase;letter-spacing:.005em;margin:0 0 20px}
-h2{font:600 clamp(23px,3.4vw,36px)/1.05 var(--font-display);text-transform:uppercase;letter-spacing:.02em;margin:0 0 12px}
-h3{font:600 18px/1.2 var(--font-display);text-transform:uppercase;letter-spacing:.05em;margin:0 0 8px}
-.prose{font:17px/1.6 var(--font-doc);color:var(--ink-2);max-width:60ch;margin:0 0 1em}
-.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums lining-nums}
-.fine{font:11px/1.5 var(--font-mono);letter-spacing:.06em;color:var(--ink-3)}
-
-/* ---- top bar ---- */
-.top{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:20px 0;flex-wrap:wrap}
-.wordmark{font:600 20px/1 var(--font-display);text-transform:uppercase;letter-spacing:.06em;box-shadow:inset 0 -3px 0 var(--cert-red);padding-bottom:2px}
-.themebtn{font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em;background:none;border:1px solid var(--rule-2);color:var(--ink-2);padding:6px 9px;border-radius:var(--radius);cursor:pointer}
-
-/* ---- sections ---- */
-section{padding:52px 0;border-top:1px solid var(--rule)}
-.eyebrow{display:flex;gap:10px;align-items:baseline;margin-bottom:18px}
-.eyebrow .no{font:11px/1 var(--font-mono);letter-spacing:.1em;color:var(--ink-3)}
-.eyebrow .nm{font:600 11px/1 var(--font-display);text-transform:uppercase;letter-spacing:.16em;color:var(--ink-2)}
-
-/* ================= THE CERT BAR ================= */
-.cert{position:relative;display:grid;grid-template-columns:1fr auto;gap:14px;
-  padding:14px 14px 20px;background:var(--label);border:1px solid var(--rule-strong);border-radius:var(--radius)}
-.cert::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--edge);border-radius:var(--radius) var(--radius) 0 0}
-.cert--foil::before{background:var(--foil);opacity:var(--foil-opacity)}
-.cert__id{min-width:0}
-.cert__l1,.cert__l2{font:600 15px/1.25 var(--font-display);text-transform:uppercase;letter-spacing:.04em;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cert__l3{font:600 12px/1.3 var(--font-display);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
-.cert__grade{padding-left:14px;min-width:78px;text-align:center;border-left:1px solid var(--rule-strong)}
-.cert__word{font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.14em;color:var(--ink-2)}
-.cert__num{display:block;margin-top:4px;font-family:var(--font-grade);font-size:42px;line-height:.9;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
-.cert__cert{position:absolute;right:12px;bottom:6px;font:10px/1 var(--font-mono);letter-spacing:.08em;color:var(--ink-3)}
-.cert--hero{padding:20px 20px 26px;box-shadow:inset 0 0 0 1px var(--label),inset 0 0 0 2px var(--rule-2),var(--slab-shadow)}
-.cert--hero .cert__num{font-size:clamp(46px,8vw,64px)}
-.cert--hero .cert__l1,.cert--hero .cert__l2{font-size:clamp(16px,2.6vw,20px)}
-.cert--hero.cert--foil::after{content:"";position:absolute;inset:0;pointer-events:none;background:var(--foil);opacity:0;mix-blend-mode:color-dodge;transform:translateX(-30%)}
-@media (prefers-reduced-motion:no-preference){
-  .cert--hero.cert--foil:hover::after{opacity:.18;transform:translateX(30%);transition:opacity .18s linear,transform .4s ease-out}
-}
-
-/* ================= 80-CHAR TITLE BOX ================= */
-.titlebox{background:var(--well);border:1px solid var(--rule);border-radius:var(--radius);padding:14px 14px 0}
-.titlebox__str{font:15px/1.5 var(--font-mono);letter-spacing:.01em;color:var(--ink);word-break:break-word;user-select:all}
-.tok{background:var(--red-wash);box-shadow:inset 0 -1px 0 var(--cert-red);padding:1px 2px;margin:0 -2px;border-radius:1px;color:inherit}
-.tfoot{display:flex;align-items:center;gap:12px;margin-top:12px;padding-bottom:12px}
-.ruler{flex:1;height:6px;border:1px solid var(--rule);
-  background:linear-gradient(90deg,var(--ink) 0 calc(var(--pct)*1%),transparent 0),
-             repeating-linear-gradient(90deg,var(--rule-2) 0 1px,transparent 1px 12.5%)}
-.count{font:12px/1 var(--font-mono);font-variant-numeric:tabular-nums;color:var(--ink-2)}
-
-/* ================= COMPS ================= */
-.comps{width:100%;border-collapse:collapse;font:13px/1.35 var(--font-ui);background:var(--label)}
-.comps th{font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule-strong)}
-.comps td{padding:7px 10px;border-bottom:1px solid var(--rule)}
-.comps .d{font:12px/1 var(--font-mono);color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap}
-.comps .p{font:600 14px/1 var(--font-mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
-.comps .t{color:var(--ink);max-width:1px;width:99%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.comps .g{width:18px;color:var(--ink-3);font:12px/1 var(--font-mono)}
-.comps tr.ex td{color:var(--ink-3)}
-.comps tr.ex .p{text-decoration:line-through;color:var(--ink-3)}
-.why{display:inline-block;font:600 9px/1 var(--font-display);text-transform:uppercase;letter-spacing:.1em;
-  background:var(--well);border:1px solid var(--rule-2);border-radius:var(--radius);padding:3px 5px;margin-left:7px;color:var(--ink-2)}
-.sumrow td{background:var(--well);border-top:1px solid var(--rule-strong);border-bottom:0;font:12px/1.4 var(--font-mono);letter-spacing:.04em;color:var(--ink-2)}
-
-/* ================= CHIPS ================= */
-.chip{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;border:1px solid var(--rule-2);
-  border-radius:var(--radius);font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink);background:var(--label);vertical-align:middle}
-.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--dot,var(--rule-2))}
-.chip--psa{--dot:var(--grader-psa)} .chip--bgs{--dot:var(--grader-bgs-silver)}
-.chip--gold{--dot:var(--grader-bgs-gold)} .chip--cgc{--dot:var(--grader-cgc)}
-.ser{font-family:var(--font-mono);font-variant-numeric:tabular-nums lining-nums}
-.ser b{font-weight:700} .ser i{font-style:oblique;color:var(--ink-3)}
-.ser--one{background:#0D0E10;color:#FFD07A;border:1px solid #9A7212;padding:2px 7px;border-radius:var(--radius);font-weight:700}
-
-/* ================= BUTTONS / FORMS ================= */
-.btn{display:inline-flex;align-items:center;justify-content:center;font:600 13px/1 var(--font-display);
-  text-transform:uppercase;letter-spacing:.12em;height:46px;padding:0 24px;border:0;border-radius:var(--radius);
-  background:var(--ink);color:var(--label);box-shadow:inset 0 -3px 0 var(--cert-red);cursor:pointer;
-  text-decoration:none;transition:box-shadow .12s,transform .12s}
-.btn:hover{box-shadow:inset 0 -5px 0 var(--cert-red);transform:translateY(-1px)}
-.btn:active{box-shadow:inset 0 -2px 0 var(--cert-red);transform:none}
-.btn--ghost{background:transparent;color:var(--ink);border:1px solid var(--rule-strong);box-shadow:none}
-.btn--ghost:hover{background:var(--well);box-shadow:none;transform:none}
-.btn--wide{width:100%}
-label.fl{display:block;font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);margin-bottom:6px}
-input[type=email]{height:46px;background:var(--well);border:1px solid var(--rule);border-radius:var(--radius);
-  padding:0 12px;font:15px/1 var(--font-ui);color:var(--ink);width:100%;min-width:0}
-input[type=email]:focus{border-color:var(--ink);box-shadow:inset 0 -2px 0 var(--cert-red)}
-input::placeholder{color:var(--ink-3)}
-.field{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
-.field>div{flex:1 1 240px}
-
-/* ---- layout helpers ---- */
-.stack{display:grid;gap:0}
-.joint{height:18px;display:grid;place-items:center}
-.joint::before{content:"";width:1px;height:100%;background:var(--rule-2)}
-.two{display:grid;gap:26px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-.legend{display:grid;gap:10px;margin-top:18px}
-.legend div{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;padding-bottom:10px;border-bottom:1px solid var(--rule)}
-.legend span.txt{color:var(--ink-2);font:13px/1.5 var(--font-ui);flex:1 1 260px}
-.ledger{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12.5px}
-.ledger td{padding:9px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
-.ledger .k{font:600 9px/1.4 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);white-space:nowrap;width:1px;padding-right:14px}
-.ledger .amt{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--ink)}
-footer{padding:34px 0 70px;border-top:1px solid var(--rule);margin-top:52px}
-footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
-
-
-
-
-/* ================= HERO BUILD ANIMATION =================
-   Plays ONCE on load. Not a loop — a loop is the template tell.
-   It animates the AUDIT, not a generic product demo: the title assembles
-   token by token, then the comps arrive and one gets struck out with its
-   reason. That last beat is the thing no competitor can show.
-   Entirely scoped to prefers-reduced-motion:no-preference, so the static
-   page is the default and nothing depends on animation to be readable. */
-@property --pct{syntax:'<number>';initial-value:83;inherits:true}
-
-@media (prefers-reduced-motion:no-preference){
-  @keyframes lrRise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-  @keyframes lrFoil{from{opacity:0;transform:translateX(-100%)}
-                    60%{opacity:.55}
-                    to{opacity:0;transform:translateX(100%)}}
-  @keyframes lrTok{from{background:transparent;box-shadow:inset 0 -1px 0 transparent}
-                   to{background:var(--red-wash);box-shadow:inset 0 -1px 0 var(--cert-red)}}
-  @keyframes lrFill{from{--pct:0}to{--pct:83}}
-  @keyframes lrStrike{from{width:0}to{width:100%}}
-  @keyframes lrPop{from{opacity:0;transform:scale(.75)}to{opacity:1;transform:scale(1)}}
-  @keyframes lrCount{from{opacity:0}to{opacity:1}}
-
-  .anim .outlabel,
-  .anim .cert,
-  .anim .titlebox,
-  .anim .comps,
-  .anim .descbox,
-  .anim .joint{animation:lrRise .42s cubic-bezier(.2,.7,.3,1) both}
-
-  .anim .outlabel:nth-of-type(1){animation-delay:.05s}
-  .anim .cert{animation-delay:.10s}
-  .anim .joint:nth-of-type(1){animation-delay:.55s}
-  .anim .titlebox{animation-delay:.62s}
-  .anim .joint:nth-of-type(2){animation-delay:1.55s}
-  .anim .comps{animation-delay:1.62s}
-  .anim .joint:nth-of-type(3){animation-delay:2.75s}
-  .anim .descbox{animation-delay:2.82s}
-
-  /* foil sweeps the slab once, as it lands */
-  .anim .cert--hero.cert--foil::after{animation:lrFoil .85s ease-out .45s 1}
-
-  /* the title assembles token by token — the RULES landing, in order */
-  .anim .titlebox__str .tok{animation:lrTok .01s linear both}
-  .anim .titlebox__str .tok:nth-of-type(1){animation-delay:.95s}
-  .anim .titlebox__str .tok:nth-of-type(2){animation-delay:1.10s}
-  .anim .titlebox__str .tok:nth-of-type(3){animation-delay:1.25s}
-  .anim .titlebox__str .tok:nth-of-type(4){animation-delay:1.40s}
-  .anim .ruler{animation:lrFill .75s ease-out .95s both}
-  .anim .count{animation:lrCount .3s linear 1.55s both}
-
-  /* comps arrive one at a time */
-  .anim .comps tbody tr{animation:lrRise .3s ease-out both}
-  .anim .comps tbody tr:nth-child(1){animation-delay:1.80s}
-  .anim .comps tbody tr:nth-child(2){animation-delay:1.95s}
-  .anim .comps tbody tr:nth-child(3){animation-delay:2.10s}
-  .anim .comps tbody tr:nth-child(4){animation-delay:2.25s}
-  .anim .comps tbody tr.sumrow{animation-delay:2.55s}
-
-  /* THE BEAT THAT MATTERS: the rejected comp gets struck, and says why */
-  .anim .comps tr.ex .p{text-decoration:none;position:relative}
-  .anim .comps tr.ex .p::after{content:"";position:absolute;left:0;right:auto;top:52%;
-    height:1px;background:currentColor;width:0;animation:lrStrike .28s ease-out 2.35s both}
-  .anim .comps tr.ex .why{animation:lrPop .3s cubic-bezier(.2,1.4,.4,1) 2.45s both}
-}
-
-
-/* ---- the 11, pushed above the fold ---- */
-.only{margin:26px 0 30px;padding:20px 0 4px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-.only h3{font:600 12px/1 var(--font-display);text-transform:uppercase;letter-spacing:.16em;
-  color:var(--ink-3);margin:0 0 16px}
-.only h3 b{color:var(--cert-red);font-family:var(--font-grade);font-size:19px;
-  letter-spacing:0;vertical-align:-2px;margin-right:5px}
-.onlygrid{display:grid;gap:8px 22px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  list-style:none;padding:0;margin:0 0 18px}
-.onlygrid li{padding-left:12px;box-shadow:inset 2px 0 0 var(--cert-red);
-  font:14px/1.4 var(--font-ui);color:var(--ink)}
-.onlygrid li span{display:block;font:11.5px/1.35 var(--font-ui);color:var(--ink-3);margin-top:2px}
-
-/* ---- hero output labels + description ---- */
-.outlabel{display:flex;align-items:baseline;gap:9px;margin:0 0 8px;flex-wrap:wrap}
-.outlabel b{font-family:var(--font-grade);font-size:17px;line-height:1;color:var(--cert-red);font-variant-numeric:tabular-nums}
-.outlabel span{font:600 11px/1 var(--font-display);text-transform:uppercase;letter-spacing:.16em;color:var(--ink)}
-.outlabel i{font:11px/1 var(--font-mono);letter-spacing:.05em;color:var(--ink-3);font-style:normal}
-.descbox{background:var(--label);border:1px solid var(--rule);border-radius:var(--radius);
-  padding:15px;font:14.5px/1.6 var(--font-doc);color:var(--ink-2)}
-.descbox strong{color:var(--ink)}
-/* ================= §01 CENTREPIECE ================= */
-.hilite{background:var(--label);border-top:3px solid transparent;border-image:var(--foil) 1;
-  padding:42px 24px 48px;border-radius:var(--radius);box-shadow:var(--slab-shadow);margin-top:8px}
-.scoreboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:1px;
-  background:var(--rule);border:1px solid var(--rule);border-radius:var(--radius);margin:26px 0 30px;overflow:hidden}
-.score{background:var(--label);padding:16px 14px;text-align:center}
-.score .n{display:block;font-family:var(--font-grade);font-size:40px;line-height:.9;color:var(--ink);
-  font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-.score .l{display:block;margin-top:7px;font:600 10px/1.3 var(--font-display);text-transform:uppercase;
-  letter-spacing:.12em;color:var(--ink-3)}
-.vswrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--radius)}
-.vs th.ours{color:var(--ink);position:relative}
-.vs th.ours::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;
-  background:var(--foil);opacity:var(--foil-opacity)}
-.vs td.y{color:var(--ink);font-weight:600;padding-left:30px;position:relative;box-shadow:inset 2px 0 0 var(--cert-red)}
-.vs td:not(.k):not(.y){padding-left:30px;position:relative;color:var(--ink-3)}
-.vs td:not(.k):not(.y)::before{content:"\2013";position:absolute;left:10px;top:10px;color:var(--rule-2);font-weight:700}
-@media (max-width:720px){
-  .hilite{padding:32px 16px 38px}
-  .score .n{font-size:32px}
-}
-
-/* ---- pipeline ---- */
-.pipe{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:0;counter-reset:none}
-.pipe li{display:grid;grid-template-columns:132px 1fr;gap:18px;padding:16px 0;border-top:1px solid var(--rule);align-items:baseline}
-.pipe li:last-child{border-bottom:1px solid var(--rule)}
-.stage{font:600 11px/1.3 var(--font-display);text-transform:uppercase;letter-spacing:.14em;color:var(--ink-3);white-space:nowrap}
-.what{font:15px/1.62 var(--font-doc);color:var(--ink-2)}
-.what b{color:var(--ink);font-weight:700}
-.what .mono{font-size:13px;color:var(--ink)}
-/* ---- comparison ---- */
-.vs{width:100%;border-collapse:collapse;font:14px/1.45 var(--font-ui);min-width:560px;background:var(--label)}
-.vs th{font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);
-  text-align:left;padding:10px;border-bottom:1px solid var(--rule-strong)}
-.vs td{padding:10px;border-bottom:1px solid var(--rule);color:var(--ink-2);vertical-align:top}
-.vs td.k{font:600 10px/1.4 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);white-space:nowrap;width:1px;padding-right:16px}
-.vs tr:hover td{background:var(--well)}
-/* ---- test list ---- */
-.tests{background:var(--well);border:1px solid var(--rule);border-radius:var(--radius);padding:14px;
-  font-size:12.5px;line-height:1.9;color:var(--ink-2);overflow-x:auto;white-space:nowrap}
-@media (max-width:720px){.pipe li{grid-template-columns:1fr;gap:6px}}
-@media (max-width:720px){
-  .cert__num{font-size:34px} .cert--hero .cert__num{font-size:44px}
-  .comps .hidem{display:none}
-}
-
-/* ---- comparison: stacked cards on phones, OUR answer first ---- */
-@media (max-width:720px){
-  .vswrap{overflow-x:visible;border:0;border-radius:0}
-  .vs{min-width:0 !important;width:100% !important;display:block;background:transparent}
-  .vs thead{display:none}
-  .vs tbody{display:block}
-  .vs tr{display:flex;flex-direction:column;background:var(--label);border:1px solid var(--rule);
-    border-radius:var(--radius);margin-bottom:10px;padding:12px}
-  .vs tr:hover td{background:transparent}
-  .vs td{display:block;border:0;padding:0;max-width:none;width:auto}
-  .vs td.k{order:1;width:auto;padding:0 0 9px;font:600 10px/1.4 var(--font-display);
-    text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3)}
-  .vs td.y{order:2;padding:0 0 0 11px;margin-bottom:8px;color:var(--ink);font-weight:600;
-    box-shadow:inset 2px 0 0 var(--cert-red);position:static}
-  .vs td:not(.k):not(.y){order:3;padding:0 0 0 11px;color:var(--ink-3);
-    box-shadow:inset 2px 0 0 var(--rule-2);position:static}
-  .vs td.y::before{content:"ListRight";position:static;display:block;margin-bottom:3px;
-    font:600 9px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em;color:var(--cert-red)}
-  .vs td:not(.k):not(.y)::before{content:"Most card tools";position:static;display:block;margin-bottom:3px;
-    font:600 9px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3)}
-}
-
-/* ================= 3D GRADING SCENE ================= */
-.scene{display:grid;grid-template-columns:minmax(150px,1fr) auto minmax(150px,1fr);gap:16px;
-  align-items:center;margin:24px 0 10px;perspective:1300px}
-.chipcol{display:flex;flex-direction:column;gap:9px;min-width:0}
-.chipcol--l{align-items:flex-end;text-align:right}
-.chipcol--r{align-items:flex-start}
-.chip3{font:13px/1.5 var(--font-ui);background:var(--label);border:1px solid var(--rule);
-  border-left:2px solid var(--rule-2);border-radius:var(--radius);padding:7px 10px;
-  color:var(--ink-3);box-shadow:var(--slab-shadow);max-width:248px}
-.chip3 b{display:block;font:600 11.5px/1 var(--font-display);text-transform:uppercase;
-  letter-spacing:.12em;color:var(--ink);margin-bottom:3px}
-.chip3--ok{border-left-color:var(--pass)}
-.chip3--ok b{color:var(--pass)}
-.chip3--no{border-left-color:var(--cert-red)}
-.chip3--no b{color:var(--cert-red)}
-.card3d{position:relative;width:min(330px,78vw);aspect-ratio:63/88;margin-top:34px;
-  transform-style:preserve-3d;transform:rotateY(-16deg) rotateX(5deg)}
-.card3d__face{position:absolute;inset:0;border-radius:10px;overflow:hidden;
-  background:linear-gradient(155deg,#33261F,#191009 46%,#2A1B12 78%,#3A2417);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.09),0 30px 52px -22px rgba(0,0,0,.6)}
-.card3d__face::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:repeating-linear-gradient(115deg,transparent 0 14px,rgba(255,255,255,.05) 14px 16px)}
-.card3d__face::after{content:"";position:absolute;inset:0 0 auto 0;height:4px;
-  background:var(--foil);opacity:.9}
-.c3-badge{position:absolute;top:19%;right:13%;z-index:1;font:600 13px/1 var(--font-display);
-  text-transform:uppercase;letter-spacing:.08em;color:#0E1116;padding:5px 7px;border-radius:2px;
-  background:linear-gradient(160deg,#F3D06B,#C89A2C)}
-.c3-photo{position:absolute;inset:10% 7% 22%;border-radius:4px;overflow:hidden;
-  background:radial-gradient(120% 95% at 32% 22%,#E8734E 0%,#B2422A 34%,#8A2F1E 55%,#2A1009 82%,#140C08 100%);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.18),
-    inset 40px -60px 90px -40px rgba(255,171,64,.28),
-    inset -30px 50px 80px -50px rgba(255,220,130,.14)}
-.c3-photo::before{content:"";position:absolute;inset:0;
-  background:radial-gradient(3px 3px at 24% 30%,rgba(255,214,140,.95),transparent 60%),
-    radial-gradient(2px 2px at 62% 18%,rgba(255,236,180,.8),transparent 60%),
-    radial-gradient(2.5px 2.5px at 74% 58%,rgba(255,190,110,.85),transparent 60%),
-    radial-gradient(1.5px 1.5px at 40% 66%,rgba(255,236,180,.7),transparent 60%),
-    radial-gradient(2px 2px at 18% 74%,rgba(255,214,140,.6),transparent 60%)}
-.c3-photo::after{content:"";position:absolute;inset:-20%;background:var(--foil);
-  opacity:.14;mix-blend-mode:screen;transform:rotate(12deg)}
-.c3-sig{position:absolute;left:6%;bottom:5%;width:72%;height:auto;
-  filter:drop-shadow(0 1px 0 rgba(0,0,0,.4))}
-.c3-plate{position:absolute;left:9%;right:9%;bottom:7%;text-align:center}
-.c3-name{display:block;font:600 18px/1.1 var(--font-display);text-transform:uppercase;
-  letter-spacing:.06em;color:#F2F4F8}
-.c3-sub{display:block;margin-top:4px;font:600 10.5px/1.2 var(--font-display);
-  text-transform:uppercase;letter-spacing:.14em;color:#98A1AE}
-.c3-scan{position:absolute;left:-8%;right:-8%;top:-6%;height:44px;opacity:0;pointer-events:none;
-  transform:translateZ(30px);
-  background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--cert-red) 45%,transparent) 80%,var(--cert-red) 95%,transparent)}
-.c3-verdict{position:absolute;left:-13%;right:-13%;top:-36px;transform:translateZ(46px);
-  padding:12px 14px 14px;box-shadow:var(--slab-shadow)}
-.c3-verdict .cert__l1{font-size:16px}
-.c3-verdict .cert__l3{font-size:11px;letter-spacing:.08em}
-.c3-verdict .cert__grade{min-width:60px;padding-left:10px}
-.c3-verdict .cert__num{font-size:34px}
-@media (prefers-reduced-motion:no-preference){
-  @keyframes c3in{from{opacity:0;transform:rotateY(56deg) rotateX(8deg) scale(.92)}
-                  to{opacity:1;transform:rotateY(-16deg) rotateX(5deg) scale(1)}}
-  @keyframes c3float{0%,100%{transform:rotateY(-16deg) rotateX(5deg)}
-                     50%{transform:rotateY(-7deg) rotateX(2deg) translateY(-7px)}}
-  @keyframes c3scan{0%{opacity:0;top:-6%}12%{opacity:1}88%{opacity:1}100%{opacity:0;top:100%}}
-  @keyframes c3drop{from{transform:translateZ(46px) translateY(-26px)}
-                    to{transform:translateZ(46px) translateY(0)}}
-  .scene .card3d{animation:c3in .8s cubic-bezier(.2,.7,.3,1) both,c3float 9s ease-in-out 3.4s infinite}
-  .scene .c3-scan{animation:c3scan 1.5s ease-in-out .9s 1}
-  .scene .chipcol--l .chip3{animation:lrPop .34s cubic-bezier(.2,1.4,.4,1) both}
-  .scene .s1{animation-delay:1.05s}.scene .s2{animation-delay:1.25s}
-  .scene .s3{animation-delay:1.45s}
-  @keyframes c3nudge{from{transform:scale(.94)}to{transform:scale(1)}}
-  .scene .chipcol--r .chip3{animation:c3nudge .34s cubic-bezier(.2,1.4,.4,1) both}
-  .scene .s5{animation-delay:1.9s}.scene .s6{animation-delay:2.05s}.scene .s7{animation-delay:2.2s}
-  .scene .c3-verdict{animation:c3drop .5s cubic-bezier(.2,1.2,.3,1) 2.85s both}
-}
-@media (max-width:720px){
-  .scene{grid-template-columns:1fr;justify-items:center;gap:16px;margin-top:24px}
-  .card3d{order:1;margin-top:34px}
-  .chipcol--r{order:2}
-  .chipcol--l{order:3}
-  .chipcol,.chipcol--l,.chipcol--r{flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:stretch;text-align:left}
-  .chip3{max-width:none;flex:1 1 100%}
-  .c3-verdict{left:-8%;right:-8%}
-}
-
-/* ================= HERO VS-BAR — them vs us ================= */
-.vsbar{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch;
-  margin:6px 0 4px;max-width:760px}
-.vsbar__cell{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:var(--radius)}
-.vsbar__cell b{font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.14em}
-.vsbar__big{font-family:var(--font-grade);font-size:30px;line-height:1;letter-spacing:-.01em;
-  font-variant-numeric:tabular-nums}
-.vsbar__sub{font:11.5px/1.45 var(--font-ui)}
-.vsbar__them{background:var(--well);border:1px dashed var(--rule-2);color:var(--ink-3)}
-.vsbar__them b,.vsbar__them .vsbar__big{color:var(--ink-3)}
-.vsbar__us{background:var(--label);border:1px solid var(--rule-strong);
-  border-top:3px solid var(--cert-red);box-shadow:var(--slab-shadow);color:var(--ink-2)}
-.vsbar__us b{color:var(--cert-red)}
-.vsbar__us .vsbar__big{color:var(--ink)}
-.vsbar__vs{align-self:center;font-family:var(--font-grade);font-size:15px;color:var(--ink-3);
-  letter-spacing:.04em}
-@media (max-width:720px){
-  .vsbar{grid-template-columns:1fr;gap:8px}
-  .vsbar__vs{justify-self:center}
-}
-
-/* ============ Codex components: benefit grid + audit flow ============ */
-.benefitgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:26px 0}
-.benefit{background:var(--label);border:1px solid var(--rule);border-radius:var(--radius);padding:22px;position:relative}
-.benefit--lead{grid-column:1/-1;border-top:3px solid var(--cert-red);display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
-.benefit__no{display:block;font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.14em;color:var(--cert-red);margin-bottom:10px}
-.benefit h3{font-size:22px;letter-spacing:.03em;margin-bottom:10px}
-.benefit p{margin:0;color:var(--ink-2);font:14px/1.55 var(--font-ui)}
-.benefit__money{font-family:var(--font-grade);font-size:clamp(38px,7vw,62px);line-height:.9;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
-.benefit__money small{display:block;margin-top:9px;font:600 10px/1.4 var(--font-display);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3)}
-.auditflow{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin:26px 0 10px}
-.auditflow div{background:var(--well);padding:15px 10px;text-align:center}
-.auditflow b{display:block;font-family:var(--font-grade);font-size:28px;line-height:1;color:var(--ink)}
-.auditflow span{display:block;margin-top:5px;font:600 9px/1.3 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3)}
-.benefitgrid{grid-template-columns:1fr}
-.benefit--lead{grid-column:auto;grid-template-columns:1fr}
-.auditflow{grid-template-columns:repeat(2,1fr)}
-
-/* ================= RESULTS HERO — seller + buyer panels ================= */
-.results{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:28px 0 12px;max-width:880px}
-.rpanel{background:var(--label);border:1px solid var(--rule-strong);border-radius:var(--radius);
-  box-shadow:var(--slab-shadow);overflow:hidden;position:relative}
-.rpanel::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--cert-red)}
-.rpanel:last-child::before{background:var(--foil);opacity:var(--foil-opacity)}
-.rpanel__head{display:flex;gap:10px;align-items:baseline;padding:12px 14px 10px}
-.rpanel__head b{font:600 13px/1 var(--font-display);text-transform:uppercase;letter-spacing:.14em;color:var(--cert-red)}
-.rpanel__head span{font:11px/1.3 var(--font-ui);color:var(--ink-3)}
-.rid{display:flex;justify-content:space-between;align-items:center;gap:10px;
-  padding:10px 14px;background:var(--well);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-.rid__l1{display:block;font:600 15px/1.2 var(--font-display);text-transform:uppercase;letter-spacing:.04em;color:var(--ink)}
-.rid__l2{display:block;font:600 9.5px/1.4 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3)}
-.rid__price{text-align:right}
-.rid__price span{display:block;font:600 9px/1 var(--font-display);text-transform:uppercase;letter-spacing:.14em;color:var(--ink-2)}
-.rid__price b{font-family:var(--font-grade);font-size:26px;line-height:1;letter-spacing:-.01em;color:var(--ink);font-variant-numeric:tabular-nums}
-.rrow{display:grid;grid-template-columns:12px 58px 1fr auto;gap:10px;align-items:center;
-  padding:9px 14px;border-bottom:1px solid var(--rule);font:12.5px/1.4 var(--font-ui);color:var(--ink-2)}
-.rrow .p{font-family:var(--font-mono);font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
-.rrow .v{font:600 9.5px/1 var(--font-display);text-transform:uppercase;letter-spacing:.12em}
-.v--g{color:var(--pass)} .v--y{color:var(--flag)} .v--r{color:var(--cert-red)}
-.rdot{width:10px;height:10px;border-radius:50%;justify-self:center}
-.rdot--g{background:var(--pass)} .rdot--y{background:var(--flag)} .rdot--r{background:var(--cert-red)}
-.rfoot{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:11px 14px;
-  font:600 10.5px/1.5 var(--font-display);text-transform:uppercase;letter-spacing:.08em;color:var(--ink)}
-.rfoot .rdot{width:8px;height:8px}
-@media (prefers-reduced-motion:no-preference){
-  @keyframes rIn{from{transform:translateY(8px)}to{transform:none}}
-  .results .rrow{animation:rIn .3s ease-out both}
-  .results .rrow:nth-child(3){animation-delay:.15s}.results .rrow:nth-child(4){animation-delay:.3s}
-  .results .rrow:nth-child(5){animation-delay:.45s}.results .rrow:nth-child(6){animation-delay:.6s}
-}
-@media (max-width:720px){.results{grid-template-columns:1fr}}
-</style>
 </head>
 <body>
-<div class="wrap">
 
-  <div class="top">
-    <span class="wordmark">ListRight</span>
-    <div style="display:flex;gap:12px;align-items:center">
-      <span class="fine">CERT No. 0000001 · FOUNDING SERIES</span>
-      <button class="themebtn" id="theme" type="button">Theme</button>
+<header class="topbar">
+  <div class="logo"><span class="l">List</span><span class="r">Right</span></div>
+  <div class="tag">Price the exact card — not the look-alikes.</div>
+  <a class="btn btn-ghost btn-sm" href="mailto:localcardhouse@gmail.com?subject=ListRight%20free%205">Run 5 cards free</a>
+</header>
+
+<!-- ============ HERO: THE SPLIT ============ -->
+<div class="hero">
+  <div class="half half-sell">
+    <div class="kicker">Side A · Sell</div>
+    <h1 class="disp">Sell it<br><span class="accent-sell">right.</span></h1>
+    <div class="flow">
+      <div class="cardshape" aria-label="abstract trading card"></div>
+      <div class="arrow">→</div>
+      <div class="ticket">
+        <div class="t-label">Audited price</div>
+        <div class="t-num">$355</div>
+        <div class="t-sub">median of 35 kept comps · HIGH</div>
+      </div>
     </div>
+    <p class="sub">Photograph a card. Get an 80-char eBay title, a price from real eBay sold comps, and the audit that proves it.</p>
+    <div><a class="btn btn-sell" href="mailto:localcardhouse@gmail.com?subject=ListRight%20free%205">Run 5 cards free</a></div>
   </div>
 
-  <!-- ================== HERO — 3D GRADING SCENE ================== -->
-  <section style="border-top:0;padding-top:14px">
-    <p class="fine" style="margin:0 0 10px;color:var(--cert-red)">LIVE RUN · JUL 28 2026 · CHARIZARD EX 151 · #199/165 · RAW</p>
-    <h1>Price the exact card.<br>Not the look-alikes.</h1>
-    <p class="prose" style="font-size:19px">Make money on both sides of the trade.
-      <strong>Sell for more</strong> — photo in, the exact card priced right.
-      <strong>Buy for less</strong> — the audited market in hand before you bid.</p>
+  <div class="seam" aria-hidden="true">
+    <div class="dollar">$</div>
+    <div class="both">Both sides</div>
+  </div>
 
-    <div class="scoreboard" style="max-width:600px;margin:20px 0 22px">
-      <div class="score"><span class="n">$54</span><span class="l">Kept out of this price &mdash; slabs &ne; raw</span></div>
-      <div class="score"><span class="n">$1,170</span><span class="l">Raw &rarr; PSA 10 gap, same card</span></div>
-      <div class="score"><span class="n">$19</span><span class="l">A month &middot; founding &middot; locked for life</span></div>
-    </div>
-
-    <div style="display:flex;gap:12px;flex-wrap:wrap;margin:18px 0 8px">
-      <a class="btn" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20free%205%20cards&amp;body=Hi%20%E2%80%94%20I%27d%20like%20to%20try%20ListRight%20on%205%20cards.%0A%0AWhat%20I%20sell%3A%20%0ARoughly%20how%20many%20cards%20a%20month%3A%20%0A" data-cta="free">Run 5 cards free — see your comps</a>
-      <a class="btn btn--ghost" href="#membership">Lock $19/mo for life — 25 founding seats</a>
-    </div>
-    <p class="fine" style="margin:0">25 seats &middot; 5 cards free, no card required &middot; cancel anytime &middot; the audit trail is what you pay for</p>
-
-    <div class="eyebrow" style="margin:26px 0 -8px"><span class="nm" style="color:var(--cert-red)">Selling &middot; price it right, make more</span></div>
-    <!-- the card goes through the audit, grading-machine style -->
-    <div class="scene" aria-hidden="true">
-      <div class="chipcol chipcol--l">
-        <span class="chip3 chip3--ok s1"><b>Identified</b>Charizard ex &middot; Scarlet &amp; Violet 151</span>
-        <span class="chip3 chip3--ok s2"><b>#199/165</b>Past the set size &mdash; a different card from the 6/165 base</span>
-        <span class="chip3 s3"><b>No grade found &rarr; raw</b>Slab sales must not price a raw card</span>
+  <div class="half half-buy">
+    <div class="kicker">Side B · Buy</div>
+    <h1 class="disp">Buy it<br><span class="accent-buy">right.</span></h1>
+    <div class="flow">
+      <div class="ticket">
+        <div class="t-label">Asking price</div>
+        <div class="t-num">$318</div>
+        <div class="t-sub">vs audited median $355</div>
       </div>
-      <div class="card3d">
-        <div class="card3d__face">
-          <div class="c3-photo"></div>
-          <div class="c3-plate"><span class="c3-name" style="font-size:19px">Special Illustration</span><span class="c3-sub">Full Art &middot; Holofoil</span></div>
-        </div>
-        <span class="c3-scan"></span>
-        <div class="c3-verdict cert">
-          <div class="cert__id">
-            <div class="cert__l1">Charizard ex</div>
-            <div class="cert__l3">151 &middot; #199/165 SIR &middot; raw</div>
-          </div>
-          <div class="cert__grade">
-            <span class="cert__word">List at</span>
-            <span class="cert__num" style="font-size:27px;letter-spacing:0">$355</span>
-          </div>
-        </div>
-      </div>
-      <div class="chipcol chipcol--r">
-        <span class="chip3 chip3--no s5"><b>&#10005; 1 multi-card lot out</b>A lot is not a comp for your single</span>
-        <span class="chip3 chip3--no s6"><b>&#10005; 4 graded slabs out</b>Graded median $409.65 &mdash; not a raw price</span>
-        <span class="chip3 chip3--ok s7"><b>&check; 35 raw sales kept</b>Median $355 &middot; IQR $298&ndash;$395 &middot; confidence HIGH</span>
-      </div>
+      <div class="arrow">→</div>
+      <div class="stamp st-deal">Deal<small>−10.4%</small></div>
     </div>
-    <div class="vsbar" aria-hidden="true">
-      <div class="vsbar__cell vsbar__them">
-        <b>A headline price</b>
-        <span class="vsbar__big">$&nbsp;&middot;&middot;&middot;</span>
-        <span class="vsbar__sub">Fast &mdash; but you still have to check whether raw cards, slabs or lots shaped the number.</span>
-      </div>
-      <span class="vsbar__vs">VS</span>
-      <div class="vsbar__cell vsbar__us">
-        <b>ListRight &middot; this run</b>
-        <span class="vsbar__big">$355</span>
-        <span class="vsbar__sub">35 raw sales kept &middot; 5 filtered with reasons &middot; IQR $298&ndash;$395 &middot; confidence HIGH</span>
-      </div>
-    </div>
-
-    <div class="eyebrow" style="margin:30px 0 -2px"><span class="nm" style="color:var(--cert-red)">Buying &middot; pay market, not markup</span></div>
-    <div class="results" style="grid-template-columns:1fr;max-width:520px">
-      <div class="rpanel">
-        <div class="rpanel__head"><b>Buying?</b><span>Same receipts, other direction</span></div>
-        <div class="rid">
-          <div><span class="rid__l1">Live asks</span><span class="rid__l2">scored against the $355 audited market</span></div>
-          <div class="rid__price"><span>Market</span><b>$355</b></div>
-        </div>
-        <div class="rrow"><span class="rdot rdot--g"></span><span class="p">$318</span><span>10% under the audited market</span><span class="v v--g">Deal</span></div>
-        <div class="rrow"><span class="rdot rdot--y"></span><span class="p">$359</span><span>At market &mdash; fair either way</span><span class="v v--y">Fair</span></div>
-        <div class="rrow"><span class="rdot rdot--r"></span><span class="p">$449</span><span>26% over the audited market</span><span class="v v--r">Over</span></div>
-        <div class="rrow"><span class="rdot rdot--r"></span><span class="p">$310</span><span>&ldquo;Raw&rdquo; ask priced like a slab? Check the photos</span><span class="v v--r">Verify</span></div>
-        <div class="rfoot">Know the real number before you bid &mdash; the audit works both ways</div>
-      </div>
-    </div>
-
-    <p class="fine" style="margin:14px 0 24px">Real engine output, live run  Jul 28 2026 — query
-      &ldquo;charizard ex 151 199/165&rdquo;: 40 comps fetched, 1 multi-card lot and 4 graded slabs excluded
-      (graded median $409.65), 35 raw sales kept, median $355, confidence HIGH. $54 = that graded median minus the raw
-      median; $1,170 = the same card&rsquo;s PSA 10 median, $1,525 (n=38, live run), minus raw. The buyer
-      rows are illustrative, computed against this run&rsquo;s median. Not a
-      customer result. Card art is unbranded on purpose; the audit report names the real card.</p>
-
-    <div class="only" style="margin-top:30px">
-      <h3>More money, both directions</h3>
-      <ul class="onlygrid">
-      <li>Sell for more<span>Photo &rarr; title, price range and description — priced off what the exact card really gets</span></li>
-      <li>Buy for less<span>The audited market in hand before you bid on any ask</span></li>
-      <li>Grade with a plan<span>PSA pre-screen and the raw&rarr;graded gap before you pay submission fees</span></li>
-      </ul>
-      <p class="fine" style="margin:2px 0 0"><a href="#compare">See why sellers choose ListRight &darr;</a></p>
-    </div>
-
-    <p class="fine" style="max-width:66ch;line-height:1.7;margin:22px 0 0">
-      ListRight is web-based subscription software for trading-card sellers. It is a listing-preparation
-      tool — it does not buy, sell, ship or process payment for any card, and no physical goods are shipped.</p>
-</section>
-
-  <!-- ================== §01 THE COMPARISON — CENTREPIECE ================== -->
-  <section class="hilite" id="compare">
-    <div class="eyebrow"><span class="no">§ 01</span><span class="nm">Why ListRight</span></div>
-    <h2>The scanner is free.<br>The judgment is the product.</h2>
-    <p class="prose">eBay and other card apps can identify a card and show you a price. ListRight is for
-      the moment after that — deciding which sales actually belong in the number, and showing you the
-      ones it threw out. Here is exactly where the others stop.</p>
-
-    <div class="benefitgrid">
-      <article class="benefit benefit--lead">
-        <div><span class="benefit__no">01 · Protect the price</span><h3>Separate evidence that should never be averaged</h3>
-          <p>Raw cards, graded slabs, and multi-card lots can share the same search results while belonging
-            to different markets. ListRight filters those populations before computing the median and tells
-            you what changed.</p></div>
-        <div class="benefit__money">$355<small>Raw median · this live run<br>$409.65 graded-slab median kept out</small></div>
-      </article>
-      <article class="benefit"><span class="benefit__no">02 · Save the review time</span><h3>One glance, with receipts</h3>
-        <p>See the median, IQR range, included sample size, confidence, recent sales, and filter notes in one result instead of rebuilding the search by hand.</p></article>
-      <article class="benefit"><span class="benefit__no">03 · Preserve the value tokens</span><h3>A title that reads like the hobby</h3>
-        <p>Grade, player, year, RC, 1st Bowman, and print-run tokens are prioritized inside eBay's 80-character limit, with a copy-ready description beside it.</p></article>
-      <article class="benefit"><span class="benefit__no">04 · Stay in control</span><h3>Evidence, not autopilot</h3>
-        <p>The number is an estimate, every output stays editable, and the beta does not publish without you. Thin or ambiguous evidence belongs in review.</p></article>
-      <article class="benefit"><span class="benefit__no">05 · Screen grading upside</span><h3>Measure before you submit</h3>
-        <p>The new PSA-aligned beta measures front/back centering after perspective correction, checks photo quality, and returns a candidate range only after your in-hand condition review.</p></article>
-    </div>
-
-    <div class="auditflow" aria-label="Live run audit flow">
-      <div><b>40</b><span>sales fetched</span></div><div><b>5</b><span>filtered with reasons</span></div>
-      <div><b>35</b><span>raw sales priced</span></div><div><b>$355</b><span>audited median</span></div>
-    </div>
-    <p class="fine">Live Charizard run shown above. One query demonstrates this workflow; it does not prove accuracy across every card or parallel.</p>
-
-
-    <div class="scoreboard">
-      <div class="score"><span class="n">$53</span><span class="l">Gap on one mispriced card</span></div>
-      <div class="score"><span class="n">40</span><span class="l">Sold comps pulled per card</span></div>
-    </div>
-
-    <div class="vswrap">
-    <table class="vs">
-      <thead><tr>
-        <th></th>
-        <th>Most card tools</th>
-        <th class="ours">ListRight</th>
-      </tr></thead>
-      <tbody>
-        <tr><td class="k">Price source</td><td>A market feed or their own database</td><td class="y">eBay sold listings — what buyers actually paid</td></tr>
-        <tr><td class="k">Accepted Best Offers</td><td>Hidden by eBay, so invisible</td><td class="y">Read and included</td></tr>
-        <tr><td class="k">Multi-card lots</td><td>Counted as comps</td><td class="y">Stripped before pricing</td></tr>
-        <tr><td class="k">Graded vs raw</td><td>Mixed together</td><td class="y">Separated</td></tr>
-        <tr><td class="k">Serial parallels</td><td>Ignored — priced like base cards</td><td class="y">/99 comps for a /99 card — flagged when comps are thin</td></tr>
-        <tr><td class="k">Title tokens</td><td>AI-written or typed by hand</td><td class="y">Rule-based and unit-tested</td></tr>
-        <tr><td class="k">1st Bowman</td><td>Often tagged as a rookie</td><td class="y">Its own token — never RC</td></tr>
-        <tr><td class="k">Rejected comps</td><td>Not shown</td><td class="y">Shown, struck, with the reason</td></tr>
-        <tr><td class="k">Description</td><td>You write it, or paste a template</td><td class="y">Written for you, policy-safe</td></tr>
-        <tr><td class="k">The price</td><td>One number</td><td class="y">Median, IQR range, n, confidence</td></tr>
-        <tr><td class="k">Character limit</td><td>You find out when eBay truncates</td><td class="y">Budgeted to 80 before you see it</td></tr>
-      </tbody>
-    </table>
-    </div>
-
-    <p class="prose" style="margin-top:24px;font-size:15px">Those title rules aren't a claim —
-      they're <strong>75 tests</strong>, and they read like the hobby talks:</p>
-    <div class="tests mono">
-      test_first_bowman_adds_1st_before_brand<br>
-      test_no_rc_token_when_not_a_rookie<br>
-      test_print_run_tolerates_full_serial_and_punctuation<br>
-      test_variety_not_duplicated_when_brand_contains_it<br>
-      test_listing_title_keeps_grade_even_with_long_brand<br>
-      test_listing_description_has_no_urls
-    </div>
-    <p class="fine" style="margin-top:12px">That last one exists because eBay treats external links in a
-      listing as a policy violation.</p>
-  </section>
-
-  <!-- ================== §02 THE OUTPUT ================== -->
-  <section>
-    <div class="eyebrow"><span class="no">§ 02</span><span class="nm">The output</span></div>
-    <h2>What comes back on every card</h2>
-    <p class="prose">Three things, ready to paste — and the comp table that justifies the number,
-      including the rows it refused to use.</p>
-
-    <div class="stack" style="margin:30px 0 26px;max-width:660px">
-      <div class="outlabel"><span>Reads the card</span></div>
-      <div class="cert cert--hero cert--foil" data-grader="psa">
-        <div class="cert__id">
-          <div class="cert__l1">2018 Panini Prizm</div>
-          <div class="cert__l2">#280 Luka Doncic</div>
-          <div class="cert__l3">Silver Prizm · RC</div>
-        </div>
-        <div class="cert__grade">
-          <span class="cert__word">Gem MT</span>
-          <span class="cert__num">10</span>
-        </div>
-        <span class="cert__cert">CERT 47182930</span>
-      </div>
-
-      <div class="joint"></div>
-
-      <div class="outlabel"><b>01</b><span>eBay title</span><i>80-char limit enforced</i></div>
-      <div class="titlebox" style="--pct:83">
-        <div class="titlebox__str">2018 Panini Prizm <span class="tok">#280</span> Luka Doncic <span class="tok">Silver Prizm</span> <span class="tok">RC</span> <span class="tok">PSA 10</span> Gem Mint</div>
-        <div class="tfoot"><div class="ruler"></div><span class="count">66/80</span></div>
-      </div>
-
-      <div class="joint"></div>
-
-      <div class="outlabel"><b>02</b><span>Price</span><i>From sold comps, shown below</i></div>
-      <table class="comps">
-        <thead><tr><th class="g"></th><th>Date</th><th style="text-align:right">Price</th><th>Sold listing</th></tr></thead>
-        <tbody>
-          <tr><td class="g">●</td><td class="d">2026-07-11</td><td class="p">$96.00</td><td class="t">2018 Prizm Luka Doncic Silver #280 PSA 10</td></tr>
-          <tr><td class="g">●</td><td class="d">2026-07-04</td><td class="p">$88.50</td><td class="t">Luka Doncic 2018 Panini Prizm Silver RC PSA 10</td></tr>
-          <tr class="ex"><td class="g">○</td><td class="d">2026-07-02</td><td class="p">$31.00</td><td class="t">2018 Prizm Luka Doncic Silver #280 — raw <span class="why">Raw · not PSA 10</span></td></tr>
-          <tr><td class="g">●</td><td class="d">2026-06-28</td><td class="p">$84.00</td><td class="t">Doncic Silver Prizm rookie PSA 10 Gem Mint</td></tr>
-          <tr class="sumrow"><td colspan="4">n=14 · MEDIAN $84.00 · IQR $71–$96 · 90D · 2 EXCLUDED</td></tr>
-        </tbody>
-      </table>
-
-      <div class="joint"></div>
-
-      <div class="outlabel"><b>03</b><span>Description</span><i>No external links — eBay policy</i></div>
-      <div class="descbox">2018 Panini Prizm #280 Luka Doncic — Silver Prizm Rookie Card, graded
-        <strong>PSA 10 Gem Mint</strong>. Certification number 47182930, verified against PSA's population
-        report: 1,842 graded PSA 10, none higher. Card is sealed in its original PSA holder and has not been
-        removed. Ships double-boxed with tracking and insurance.</div>
-    </div>
-
-    <p class="prose" style="margin:22px 0 6px;font-size:18px;max-width:62ch">
-      <strong>Price a PSA 10 off raw sales and you list an $84 card at $31.</strong>
-      That struck-through row is one ListRight refused to price on — graded and raw are never averaged together.</p>
-    <p class="fine" style="margin:0 0 6px">Illustrative example of the token rules and comp handling — not a customer result.</p>
-  </section>
-
-  <!-- ================== §02 THE TITLE ================== -->
-  <section>
-    <div class="eyebrow"><span class="no">§ 03</span><span class="nm">The title</span></div>
-    <h2>Buyers search "Auto." Not "Autograph."</h2>
-    <p class="prose">Miss the token a buyer actually types and your card doesn't appear in the search that
-      would have sold it. Every card app writes a title. ListRight writes it from <em>rules</em> — the same
-      value tokens, in the hobby's order, inside the 80-character limit, every single time.</p>
-
-    <div class="legend">
-      <div><span class="ser"><b>/250</b></span><span class="txt"><strong>Print run.</strong> The denominator is the information — a /25 is a different card from a /250. Always in the title.</span></div>
-      <div><span class="chip">RC</span><span class="txt"><strong>Rookie card.</strong> Only when the card actually carries the RC mark. A 1st Bowman prospect is <em>not</em> a rookie — a mistake that costs money in both directions.</span></div>
-      <div><span class="chip">1st Bowman</span><span class="txt"><strong>First Bowman.</strong> Its own token, placed before the brand so it reads "1st Bowman Chrome."</span></div>
-      <div><span class="chip chip--psa">PSA 10</span><span class="txt"><strong>Grade.</strong> The single strongest value token on a slab, and it leads the title.</span></div>
-      <div><span class="ser ser--one">1/1</span><span class="txt"><strong>One of one.</strong> A different class of object from a /250 — and never styled like one.</span></div>
-    </div>
-  </section>
-
-  <!-- ================== §02 THE PRICE ================== -->
-  <section>
-    <div class="eyebrow"><span class="no">§ 04</span><span class="nm">The price</span></div>
-    <h2>Priced off sold comps.<br>Not a "market price."</h2>
-    <div class="two">
-      <div>
-        <h3>What everyone else does</h3>
-        <p class="prose" style="font-size:15px">Card tools price off a market feed — TCGplayer, or their own database. It's a number, and you're asked to trust it.</p>
-      </div>
-      <div>
-        <h3>What ListRight does</h3>
-        <p class="prose" style="font-size:15px">Reads what the card <em>actually sold for</em> on eBay. Strips lots, separates graded from raw, drops outliers, and gives you a median with a range — then shows you every comp behind it.</p>
-      </div>
-    </div>
-    <p class="prose" style="margin-top:6px"><strong>Including the ones it threw out.</strong> That hollow row in the example above —
-      struck price, "raw — not PSA 10" — is a comp ListRight refused to price on. No other tool shows you its own rejects.</p>
-  </section>
-
-  <!-- ================== §03 THE PIPELINE ================== -->
-  <section>
-    <div class="eyebrow"><span class="no">§ 05</span><span class="nm">What runs on every card</span></div>
-    <h2>Seven stages.<br>No guessing at any of them.</h2>
-    <p class="prose">This is the whole pipeline. Nothing here is a language model being asked politely to
-      produce a good title — the identification is structured, and everything after it is deterministic code
-      with tests.</p>
-
-    <ol class="pipe">
-      <li><span class="stage">01 · Read</span><span class="what"><b>Front and back.</b> HEIC and JPEG, EXIF rotation corrected, decompression-bomb guarded, downscaled to 1600px before anything sees it. The back resolves year, set and serial the front can't.</span></li>
-      <li><span class="stage">02 · Identify</span><span class="what"><b>Structured extraction, not prose.</b> Twenty fields come back typed — sport, year, brand, set, player, team, card number, parallel, insert, serial, print run, grader, grade, cert — each with a confidence. The model fills a schema; it doesn't write a sentence and hope.</span></li>
-      <li><span class="stage">03 · Tokens</span><span class="what"><b>Rules override the model.</b> A legible serial derives the print run whether the card reads <span class="mono">074/250</span>, <span class="mono">/250</span> or <span class="mono">250</span>. A 1st Bowman prospect is forced to <em>not</em> be a rookie, because it isn't one — a distinction most tools get wrong in both directions.</span></li>
-      <li><span class="stage">04 · Title &amp; description</span><span class="what"><b>An 80-character budget, spent by priority — plus the description.</b> Grade, player and year are never dropped. Then RC, 1st Bowman and the print run — short, high-signal — outrank the long brand string and the card number. Duplicate variety text is removed when the brand already contains it, and ALL-CAPS grader fields are re-cased without breaking <span class="mono">RC</span>, <span class="mono">PSA</span>, <span class="mono">SP</span> or <span class="mono">SSP</span>. The description is written alongside it, with population context and <em>no external links</em> — eBay treats those as a policy violation.</span></li>
-      <li><span class="stage">05 · Comps</span><span class="what"><b>Real eBay sold listings</b> — 40 pulled per card, including <strong>accepted Best Offer prices that eBay hides from you</strong>. That's the truest record of what a card actually trades for, and most tools never see it.</span></li>
-      <li><span class="stage">06 · Segment</span><span class="what"><b>The step that decides whether the number means anything.</b> Multi-card lots stripped out. Graded separated from raw. Serial-numbered parallels matched to serial-numbered parallels. Currencies split. Stale sales aged out. A comp set that skips this is just an average of unrelated cards.</span></li>
-      <li><span class="stage">07 · Price</span><span class="what"><b>Median, not mean</b> — one shill sale can't drag it. Range is the interquartile band, so the middle half of real sales. Confidence is computed from sample size <em>and</em> spread, and it's always shown with the numbers behind it, never as a bare adjective.</span></li>
-    </ol>
-
-    <p class="fine" style="margin-top:20px">Graded slabs additionally verify against PSA's public API — identity and population, by cert number.</p>
-  </section>
-
-  <!-- ================== §05 THE PROOF ================== -->
-  <section>
-    <div class="eyebrow"><span class="no">§ 06</span><span class="nm">The proof</span></div>
-    <h2>The same card, titled two ways</h2>
-    <table class="ledger">
-      <tr><td class="k">Typical</td><td>2023 Bowman Chrome Jackson Holliday Refractor Auto</td><td class="amt">50 ch</td></tr>
-      <tr><td class="k">ListRight</td><td>PSA 10 Jackson Holliday 2023 <span class="tok">1st Bowman</span> Chrome Auto Refractor <span class="tok">/499</span></td><td class="amt">66 ch</td></tr>
-      <tr><td class="k">Typical</td><td>maui ahuna bowman auto</td><td class="amt">22 ch</td></tr>
-      <tr><td class="k">ListRight</td><td>2023 Bowman Draft Chrome Maui Ahuna <span class="tok">1st Bowman</span> <span class="tok">Autograph</span> <span class="tok">#CDA-MAH</span> SF Giants</td><td class="amt">75 ch</td></tr>
-      <tr><td class="k">Typical</td><td>Luka Doncic Prizm Silver rookie graded</td><td class="amt">38 ch</td></tr>
-      <tr><td class="k">ListRight</td><td>2018 Panini Prizm #280 Luka Doncic <span class="tok">Silver Prizm</span> <span class="tok">RC</span> <span class="tok">PSA 10</span></td><td class="amt">57 ch</td></tr>
-    </table>
-    <p class="fine" style="margin-top:14px">Illustrative pairs showing the token rules. The Ahuna title is a real engine output (live run, 2026-07-28). Not customer results — there aren't any yet.</p>
-  </section>
-
-  <!-- ================== §04 MEMBERSHIP ================== -->
-  <section id="membership">
-    <div class="eyebrow"><span class="no">§ 07</span><span class="nm">The membership</span></div>
-    <h2>Founding series</h2>
-    <p class="prose">Try five cards free, no card required. If it earns a seat, twenty-five people get it at $19 — cheaper than it will ever be again, permanently — and get to tell me what to build next.</p>
-
-    <div style="max-width:520px;margin:24px 0 18px">
-      <div class="cert cert--hero" data-grader="psa">
-        <div class="cert__id">
-          <div class="cert__l1">Founding Membership</div>
-          <div class="cert__l2">500 Scans · Monthly</div>
-          <div class="cert__l3">Was $39 · Locked for life</div>
-        </div>
-        <div class="cert__grade">
-          <span class="cert__word">USD</span>
-          <span class="cert__num">19</span>
-        </div>
-        <span class="cert__cert">SERIES 1 · 25 SEATS</span>
-      </div>
-    </div>
-
-    <a class="btn btn--wide" href="https://buy.stripe.com/28E5kDcRw6mcbc0dFN1Fe00" data-payment-link style="max-width:520px">Claim a founding seat — $19/mo</a>
-    <p class="fine" style="margin-top:12px;max-width:520px">Past 500 cards in a month? Email me and I'll raise your cap — I'd rather price it right than have you hit a wall · 5 cards free first, no card required · Cancel anytime · Refund in the first 30 days</p>
-
-    <p class="fine" style="margin-top:18px;max-width:520px;line-height:1.7">
-      DELIVERY · ListRight is web-based software. Access is delivered electronically and is available
-      immediately after successful payment, through your account on listrightapp.com. No physical goods
-      are shipped. Subscription renews monthly at $19 until cancelled; cancel any time.</p>
-
-    <p class="prose" style="margin-top:24px;font-size:15px">Honest status: the engine works and is what I use on my own
-      cards. The hosted version is early — you'll be using a beta and talking to me directly. It does <strong>not</strong>
-      publish to eBay or Whatnot yet; you copy the title and price into your listing. That's next.</p>
-  </section>
-
-  <!-- ================== §08 GRADING PRE-SCREEN ================== -->
-  <section id="grading">
-    <div class="eyebrow"><span class="no">§ 08</span><span class="nm">PSA-aligned pre-screen · beta</span></div>
-    <h2>Measure the card.<br>Don't promise the grade.</h2>
-    <p class="prose">Upload the front and back in even light. ListRight perspective-corrects the card,
-      checks resolution, sharpness and glare, measures centering, and lets you adjust the detected border
-      guides. Then your in-hand corners, edges and surface check produces a conservative candidate range.</p>
-    <div class="two" style="margin:24px 0">
-      <div><h3>What the camera can support</h3><p class="prose" style="font-size:15px">Front/back centering ratios, photo-quality gates, and visible-condition prompts tied to PSA's published high-grade guidance.</p></div>
-      <div><h3>What it cannot certify</h3><p class="prose" style="font-size:15px">Authenticity, alteration, microscopic surface defects, original gloss, every edge or corner flaw, eye appeal, or the grade PSA will assign in hand.</p></div>
-    </div>
-    <p class="prose" style="font-size:17px"><strong>The result is a range such as “PSA 9–10 candidate,” never a guaranteed PSA 10.</strong></p>
-    <a class="btn btn--ghost" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20PSA-aligned%20pre-screen%20beta&amp;body=Hi%20%E2%80%94%20I%27d%20like%20to%20test%20the%20PSA-aligned%20pre-screen%20on%205%20cards.%0A">Test the pre-screen — in the 5 free cards</a>
-    <p class="fine" style="margin-top:14px">Method references <a href="https://www.psacard.com/gradingstandards" target="_blank" rel="noopener">PSA's published grading standards</a>. Not affiliated with or endorsed by PSA.</p>
-  </section>
-
-  <footer>
-    <p style="font:600 12px/1.8 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-2);font-style:normal">
-      <a href="/terms.html">Terms of Service</a> &nbsp;·&nbsp;
-      <a href="/privacy.html">Privacy Policy</a> &nbsp;·&nbsp;
-      <a href="/refunds.html">Refund Policy</a> &nbsp;·&nbsp;
-      <a href="mailto:support@listrightapp.com">Contact</a></p>
-    <p>Not affiliated with, endorsed by, or sponsored by eBay, Whatnot, PSA, BGS, CGC, SGC or TAG.
-      Comps are eBay sold listings; prices are estimates, not appraisals. Always review a title and
-      price before you list.</p>
-  </footer>
+    <p class="sub">Paste any asking price. Get a verdict against the audited market — DEAL, FAIR, OVER, or VERIFY when it's too good.</p>
+    <div><a class="btn btn-buy" href="https://buy.stripe.com/28E5kDcRw6mcbc0dFN1Fe00">$19/mo founding</a></div>
+  </div>
 </div>
 
+<div class="marquee" aria-hidden="true">
+  <span class="marquee-track">The scanner is free. <b>The judgment is the product.</b> &nbsp;·&nbsp; Make money on <b>both sides</b> of the trade. &nbsp;·&nbsp; Price the <b>exact card</b> — not the look-alikes. &nbsp;·&nbsp; The scanner is free. <b>The judgment is the product.</b> &nbsp;·&nbsp; Make money on <b>both sides</b> of the trade. &nbsp;·&nbsp; Price the <b>exact card</b> — not the look-alikes. &nbsp;·&nbsp; </span>
+</div>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section>
+  <div class="wrap">
+    <div class="sec-label" style="color:var(--gray)">How it works</div>
+    <h2>Three moves.<br>Either side.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="num">01</div>
+        <h3>Shoot or paste</h3>
+        <p>Selling: photograph the card. Buying: paste the asking price. That's the whole input.</p>
+      </div>
+      <div class="step">
+        <div class="num">02</div>
+        <h3>We audit the comps</h3>
+        <p>Real eBay sold comps, every one shown as kept or rejected <b>with the reason</b>. Lots stripped. Graded never averaged with raw.</p>
+      </div>
+      <div class="step">
+        <div class="num">03</div>
+        <h3>Get the call</h3>
+        <p>Sellers get title + price + description, ready to list. Buyers get a stamped verdict. Thin evidence gets <b>NO VERDICT</b> — we don't guess.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SELL ============ -->
+<section class="stripe-sell">
+  <div class="wrap">
+    <div class="sec-label">Side A · Sell</div>
+    <h2>One photo in.<br>A defensible price out.</h2>
+    <p class="lede">Live engine run, Jul 28 2026 — Charizard ex, Pokemon 151 #199/165 SIR. Here's the audit, receipt-style. Every exclusion has a reason you can read.</p>
+
+    <div class="split2">
+      <div class="receipt">
+        <div class="receipt-head">
+          <div class="rt">Comp audit — 40 fetched</div>
+          <span class="pill pill-hi">CONFIDENCE HIGH</span>
+        </div>
+        <div class="rrow"><span class="mark mk-cut">CUT ×1</span><span class="why"><b>Lot detected</b> — multi-card sale, not a single. Stripped.</span></div>
+        <div class="rrow"><span class="mark mk-cut">CUT ×4</span><span class="why"><b>Graded slabs</b> (median $409.65) — graded is a different market. Never averaged with raw.</span></div>
+        <div class="rrow"><span class="mark mk-keep">KEPT ×35</span><span class="why"><b>Raw singles, same card</b> — the market that actually prices this listing.</span></div>
+        <div class="receipt-foot">
+          <div class="stat"><div class="s-num">$355</div><div class="s-lab">Median</div></div>
+          <div class="stat"><div class="s-num">$298–$395</div><div class="s-lab">IQR</div></div>
+          <div class="stat"><div class="s-num">35</div><div class="s-lab">Comps kept</div></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="titlecard">
+          <div class="tc-lab">Generated listing — ready to paste</div>
+          <div class="tc-title">Pokemon 151 Charizard ex #199/165 SIR Special Illustration Rare NM</div>
+          <div class="tc-meta">80-char budget · hobby tokens ordered by value · price $355 · description included</div>
+        </div>
+        <div class="callout">
+          <div class="c-num">$54</div>
+          <p>The pricing error avoided on this one run by refusing to blend graded-slab comps into a raw price. Tools that average everything hand that money to the other side of the trade.</p>
+        </div>
+        <div style="margin-top:18px"><a class="btn btn-sell" href="mailto:localcardhouse@gmail.com?subject=ListRight%20free%205">Run 5 cards free</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BUY ============ -->
+<section class="stripe-buy">
+  <div class="wrap">
+    <div class="sec-label">Side B · Buy</div>
+    <h2>Every ask,<br>stamped.</h2>
+    <p class="lede">Same audited market, pointed the other way. Paste an asking price and get one of five verdicts — including the honest one nobody else gives you.</p>
+
+    <div class="board">
+      <div class="brow">
+        <div class="ask">$318<small>ASK</small></div>
+        <div class="rule">At least 10% under the audited median. Buy-side edge.</div>
+        <div class="bstamp st-deal">Deal<small>−10.4%</small></div>
+      </div>
+      <div class="brow">
+        <div class="ask">$359<small>ASK</small></div>
+        <div class="rule">Within ±10% of the market. Pay it if you want the card.</div>
+        <div class="bstamp st-fair">Fair<small>+1.1%</small></div>
+      </div>
+      <div class="brow">
+        <div class="ask">$449<small>ASK</small></div>
+        <div class="rule">10%+ over the audited market. Walk, or negotiate with the number.</div>
+        <div class="bstamp st-over">Over<small>+26.5%</small></div>
+      </div>
+      <div class="brow">
+        <div class="ask">$150<small>ASK</small></div>
+        <div class="rule">45%+ under is <b>too</b> good. Check the photos before you check out.</div>
+        <div class="bstamp st-verify">Verify<small>−57.7%</small></div>
+      </div>
+      <div class="brow">
+        <div class="ask">—<small>ASK</small></div>
+        <div class="rule">Thin evidence = no call. We say so instead of inventing a number.</div>
+        <div class="bstamp st-none">No verdict<small>&nbsp;</small></div>
+      </div>
+    </div>
+
+    <div class="tryit">
+      <label for="askin">Try an ask →</label>
+      <input id="askin" inputmode="decimal" placeholder="$400" aria-label="asking price">
+      <button class="btn btn-buy btn-sm" onclick="stampIt()" type="button">Stamp it</button>
+      <div id="tryout"></div>
+      <div class="trynote">Illustrative demo scored against this run's $355 raw median (Jul 28 2026) — not a live quote.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PSA ============ -->
+<section style="background:#0b0b0e;padding:72px 24px;border-top:1px solid rgba(244,241,234,.14)">
+  <div style="max-width:1060px;margin:0 auto">
+    <p style="font:800 12px/1 var(--disp);letter-spacing:.22em;color:var(--amber);text-transform:uppercase;margin:0 0 10px">The head-to-head</p>
+    <h2 style="font:800 clamp(34px,5.4vw,58px)/0.95 var(--disp);text-transform:uppercase;color:var(--paper);margin:0 0 14px">Where the others stop.<br><span style="color:var(--buy)">Where we keep going.</span></h2>
+    <p style="font:16px/1.6 var(--body);color:var(--gray);max-width:62ch;margin:0 0 30px">Every card app can scan. The scanning was never the hard part — the judgment is. Row by row, here is exactly what the scan-and-price apps skip.</p>
+    <div style="overflow-x:auto;border:1px solid rgba(244,241,234,.14);border-radius:6px">
+      <table style="width:100%;border-collapse:collapse;min-width:640px;font:14px/1.5 var(--body)">
+        <thead><tr style="background:rgba(244,241,234,.05)">
+          <th style="text-align:left;padding:12px 14px;font:800 11px/1 var(--disp);letter-spacing:.14em;text-transform:uppercase;color:var(--gray)"></th>
+          <th style="text-align:left;padding:12px 14px;font:800 11px/1 var(--disp);letter-spacing:.14em;text-transform:uppercase;color:var(--sell)">Most card apps</th>
+          <th style="text-align:left;padding:12px 14px;font:800 11px/1 var(--disp);letter-spacing:.14em;text-transform:uppercase;color:var(--buy)">ListRight</th>
+        </tr></thead>
+        <tbody style="color:var(--paper)">
+          <tr style="border-top:1px solid rgba(244,241,234,.10)">
+            <td style="padding:11px 14px;font:800 10.5px/1.4 var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--gray);white-space:nowrap">Price source</td>
+            <td style="padding:11px 14px;color:var(--gray)"><span style="color:var(--sell);font-weight:800">&#10005;</span>&nbsp; A market feed or their own database</td>
+            <td style="padding:11px 14px;font-weight:600"><span style="color:var(--buy);font-weight:800">&check;</span>&nbsp; eBay sold listings — what buyers actually paid</td>
+          </tr>
+          <tr style="border-top:1px solid rgba(244,241,234,.10)">
+            <td style="padding:11px 14px;font:800 10.5px/1.4 var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--gray);white-space:nowrap">Accepted Best Offers</td>
+            <td style="padding:11px 14px;color:var(--gray)"><span style="color:var(--sell);font-weight:800">&#10005;</span>&nbsp; Hidden by eBay, so invisible</td>
+            <td style="padding:11px 14px;font-weight:600"><span style="color:var(--buy);font-weight:800">&check;</span>&nbsp; Read and included</td>
+          </tr>
+          <tr style="border-top:1px solid rgba(244,241,234,.10)">
+            <td style="padding:11px 14px;font:800 10.5px/1.4 var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--gray);white-space:nowrap">Multi-card lots</td>
+            <td style="padding:11px 14px;color:var(--gray)"><span style="color:var(--sell);font-weight:800">&#10005;</span>&nbsp; Counted as comps</td>
+            <td style="padding:11px 14px;font-weight:600"><span style="color:var(--buy);font-weight:800">&check;</span>&nbsp; Stripped before pricing</td>
+          </tr>
+          <tr style="border-top:1px solid rgba(244,241,234,.10)">
+            <td style="padding:11px 14px;font:800 10.5px/1.4 var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--gray);white-space:nowrap">Graded vs raw</td>
+            <td style="padding:11px 14px;color:var(--gray)"><span style="color:var(--sell);font-weight:800">&#10005;</span>&nbsp; Mixed together</td>
+            <td style="padding:11px 14px;font-weight:600"><span style="color:var(--buy);font-weight:800">&check;</span>&nbsp; Separated — never averaged</td>
+          </tr>
+          <tr style="border-top:1px solid rgba(244,241,234,.10)">
+            <td style="padding:11px 14px;font:800 10.5px/1.4 var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--gray);white-space:nowrap">Rejected comps</td>
+            <td style="padding:11px 14px;color:var(--gray)"><span style="color:var(--sell);font-weight:800">&#10005;</span>&nbsp; Not shown</td>
+            <td style="padding:11px 14px;font-weight:600"><span style="color:var(--buy);font-weight:800">&check;</span>&nbsp; Shown, with the reason</td>
+          </tr>
+          <tr style="border-top:1px solid rgba(244,241,234,.10)">
+            <td style="padding:11px 14px;font:800 10.5px/1.4 var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--gray);white-space:nowrap">The price</td>
+            <td style="padding:11px 14px;color:var(--gray)"><span style="color:var(--sell);font-weight:800">&#10005;</span>&nbsp; One number, trust it</td>
+            <td style="padding:11px 14px;font-weight:600"><span style="color:var(--buy);font-weight:800">&check;</span>&nbsp; Median, IQR, sample size, confidence</td>
+          </tr>
+          <tr style="border-top:1px solid rgba(244,241,234,.10)">
+            <td style="padding:11px 14px;font:800 10.5px/1.4 var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--gray);white-space:nowrap">Buy side</td>
+            <td style="padding:11px 14px;color:var(--gray)"><span style="color:var(--sell);font-weight:800">&#10005;</span>&nbsp; Nothing — sellers only</td>
+            <td style="padding:11px 14px;font-weight:600"><span style="color:var(--buy);font-weight:800">&check;</span>&nbsp; Any ask scored DEAL / FAIR / OVER / VERIFY</td>
+          </tr>
+          <tr style="border-top:1px solid rgba(244,241,234,.10)">
+            <td style="padding:11px 14px;font:800 10.5px/1.4 var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--gray);white-space:nowrap">Grading call</td>
+            <td style="padding:11px 14px;color:var(--gray)"><span style="color:var(--sell);font-weight:800">&#10005;</span>&nbsp; A promised grade, or nothing</td>
+            <td style="padding:11px 14px;font-weight:600"><span style="color:var(--buy);font-weight:800">&check;</span>&nbsp; Centering pre-screen + the real raw&rarr;graded ladder</td>
+          </tr>
+          <tr style="border-top:1px solid rgba(244,241,234,.10)">
+            <td style="padding:11px 14px;font:800 10.5px/1.4 var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--gray);white-space:nowrap">Title tokens</td>
+            <td style="padding:11px 14px;color:var(--gray)"><span style="color:var(--sell);font-weight:800">&#10005;</span>&nbsp; AI prose, hope for the best</td>
+            <td style="padding:11px 14px;font-weight:600"><span style="color:var(--buy);font-weight:800">&check;</span>&nbsp; Rule-based: /250, RC, 1st Bowman, grade first</td>
+          </tr>
+          <tr style="border-top:1px solid rgba(244,241,234,.10)">
+            <td style="padding:11px 14px;font:800 10.5px/1.4 var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--gray);white-space:nowrap">80-char limit</td>
+            <td style="padding:11px 14px;color:var(--gray)"><span style="color:var(--sell);font-weight:800">&#10005;</span>&nbsp; You find out when eBay truncates</td>
+            <td style="padding:11px 14px;font-weight:600"><span style="color:var(--buy);font-weight:800">&check;</span>&nbsp; Budgeted by priority before you see it</td>
+          </tr>
+          <tr style="border-top:1px solid rgba(244,241,234,.10)">
+            <td style="padding:11px 14px;font:800 10.5px/1.4 var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--gray);white-space:nowrap">Thin evidence</td>
+            <td style="padding:11px 14px;color:var(--gray)"><span style="color:var(--sell);font-weight:800">&#10005;</span>&nbsp; A confident wrong number</td>
+            <td style="padding:11px 14px;font-weight:600"><span style="color:var(--buy);font-weight:800">&check;</span>&nbsp; &ldquo;Not enough evidence&rdquo; — it refuses</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font:12px/1.6 var(--mono);color:var(--gray);margin:14px 0 0">&ldquo;Most card apps&rdquo; = the scan-and-price category as verified in a ~35-tool teardown, Jul 2026. No single competitor is claimed to fail every row.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-label" style="color:var(--amber)">The third side · Grade</div>
+    <h2>The ladder is real.<br>Climb it with your eyes open.</h2>
+    <p class="lede">Same card, four markets — from the same Jul 28 2026 engine run. The distance between raw and PSA 10 is the biggest number on this page.</p>
+
+    <div class="ladder">
+      <div class="rung"><div class="r-price">$355</div><div class="r-bar b1"><div class="r-grade">Raw</div><div class="r-n">n=35</div></div></div>
+      <div class="rung"><div class="r-price">$360</div><div class="r-bar b2"><div class="r-grade">PSA 8</div><div class="r-n">n=40</div></div></div>
+      <div class="rung"><div class="r-price">$405</div><div class="r-bar b3"><div class="r-grade">PSA 9</div><div class="r-n">n=37</div></div></div>
+      <div class="rung"><div class="r-price">$1,525</div><div class="r-bar b4"><div class="r-grade">PSA 10</div><div class="r-n">n=38</div></div></div>
+    </div>
+    <div class="gapline">
+      <div class="g-num">+$1,170</div>
+      <p>raw → PSA 10 gap on this card. Also note the flat first rungs: a PSA 8 was worth $5 more than raw. Grading the wrong card costs money too.</p>
+    </div>
+
+    <div class="prescreen">
+      <div class="ps-card">
+        <h3>PSA pre-screen <span class="beta">BETA</span></h3>
+        <p>Perspective-corrected centering measurement plus your own condition check produces a conservative candidate range — a filter for what's worth the grading fee.</p>
+        <div class="ps-badge">PSA 8–10 candidate</div>
+      </div>
+      <div class="ps-card">
+        <h3>Never a guaranteed grade</h3>
+        <p>Nobody can promise a grade from a photo, so we don't. You get a range, stated conservatively, and the centering math behind it. If that honesty costs us a sale, fine.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section>
+  <div class="wrap">
+    <div class="sec-label" style="color:var(--gray)">Pricing</div>
+    <h2>Free to try.<br>Cheap to keep.</h2>
+    <div class="prices">
+      <div class="price-card price-free">
+        <div class="p-name">Prove it first</div>
+        <div class="p-num">$0</div>
+        <ul>
+          <li>5 cards free — your cards, full output</li>
+          <li>Audited price + comp receipt</li>
+          <li>Buy verdicts included</li>
+          <li>No card number required</li>
+        </ul>
+        <a class="btn btn-sell" href="mailto:localcardhouse@gmail.com?subject=ListRight%20free%205">Run 5 cards free</a>
+      </div>
+      <div class="price-card price-paid">
+        <div class="p-name">Founding member</div>
+        <div><span class="p-num">$19<small>/mo</small></span><span class="p-was">$39</span></div>
+        <div class="founding">25 founding seats · price locked for life</div>
+        <ul>
+          <li>500 scans per month</li>
+          <li>Sell: title + price + description, comp-audited</li>
+          <li>Buy: DEAL / FAIR / OVER / VERIFY on any ask</li>
+          <li>PSA pre-screen (beta)</li>
+          <li>Cancel anytime</li>
+        </ul>
+        <a class="btn btn-buy" href="https://buy.stripe.com/28E5kDcRw6mcbc0dFN1Fe00">$19/mo founding</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINE PRINT / FOOTER ============ -->
+<div class="fine">
+  <div class="wrap">
+    <p>Honest fine print: every number on this page comes from one real ListRight engine run on Jul 28 2026 (Charizard ex, Pokemon 151 #199/165 SIR) — 40 comps fetched, 1 lot and 4 graded slabs excluded, 35 kept, median $355, IQR $298–$395. These are engine outputs, not customer results, and no accuracy rate is claimed. The buyer verdict rows are illustrative asking prices scored against that run's median. Card names appear as text identification only; no card artwork is shown.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="logo" style="font-size:1rem"><span class="l">List</span><span class="r">Right</span></div>
+  <nav>
+    <a href="/terms.html">Terms</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/refunds.html">Refunds</a>
+  </nav>
+  <div class="noaff">Not affiliated with eBay, PSA, or Pokemon.</div>
+</footer>
+
 <script>
-// attribution: ?src=<channel> rides through to Stripe as client_reference_id,
-// so the webhook can say WHICH post/DM produced each paying customer.
+function stampIt(){
+  var raw=document.getElementById('askin').value.replace(/[^0-9.]/g,'');
+  var v=parseFloat(raw), out=document.getElementById('tryout'), M=355;
+  if(!v||v<=0){out.innerHTML='<span class="bstamp st-none" style="transform:none">No verdict<small>enter a price</small></span>';return;}
+  var d=(v-M)/M, pct=(d*100).toFixed(1); if(pct>0)pct='+'+pct;
+  var cls,txt;
+  if(d<=-0.45){cls='st-verify';txt='Verify';}
+  else if(d<=-0.10){cls='st-deal';txt='Deal';}
+  else if(d<0.10){cls='st-fair';txt='Fair';}
+  else{cls='st-over';txt='Over';}
+  out.innerHTML='<span class="bstamp '+cls+'" style="transform:rotate(-3deg)">'+txt+'<small>'+pct+'% vs $355</small></span>';
+}
+document.getElementById('askin').addEventListener('keydown',function(e){if(e.key==='Enter')stampIt();});
+</script>
+
+<script>
 (function(){
   try {
     var src = new URLSearchParams(location.search).get('src');
     if (!src) return;
     src = src.replace(/[^\w-]/g, '').slice(0, 60);
-    document.querySelectorAll('[data-payment-link]').forEach(function(a){
+    document.querySelectorAll('a[href*="buy.stripe.com"]').forEach(function(a){
       a.href += (a.href.indexOf('?') > -1 ? '&' : '?') + 'client_reference_id=' + src;
     });
   } catch(e){}
-})();
-
-(function(){
-  var r = document.documentElement, k = 'lr-theme', saved = null;
-  try { saved = localStorage.getItem(k); } catch(e){}
-  if (saved) r.setAttribute('data-theme', saved);
-  document.getElementById('theme').addEventListener('click', function(){
-    var dark = r.getAttribute('data-theme') === 'dark'
-      || (!r.getAttribute('data-theme') && matchMedia('(prefers-color-scheme:dark)').matches);
-    var next = dark ? 'light' : 'dark';
-    r.setAttribute('data-theme', next);
-    try { localStorage.setItem(k, next); } catch(e){}
-  });
 })();
 </script>
 </body>
