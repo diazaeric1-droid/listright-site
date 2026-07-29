@@ -439,6 +439,23 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
   .vsbar{grid-template-columns:1fr;gap:8px}
   .vsbar__vs{justify-self:center}
 }
+
+/* ============ Codex components: benefit grid + audit flow ============ */
+.benefitgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:26px 0}
+.benefit{background:var(--label);border:1px solid var(--rule);border-radius:var(--radius);padding:22px;position:relative}
+.benefit--lead{grid-column:1/-1;border-top:3px solid var(--cert-red);display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
+.benefit__no{display:block;font:600 10px/1 var(--font-display);text-transform:uppercase;letter-spacing:.14em;color:var(--cert-red);margin-bottom:10px}
+.benefit h3{font-size:22px;letter-spacing:.03em;margin-bottom:10px}
+.benefit p{margin:0;color:var(--ink-2);font:14px/1.55 var(--font-ui)}
+.benefit__money{font-family:var(--font-grade);font-size:clamp(38px,7vw,62px);line-height:.9;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
+.benefit__money small{display:block;margin-top:9px;font:600 10px/1.4 var(--font-display);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3)}
+.auditflow{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin:26px 0 10px}
+.auditflow div{background:var(--well);padding:15px 10px;text-align:center}
+.auditflow b{display:block;font-family:var(--font-grade);font-size:28px;line-height:1;color:var(--ink)}
+.auditflow span{display:block;margin-top:5px;font:600 9px/1.3 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3)}
+.benefitgrid{grid-template-columns:1fr}
+.benefit--lead{grid-column:auto;grid-template-columns:1fr}
+.auditflow{grid-template-columns:repeat(2,1fr)}
 </style>
 </head>
 <body>
@@ -542,6 +559,31 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
     <p class="prose">eBay and other card apps can identify a card and show you a price. ListRight is for
       the moment after that — deciding which sales actually belong in the number, and showing you the
       ones it threw out. Here is exactly where the others stop.</p>
+
+    <div class="benefitgrid">
+      <article class="benefit benefit--lead">
+        <div><span class="benefit__no">01 · Protect the price</span><h3>Separate evidence that should never be averaged</h3>
+          <p>Raw cards, graded slabs, and multi-card lots can share the same search results while belonging
+            to different markets. ListRight filters those populations before computing the median and tells
+            you what changed.</p></div>
+        <div class="benefit__money">$355<small>Raw median · this live run<br>$409.65 graded-slab median kept out</small></div>
+      </article>
+      <article class="benefit"><span class="benefit__no">02 · Save the review time</span><h3>One glance, with receipts</h3>
+        <p>See the median, IQR range, included sample size, confidence, recent sales, and filter notes in one result instead of rebuilding the search by hand.</p></article>
+      <article class="benefit"><span class="benefit__no">03 · Preserve the value tokens</span><h3>A title that reads like the hobby</h3>
+        <p>Grade, player, year, RC, 1st Bowman, and print-run tokens are prioritized inside eBay's 80-character limit, with a copy-ready description beside it.</p></article>
+      <article class="benefit"><span class="benefit__no">04 · Stay in control</span><h3>Evidence, not autopilot</h3>
+        <p>The number is an estimate, every output stays editable, and the beta does not publish without you. Thin or ambiguous evidence belongs in review.</p></article>
+      <article class="benefit"><span class="benefit__no">05 · Screen grading upside</span><h3>Measure before you submit</h3>
+        <p>The new PSA-aligned beta measures front/back centering after perspective correction, checks photo quality, and returns a candidate range only after your in-hand condition review.</p></article>
+    </div>
+
+    <div class="auditflow" aria-label="Live run audit flow">
+      <div><b>40</b><span>sales fetched</span></div><div><b>5</b><span>filtered with reasons</span></div>
+      <div><b>35</b><span>raw sales priced</span></div><div><b>$355</b><span>audited median</span></div>
+    </div>
+    <p class="fine">Live Charizard run shown above. One query demonstrates this workflow; it does not prove accuracy across every card or parallel.</p>
+
 
     <div class="scoreboard">
       <div class="score"><span class="n">$53</span><span class="l">Gap on one mispriced card</span></div>
@@ -749,14 +791,20 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
       publish to eBay or Whatnot yet; you copy the title and price into your listing. That's next.</p>
   </section>
 
-  <!-- ================== WAITLIST + PROBE ================== -->
-  <section id="waitlist">
-    <div class="eyebrow"><span class="no">§ 08</span><span class="nm">What's next</span></div>
-    <h2>Would you use this one?</h2>
-    <p class="prose" style="font-size:15px">Deciding what to build after launch. One candidate: measure centering,
-      flag corner and edge defects, then tell you whether paying to grade is worth it against what the graded
-      comps actually sell for. If you'd use it, say so — that's how I'll decide.</p>
-    <a class="btn btn--ghost" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20I%27d%20use%20%22should%20I%20grade%20this%3F%22&amp;body=I%27d%20use%20a%20%22should%20I%20grade%20this%22%20tool.%0A%0AWhat%20I%27d%20want%20it%20to%20tell%20me%3A%20%0A">I'd use "should I grade this?"</a>
+  <!-- ================== §08 GRADING PRE-SCREEN ================== -->
+  <section id="grading">
+    <div class="eyebrow"><span class="no">§ 08</span><span class="nm">PSA-aligned pre-screen · beta</span></div>
+    <h2>Measure the card.<br>Don't promise the grade.</h2>
+    <p class="prose">Upload the front and back in even light. ListRight perspective-corrects the card,
+      checks resolution, sharpness and glare, measures centering, and lets you adjust the detected border
+      guides. Then your in-hand corners, edges and surface check produces a conservative candidate range.</p>
+    <div class="two" style="margin:24px 0">
+      <div><h3>What the camera can support</h3><p class="prose" style="font-size:15px">Front/back centering ratios, photo-quality gates, and visible-condition prompts tied to PSA's published high-grade guidance.</p></div>
+      <div><h3>What it cannot certify</h3><p class="prose" style="font-size:15px">Authenticity, alteration, microscopic surface defects, original gloss, every edge or corner flaw, eye appeal, or the grade PSA will assign in hand.</p></div>
+    </div>
+    <p class="prose" style="font-size:17px"><strong>The result is a range such as “PSA 9–10 candidate,” never a guaranteed PSA 10.</strong></p>
+    <a class="btn btn--ghost" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20PSA-aligned%20pre-screen%20beta&amp;body=Hi%20%E2%80%94%20I%27d%20like%20to%20test%20the%20PSA-aligned%20pre-screen%20on%205%20cards.%0A">Test the pre-screen — in the 5 free cards</a>
+    <p class="fine" style="margin-top:14px">Method references <a href="https://www.psacard.com/gradingstandards" target="_blank" rel="noopener">PSA's published grading standards</a>. Not affiliated with or endorsed by PSA.</p>
   </section>
 
   <footer>
