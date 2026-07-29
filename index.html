@@ -490,6 +490,34 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
   .results .rrow:nth-child(5){animation-delay:.45s}.results .rrow:nth-child(6){animation-delay:.6s}
 }
 @media (max-width:720px){.results{grid-template-columns:1fr}}
+
+/* ================= HERO SIDE — card + market ladder, upper right ================= */
+.herogrid{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:start}
+.herogrid h1{font-size:clamp(30px,4.6vw,46px)}
+.heroside{display:flex;flex-direction:column;align-items:center;gap:18px;padding-top:6px}
+.heroside .card3d{width:min(225px,60vw);margin-top:34px}
+.heroside .c3-verdict{top:-32px}
+.heroside .c3-verdict .cert__l1{font-size:14px}
+.heroside .c3-verdict .cert__l3{font-size:9px}
+.mkt{width:100%;max-width:320px;background:var(--label);border:1px solid var(--rule-strong);
+  border-radius:var(--radius);box-shadow:var(--slab-shadow);overflow:hidden}
+.mkt__head{padding:10px 13px;font:600 10px/1 var(--font-display);text-transform:uppercase;
+  letter-spacing:.14em;color:var(--ink-2);background:var(--well);border-bottom:1px solid var(--rule)}
+.mkt__row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:baseline;
+  padding:9px 13px;border-bottom:1px solid var(--rule)}
+.mkt__row span{font:600 11px/1 var(--font-display);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-2)}
+.mkt__row b{font-family:var(--font-grade);font-size:19px;letter-spacing:0;color:var(--ink);font-variant-numeric:tabular-nums}
+.mkt__row i{font:9.5px/1 var(--font-mono);font-style:normal;color:var(--ink-3);min-width:52px;text-align:right}
+.mkt__row--top{box-shadow:inset 2px 0 0 var(--cert-red)}
+.mkt__row--top b{color:var(--cert-red);font-size:22px}
+.mkt__foot{padding:9px 13px;font:600 9.5px/1.5 var(--font-display);text-transform:uppercase;
+  letter-spacing:.1em;color:var(--ink-3)}
+.mkt__foot a{color:var(--link);text-decoration:none}
+@media (max-width:860px){
+  .herogrid{grid-template-columns:1fr}
+  .herogrid h1{font-size:clamp(34px,7vw,64px)}
+  .heroside{padding-top:8px}
+}
 </style>
 </head>
 <body>
@@ -505,6 +533,8 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
 
   <!-- ================== HERO — 3D GRADING SCENE ================== -->
   <section style="border-top:0;padding-top:14px">
+    <div class="herogrid">
+    <div>
     <p class="fine" style="margin:0 0 10px;color:var(--cert-red)">LIVE RUN · JUL 28 2026 · CHARIZARD EX 151 · #199/165 · RAW</p>
     <h1>Price the exact card.<br>Not the look-alikes.</h1>
     <p class="prose">Photograph a card. ListRight writes a copy-ready eBay title, pulls real
@@ -521,6 +551,34 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
     </div>
     <p class="fine" style="margin:0 0 4px">$19/mo founding · 25 seats · cancel anytime · the email opens your 5 free runs the same day</p>
     <p class="fine" style="margin:0">A free scanner can draft a listing. The audit trail behind the price is what you pay for.</p>
+    </div>
+    <aside class="heroside" aria-hidden="true">
+      <div class="card3d">
+        <div class="card3d__face">
+          <div class="c3-photo"></div>
+          <div class="c3-plate"><span class="c3-name" style="font-size:16px">Special Illustration</span><span class="c3-sub">Full Art &middot; Holofoil</span></div>
+        </div>
+        <div class="c3-verdict cert">
+          <div class="cert__id">
+            <div class="cert__l1">Charizard ex</div>
+            <div class="cert__l3">151 &middot; #199/165 SIR</div>
+          </div>
+          <div class="cert__grade">
+            <span class="cert__word">Raw</span>
+            <span class="cert__num" style="font-size:24px;letter-spacing:0">$355</span>
+          </div>
+        </div>
+      </div>
+      <div class="mkt">
+        <div class="mkt__head">The market &middot; this exact card</div>
+        <div class="mkt__row"><span>Raw</span><b>$355</b><i>35 sales</i></div>
+        <div class="mkt__row"><span>PSA 8</span><b>$360</b><i>40 sales</i></div>
+        <div class="mkt__row"><span>PSA 9</span><b>$405</b><i>37 sales</i></div>
+        <div class="mkt__row mkt__row--top"><span>PSA 10</span><b>$1,525</b><i>38 sales</i></div>
+        <div class="mkt__foot">$1,170 raw&rarr;10 gap &middot; <a href="#grading">will yours grade? &darr;</a></div>
+      </div>
+    </aside>
+    </div>
 
     <!-- the results page IS the hero: same engine, both directions -->
     <div class="results" aria-hidden="true">
@@ -566,7 +624,9 @@ footer p{font:italic 13px/1.6 var(--font-doc);color:var(--ink-3);max-width:70ch}
     <p class="fine" style="margin:14px 0 24px">Totals are real engine output, live run Jul 28 2026 — query
       &ldquo;charizard ex 151 199/165&rdquo;: 40 comps fetched, 1 multi-card lot and 4 graded slabs excluded
       (graded median $409.65), 35 raw sales kept, median $355, confidence HIGH. Individual rows and the
-      buyer view are illustrative, computed against that run&rsquo;s median. Not a customer result.</p>
+      buyer view are illustrative, computed against that run&rsquo;s median. The market ladder is four
+      further live runs of the same engine (raw n=35, PSA 8 n=40, PSA 9 n=37, PSA 10 n=38 — every one
+      confidence HIGH). Not a customer result.</p>
 
     <div class="only" style="margin-top:30px">
       <h3>Three things, every card</h3>
