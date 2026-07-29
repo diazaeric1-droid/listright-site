@@ -203,6 +203,46 @@
   footer a{color:var(--gray);font-size:.8rem;text-decoration:none}
   footer a:hover{color:var(--paper)}
   footer .noaff{font-size:.72rem;color:var(--gray)}
+
+/* ===== FULL DECISION SHOWCASE ===== */
+.showcase{background:#0b0b0e;padding:72px 24px;border-top:1px solid var(--line)}
+.sc-wrap{max-width:1060px;margin:0 auto}
+.sc-card{background:#141418;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 30px 60px -30px #000;margin-top:30px}
+.sc-top{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;padding:18px 22px;background:linear-gradient(180deg,#1b1b22,#141418);border-bottom:1px solid var(--line)}
+.sc-art{width:56px;height:78px;border-radius:6px;background:radial-gradient(120% 95% at 32% 22%,#E8734E,#8A2F1E 55%,#140C08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.sc-id b{display:block;font:800 20px/1 var(--disp);letter-spacing:.02em;color:var(--paper)}
+.sc-id span{display:block;margin-top:5px;font:700 11px/1.3 var(--disp);letter-spacing:.1em;text-transform:uppercase;color:var(--gray)}
+.sc-conf{text-align:right}
+.sc-conf b{font:800 12px/1 var(--disp);letter-spacing:.1em;color:var(--buy)}
+.sc-conf span{display:block;margin-top:4px;font:11px/1 var(--mono);color:var(--gray)}
+.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+.sc-cell{background:#141418;padding:18px 22px}
+.sc-cell h4{font:800 10px/1 var(--disp);letter-spacing:.16em;text-transform:uppercase;color:var(--gray);margin:0 0 12px}
+.sc-title{font:14px/1.5 var(--mono);color:var(--paper);word-break:break-word}
+.sc-title b{color:var(--amber)}
+.sc-chars{margin-top:8px;font:11px/1 var(--mono);color:var(--gray)}
+.sc-price{font:800 40px/1 var(--disp);color:var(--paper);letter-spacing:-.01em}
+.sc-price small{font:700 12px/1 var(--disp);letter-spacing:.08em;color:var(--gray);margin-left:8px}
+.sc-comp{display:grid;grid-template-columns:10px 54px 1fr auto;gap:10px;align-items:center;padding:6px 0;font:12px/1.4 var(--body);color:#cfcfd6;border-top:1px solid var(--line)}
+.sc-comp:first-of-type{border-top:0}
+.sc-comp .cp{font-family:var(--mono);font-weight:700;color:var(--paper)}
+.sc-comp .cv{font:800 9px/1 var(--disp);letter-spacing:.1em}
+.dot{width:9px;height:9px;border-radius:50%}
+.dg{background:var(--buy)} .dr{background:var(--sell)} .dy{background:var(--amber)}
+.cg{color:var(--buy)} .cr{color:var(--sell)} .cy{color:var(--amber)}
+.sc-verdict{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:4px;font:800 13px/1 var(--disp);letter-spacing:.06em}
+.sc-buyrow{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font:12px/1.3 var(--body);color:#cfcfd6}
+.sc-buyrow:first-of-type{border-top:0}
+.sc-buyrow .ba{font-family:var(--mono);font-weight:700;color:var(--paper)}
+.sc-buyrow .bv{font:800 9px/1 var(--disp);letter-spacing:.1em;justify-self:end}
+.sc-ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-items:end;margin-top:6px}
+.sc-rung{text-align:center}
+.sc-rbar{border-radius:4px 4px 0 0;margin-top:6px}
+.sc-rung b{font:800 15px/1 var(--disp);color:var(--paper)}
+.sc-rung span{display:block;margin-top:5px;font:700 9px/1 var(--disp);letter-spacing:.08em;text-transform:uppercase;color:var(--gray)}
+.sc-foot{padding:14px 22px;border-top:1px solid var(--line);font:11px/1.6 var(--mono);color:var(--gray)}
+.sc-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+@media(max-width:720px){.sc-grid{grid-template-columns:1fr}.sc-top{grid-template-columns:auto 1fr}.sc-conf{grid-column:1/-1;text-align:left}}
 </style>
 <meta name="description" content="Make money on both sides of the trade. ListRight prices the exact card off real eBay sold comps — every comp kept or rejected with the reason — and scores any asking price DEAL / FAIR / OVER before you bid.">
 <meta property="og:title" content="ListRight — sell it right, buy it right.">
@@ -445,6 +485,67 @@
       </table>
     </div>
     <p style="font:12px/1.6 var(--mono);color:var(--gray);margin:14px 0 0">&ldquo;Most card apps&rdquo; = the scan-and-price category as verified in a ~35-tool teardown, Jul 2026. No single competitor is claimed to fail every row.</p>
+  </div>
+</section>
+
+
+<section class="showcase" id="decision">
+  <div class="sc-wrap">
+    <div class="sec-label" style="color:var(--amber)">One card, every signal</div>
+    <h2>Everything you need to make the call.</h2>
+    <p class="lede">This is one real card through ListRight — identity, the eBay title, the audited price with its receipts, the buy verdict, and the grading ladder. Every number is a live Jul 28 2026 engine run.</p>
+
+    <div class="sc-card" aria-hidden="true">
+      <div class="sc-top">
+        <div class="sc-art"></div>
+        <div class="sc-id"><b>Charizard ex &mdash; 151</b><span>#199/165 SIR &middot; Scarlet &amp; Violet &middot; raw</span></div>
+        <div class="sc-conf"><b>CONFIDENCE HIGH</b><span>40 comps &middot; 35 used</span></div>
+      </div>
+
+      <div class="sc-grid">
+        <div class="sc-cell">
+          <h4>1 &middot; The eBay title</h4>
+          <div class="sc-title">2023 Pokemon SV 151 Charizard ex <b>#199/165</b> <b>SIR</b> Special Illustration Rare</div>
+          <div class="sc-chars">73 / 80 chars &middot; value tokens first &middot; ready to paste</div>
+        </div>
+
+        <div class="sc-cell">
+          <h4>2 &middot; The price &mdash; with receipts</h4>
+          <div class="sc-price">$355<small>RAW MEDIAN &middot; IQR $298&ndash;$395</small></div>
+          <div class="sc-comp"><span class="dot dg"></span><span class="cp">$360</span><span>Raw single &middot; Jul 24</span><span class="cv cg">INCLUDED</span></div>
+          <div class="sc-comp"><span class="dot dg"></span><span class="cp">$349</span><span>Raw single &middot; Jul 21</span><span class="cv cg">INCLUDED</span></div>
+          <div class="sc-comp"><span class="dot dr"></span><span class="cp">$410</span><span>PSA 10 slab &mdash; graded &ne; raw</span><span class="cv cr">EXCLUDED</span></div>
+          <div class="sc-comp"><span class="dot dr"></span><span class="cp">$88</span><span>Multi-card lot &mdash; not a single</span><span class="cv cr">EXCLUDED</span></div>
+        </div>
+
+        <div class="sc-cell">
+          <h4>3 &middot; Buying? Score the ask</h4>
+          <div style="margin-bottom:10px"><span class="sc-verdict" style="background:rgba(47,224,122,.14);color:var(--buy)">&#9679; DEAL</span> <span style="font:12px/1 var(--mono);color:var(--gray)">an ask of $318 is 10% under market</span></div>
+          <div class="sc-buyrow"><span class="ba">$318</span><span>10% under the audited market</span><span class="bv cg">DEAL</span></div>
+          <div class="sc-buyrow"><span class="ba">$359</span><span>right at market &mdash; fair either way</span><span class="bv cy">FAIR</span></div>
+          <div class="sc-buyrow"><span class="ba">$449</span><span>26% over &mdash; you&rsquo;re overpaying</span><span class="bv cr">OVER</span></div>
+          <div class="sc-buyrow"><span class="ba">$150</span><span>too good &mdash; check the photos</span><span class="bv cr">VERIFY</span></div>
+        </div>
+
+        <div class="sc-cell">
+          <h4>4 &middot; Should you grade it?</h4>
+          <div class="sc-ladder">
+            <div class="sc-rung"><b>$355</b><div class="sc-rbar" style="height:26px;background:var(--gray)"></div><span>Raw</span></div>
+            <div class="sc-rung"><b>$360</b><div class="sc-rbar" style="height:28px;background:#6b6b74"></div><span>PSA 8</span></div>
+            <div class="sc-rung"><b>$405</b><div class="sc-rbar" style="height:36px;background:var(--amber)"></div><span>PSA 9</span></div>
+            <div class="sc-rung"><b>$1,525</b><div class="sc-rbar" style="height:96px;background:var(--buy)"></div><span>PSA 10</span></div>
+          </div>
+          <div style="margin-top:12px;font:12px/1.5 var(--body);color:#cfcfd6"><b style="color:var(--buy)">$1,170</b> raw&rarr;PSA 10 gap. The pre-screen measures centering and returns a candidate range &mdash; never a promised grade.</div>
+        </div>
+      </div>
+
+      <div class="sc-foot">Real engine output, live runs Jul 28 2026 &mdash; raw n=35, PSA 8 n=40, PSA 9 n=37, PSA 10 n=38, every one confidence HIGH. Buyer rows illustrative vs the $355 median. Title shows the token rules; not a customer result.</div>
+    </div>
+
+    <div class="sc-cta">
+      <a class="btn btn-sell" href="mailto:localcardhouse@gmail.com?subject=ListRight%20free%205%20cards&amp;body=Hi%20%E2%80%94%20I%27d%20like%20to%20run%205%20cards%20free.%0A">Run 5 cards free &mdash; see your own</a>
+      <a class="btn btn-buy" href="https://buy.stripe.com/28E5kDcRw6mcbc0dFN1Fe00">$19/mo founding &mdash; 25 seats</a>
+    </div>
   </div>
 </section>
 
