@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ListRight — Make money on both sides of the trade</title>
+<title>ListRight — Stop pricing off the wrong number</title>
 <style>
   :root{
     --ink:#0b0b0e;
@@ -43,26 +43,8 @@
   .btn-ghost{border-color:var(--paper);color:var(--paper);background:transparent}
   .btn-sm{padding:8px 16px;font-size:.85rem}
 
-  /* ---------- hero split ---------- */
-  .hero{position:relative;display:grid;grid-template-columns:1fr 1fr;min-height:78vh}
-  .half{padding:56px 32px 64px;display:flex;flex-direction:column;justify-content:center;gap:22px;position:relative;overflow:clip}
-  .half-sell{background:linear-gradient(160deg,#1c0509 0%,#2a070d 55%,#12030a 100%);border-right:1px solid rgba(255,59,78,.25)}
-  .half-buy{background:linear-gradient(200deg,#03180d 0%,#062b16 55%,#02120a 100%)}
-  .half::before{content:"";position:absolute;inset:auto -20% -35% auto;width:70%;aspect-ratio:1;border-radius:50%;filter:blur(60px);opacity:.25;pointer-events:none}
-  .half-sell::before{background:var(--sell)}
-  .half-buy::before{background:var(--buy);inset:auto auto -35% -20%}
+
   .kicker{font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.28em;font-size:.8rem}
-  .half-sell .kicker{color:var(--sell)}
-  .half-buy .kicker{color:var(--buy)}
-  .hero h1{font-size:clamp(2.6rem,6.4vw,5rem)}
-  .hero h1 .accent-sell{color:var(--sell)}
-  .hero h1 .accent-buy{color:var(--buy)}
-  .hero .sub{color:#d8d4ca;font-size:.98rem;max-width:34ch}
-  .flow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-  .flow .arrow{font-family:var(--disp);font-weight:800;font-size:1.6rem;color:var(--gray)}
-  .cardshape{width:86px;height:120px;border-radius:9px;background:linear-gradient(150deg,#3a3a46,#1c1c24 60%);border:2px solid #55555f;position:relative;flex:none;box-shadow:0 10px 24px rgba(0,0,0,.5)}
-  .cardshape::before{content:"";position:absolute;inset:9px 9px 38px;border-radius:5px;background:linear-gradient(135deg,#6b6b78,#2e2e38)}
-  .cardshape::after{content:"";position:absolute;left:9px;right:9px;bottom:10px;height:20px;border-radius:4px;background:#2e2e38}
   .ticket{background:var(--paper);color:var(--ink);border-radius:8px;padding:12px 18px;flex:none;box-shadow:0 10px 24px rgba(0,0,0,.5)}
   .ticket .t-label{font-family:var(--disp);text-transform:uppercase;font-weight:800;font-size:.68rem;letter-spacing:.18em;color:#666}
   .ticket .t-num{font-family:var(--disp);font-weight:800;font-size:2.6rem;line-height:1}
@@ -75,26 +57,46 @@
   .st-verify{color:var(--amber)}
   .st-none{color:var(--gray)}
 
-  /* seam medallion */
-  .seam{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:10;width:132px;height:132px;border-radius:50%;background:var(--ink);border:3px solid var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 0 0 8px var(--ink),0 18px 40px rgba(0,0,0,.6)}
-  .seam .dollar{font-family:var(--disp);font-weight:800;font-size:3.2rem;line-height:1;background:linear-gradient(90deg,var(--sell) 48%,var(--buy) 52%);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .seam .both{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:.62rem;letter-spacing:.3em;color:var(--gray)}
-
-  @media(max-width:760px){
-    .hero{display:flex;flex-direction:column;min-height:0}
-    .half{padding:44px 20px 52px}
-    .half-sell{order:1;border-right:none;border-bottom:1px solid rgba(255,59,78,.25)}
-    .seam{order:2;position:static;transform:none;margin:-40px auto;z-index:10;width:112px;height:112px}
-    .half-buy{order:3;padding-top:64px}
-    .hero h1{font-size:clamp(2.6rem,11vw,4rem)}
-  }
-
   /* ---------- marquee ---------- */
   .marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:clip;background:var(--ink2);padding:12px 0;white-space:nowrap}
   .marquee-track{display:inline-block;animation:slide 26s linear infinite;font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.14em;font-size:1rem;color:var(--gray)}
   .marquee-track b{color:var(--paper)}
   @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
   @media(prefers-reduced-motion:reduce){.marquee-track{animation:none}}
+
+
+  /* ---------- delta hero ---------- */
+  .dhero{position:relative;background:radial-gradient(130% 110% at 50% 0%,#16161f 0%,var(--ink) 62%);padding:60px 20px 68px;border-bottom:1px solid var(--line);text-align:center;overflow:clip}
+  .dhero::before{content:"";position:absolute;inset:auto -12% -46% -12%;height:70%;background:radial-gradient(50% 100% at 30% 100%,rgba(255,59,78,.16),transparent 70%),radial-gradient(50% 100% at 70% 100%,rgba(47,224,122,.14),transparent 70%);pointer-events:none}
+  .dhero .kicker{color:var(--amber)}
+  .dhero h1{font-size:clamp(2.5rem,6.4vw,4.6rem);margin:14px auto 12px;max-width:15ch}
+  .dhero .sub{color:#d8d4ca;font-size:1rem;max-width:56ch;margin:0 auto}
+  .dhero .sub b{color:var(--paper)}
+  .delta{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;margin:36px auto 14px;position:relative}
+  .delta .ticket{text-align:left;min-width:218px}
+  .t-wrong{outline:2px solid rgba(255,59,78,.55);outline-offset:2px}
+  .t-wrong .t-label{color:var(--sell-deep)}
+  .t-wrong .t-num{color:#3c3c44;text-decoration:line-through;text-decoration-thickness:5px;text-decoration-color:rgba(255,59,78,.8)}
+  .t-right{outline:2px solid rgba(47,224,122,.6);outline-offset:2px;box-shadow:0 14px 34px rgba(47,224,122,.14)}
+  .t-right .t-label{color:var(--buy-deep)}
+  .dstamp{font-family:var(--disp);font-weight:800;text-transform:uppercase;border:4px solid var(--amber);color:var(--amber);border-radius:10px;padding:10px 20px;font-size:2.3rem;line-height:1;transform:rotate(-6deg);flex:none}
+  .dstamp small{display:block;font-size:.72rem;letter-spacing:.14em}
+  .dproof{font-family:var(--mono);font-size:.72rem;color:var(--gray);margin:6px auto 26px}
+  .dcta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  @media(max-width:960px){.delta{flex-direction:column;gap:12px}.dstamp{transform:rotate(-4deg) scale(.92);margin:2px 0}.delta .ticket{min-width:0;width:min(320px,100%)}}
+
+  /* ---------- money leaks ---------- */
+  .leaks{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+  @media(max-width:820px){.leaks{grid-template-columns:1fr}}
+  .leak{border:1px solid var(--line);border-radius:10px;padding:22px;background:var(--ink2);display:flex;flex-direction:column;gap:9px}
+  .leak .l-tag{font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.22em;font-size:.72rem}
+  .leak h3{font-family:var(--disp);text-transform:uppercase;font-weight:800;font-size:1.3rem;line-height:1}
+  .leak p{font-size:.88rem;color:#c9c5bb;flex:1}
+  .leak .l-num{font-family:var(--disp);font-weight:800;font-size:2.5rem;line-height:1}
+  .leak .l-note{font-family:var(--mono);font-size:.68rem;color:var(--gray)}
+  .lk-sell .l-tag,.lk-sell .l-num{color:var(--sell)}
+  .lk-buy .l-tag,.lk-buy .l-num{color:var(--buy)}
+  .lk-grade .l-tag,.lk-grade .l-num{color:var(--amber)}
 
   /* ---------- sections ---------- */
   section{padding:72px 0;border-bottom:1px solid var(--line)}
@@ -229,7 +231,7 @@
 .sc-comp .cv{font:800 9px/1 var(--disp);letter-spacing:.1em}
 .dot{width:9px;height:9px;border-radius:50%}
 .dg{background:var(--buy)} .dr{background:var(--sell)} .dy{background:var(--amber)}
-.cg{color:var(--buy)} .cr{color:var(--sell)} .cy{color:var(--amber)}
+.cg{color:var(--buy)} .cr{color:var(--sell)} .cy{color:var(--amber)} .cw{color:var(--paper)}
 .sc-verdict{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:4px;font:800 13px/1 var(--disp);letter-spacing:.06em}
 .sc-buyrow{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font:12px/1.3 var(--body);color:#cfcfd6}
 .sc-buyrow:first-of-type{border-top:0}
@@ -244,9 +246,9 @@
 .sc-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
 @media(max-width:720px){.sc-grid{grid-template-columns:1fr}.sc-top{grid-template-columns:auto 1fr}.sc-conf{grid-column:1/-1;text-align:left}}
 </style>
-<meta name="description" content="Make money on both sides of the trade. ListRight prices the exact card off real eBay sold comps — every comp kept or rejected with the reason — and scores any asking price DEAL / FAIR / OVER before you bid.">
-<meta property="og:title" content="ListRight — sell it right, buy it right.">
-<meta property="og:description" content="Live run: 40 comps audited, 5 thrown out with reasons, median $355 confidence HIGH. Every price comes with the receipt — both directions.">
+<meta name="description" content="Slab sales said $410; the exact raw card sells for $355. ListRight prices the exact card off real eBay solds — every comp kept or thrown out with the reason. Best range to list, best price to buy.">
+<meta property="og:title" content="ListRight — the difference, in dollars.">
+<meta property="og:description" content="Slabs said $410; the exact raw card is $355 — a $54 gap caught on one live run. Every price comes with the receipt, both directions.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://listrightapp.com/">
 <link rel="canonical" href="https://listrightapp.com/">
@@ -256,52 +258,73 @@
 <header class="topbar">
   <div class="logo"><span class="l">List</span><span class="r">Right</span></div>
   <div class="tag">Price the exact card — not the look-alikes.</div>
-  <a class="btn btn-ghost btn-sm" href="mailto:localcardhouse@gmail.com?subject=ListRight%20free%205">Run 5 cards free</a>
+  <a class="btn btn-ghost btn-sm" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20run%20my%205%20free%20cards&body=Attach%20photos%20of%20up%20to%205%20cards%20(front%2C%20plus%20back%20if%20graded)%20and%20hit%20send%20%E2%80%94%20the%20full%20audit%20comes%20back%3A%20title%2C%20price%2C%20range%2C%20receipts.">Run 5 cards free</a>
 </header>
 
-<!-- ============ HERO: THE SPLIT ============ -->
-<div class="hero">
-  <div class="half half-sell">
-    <div class="kicker">Side A · Sell</div>
-    <h1 class="disp">Sell it<br><span class="accent-sell">right.</span></h1>
-    <div class="flow">
-      <div class="cardshape" aria-label="abstract trading card"></div>
-      <div class="arrow">→</div>
-      <div class="ticket">
-        <div class="t-label">Audited price</div>
-        <div class="t-num">$355</div>
-        <div class="t-sub">median of 35 kept comps · HIGH</div>
-      </div>
-    </div>
-    <p class="sub">Photograph a card. Get an 80-char eBay title, a price from real eBay sold comps, and the audit that proves it.</p>
-    <div><a class="btn btn-sell" href="mailto:localcardhouse@gmail.com?subject=ListRight%20free%205">Run 5 cards free</a></div>
-  </div>
+<!-- ============ HERO: THE DELTA ============ -->
+<div class="dhero">
+  <div class="kicker">Card pricing &mdash; the difference, in dollars</div>
+  <h1 class="disp">Stop pricing off<br>the wrong number.</h1>
+  <p class="sub">Scanner apps and price guides quote slab and look-alike sales as if they were your card&rsquo;s market. ListRight prices the <b>exact card</b> off real eBay solds — best range to list, best price to buy — and shows every receipt.</p>
 
-  <div class="seam" aria-hidden="true">
-    <div class="dollar">$</div>
-    <div class="both">Both sides</div>
-  </div>
-
-  <div class="half half-buy">
-    <div class="kicker">Side B · Buy</div>
-    <h1 class="disp">Buy it<br><span class="accent-buy">right.</span></h1>
-    <div class="flow">
-      <div class="ticket">
-        <div class="t-label">Asking price</div>
-        <div class="t-num">$318</div>
-        <div class="t-sub">vs audited median $355</div>
-      </div>
-      <div class="arrow">→</div>
-      <div class="stamp st-deal">Deal<small>−10.4%</small></div>
+  <div class="delta" aria-label="the pricing mistake, caught">
+    <div class="ticket t-wrong">
+      <div class="t-label">The slab number</div>
+      <div class="t-num">$410</div>
+      <div class="t-sub">what the graded slabs sold for &mdash; a different market</div>
     </div>
-    <p class="sub">Paste any asking price. Get a verdict against the audited market — DEAL, FAIR, OVER, or VERIFY when it's too good.</p>
-    <div><a class="btn btn-buy" href="https://buy.stripe.com/28E5kDcRw6mcbc0dFN1Fe00">$19/mo founding</a></div>
+    <div class="dstamp">−$54<small>caught on one card</small></div>
+    <div class="ticket t-right">
+      <div class="t-label">The exact-card number</div>
+      <div class="t-num">$355</div>
+      <div class="t-sub">35 raw sales · IQR $298–$395 · HIGH</div>
+    </div>
   </div>
+  <div class="dproof">One live engine run, Jul 28 2026 &mdash; graded median $409.65 vs raw median $355. 40 comps, 5 thrown out with reasons. Receipts below&nbsp;&darr;</div>
+
+  <div class="dcta">
+    <a class="btn btn-sell" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20run%20my%205%20free%20cards&body=Attach%20photos%20of%20up%20to%205%20cards%20(front%2C%20plus%20back%20if%20graded)%20and%20hit%20send%20%E2%80%94%20the%20full%20audit%20comes%20back%3A%20title%2C%20price%2C%20range%2C%20receipts.">Run 5 cards free</a>
+    <a class="btn btn-buy" href="https://buy.stripe.com/28E5kDcRw6mcbc0dFN1Fe00">$19/mo founding</a>
+  </div>
+  <div class="dproof" style="margin:14px auto 0">Free tier opens an email &mdash; attach card photos, the full audit comes back to you.</div>
 </div>
 
 <div class="marquee" aria-hidden="true">
-  <span class="marquee-track">The scanner is free. <b>The judgment is the product.</b> &nbsp;·&nbsp; Make money on <b>both sides</b> of the trade. &nbsp;·&nbsp; Price the <b>exact card</b> — not the look-alikes. &nbsp;·&nbsp; The scanner is free. <b>The judgment is the product.</b> &nbsp;·&nbsp; Make money on <b>both sides</b> of the trade. &nbsp;·&nbsp; Price the <b>exact card</b> — not the look-alikes. &nbsp;·&nbsp; </span>
+  <span class="marquee-track">Best <b>range</b> to list. Best <b>price</b> to buy. &nbsp;·&nbsp; <b>$54</b> caught on one card. &nbsp;·&nbsp; The scan was never the hard part &mdash; <b>the judgment is</b>. &nbsp;·&nbsp; Best <b>range</b> to list. Best <b>price</b> to buy. &nbsp;·&nbsp; <b>$54</b> caught on one card. &nbsp;·&nbsp; The scan was never the hard part &mdash; <b>the judgment is</b>. &nbsp;·&nbsp; </span>
 </div>
+
+
+<!-- ============ WHERE THE MONEY LEAKS ============ -->
+<section>
+  <div class="wrap">
+    <div class="sec-label" style="color:var(--amber)">Where the money leaks</div>
+    <h2>Three leaks.<br>One audit plugs them.</h2>
+    <p class="lede">Every mispriced card costs you on one side of the trade or the other. These are the three leaks — with the dollars from the run, and one worked example, on this page.</p>
+    <div class="leaks">
+      <div class="leak lk-sell">
+        <div class="l-tag">Leak 1 · Selling</div>
+        <h3>Listing off the wrong market</h3>
+        <p>Slabs in the pool said $410; the raw market clears at $355. Overprice and the card sits for weeks. Underprice and it's sniped in minutes. The audit hands you a range instead: <b style="color:var(--paper)">list $355, hold the line at $298</b>.</p>
+        <div class="l-num">−$54</div>
+        <div class="l-note">the graded-vs-raw gap on this run</div>
+      </div>
+      <div class="leak lk-buy">
+        <div class="l-tag">Leak 2 · Buying</div>
+        <h3>Paying the ask</h3>
+        <p>A $449 ask against an audited $355 market is a 26% overpay wearing a fair-price costume. The stamp says <b style="color:var(--paper)">OVER</b> before your money moves — and DEAL when $318 shows up.</p>
+        <div class="l-num">−$94</div>
+        <div class="l-note">on an illustrative $449 ask vs the audited $355</div>
+      </div>
+      <div class="leak lk-grade">
+        <div class="l-tag">Leak 3 · Grading</div>
+        <h3>Grading blind</h3>
+        <p>On this card a PSA 8 was worth $5 more than raw — the fee outruns the upgrade. A true PSA 10 candidate is a different story. The pre-screen filters which fee is worth paying.</p>
+        <div class="l-num">+$1,170</div>
+        <div class="l-note">raw&rarr;PSA 10 gap when it IS the right card</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ============ HOW IT WORKS ============ -->
 <section>
@@ -333,7 +356,7 @@
   <div class="wrap">
     <div class="sec-label">Side A · Sell</div>
     <h2>One photo in.<br>A defensible price out.</h2>
-    <p class="lede">Live engine run, Jul 28 2026 — Charizard ex, Pokemon 151 #199/165 SIR. Here's the audit, receipt-style. Every exclusion is counted, with its reason in the audit notes.</p>
+    <p class="lede">Live engine run, Jul 28 2026 — Charizard ex, Pokemon 151 #199/165 SIR. Here's the audit, receipt-style. Every exclusion is counted, with its reason in the audit notes — and the output is a range you can defend: list at $355, hold the line at $298.</p>
 
     <div class="split2">
       <div class="receipt">
@@ -354,14 +377,14 @@
       <div>
         <div class="titlecard">
           <div class="tc-lab">Generated listing — ready to paste</div>
-          <div class="tc-title">Pokemon 151 Charizard ex #199/165 SIR Special Illustration Rare NM</div>
-          <div class="tc-meta">80-char budget · hobby tokens ordered by value · price $355 · description included</div>
+          <div class="tc-title">2023 Pokemon SV 151 Charizard ex #199/165 SIR Special Illustration Rare</div>
+          <div class="tc-meta">71 / 80 chars · value tokens first · price $355 · description included</div>
         </div>
         <div class="callout">
-          <div class="c-num">$54</div>
-          <p>The pricing error avoided on this one run by refusing to blend graded-slab comps into a raw price. Tools that average everything hand that money to the other side of the trade.</p>
+          <div class="c-num">$298</div>
+          <p>The floor. A range beats a point estimate the moment a lowball offer lands &mdash; $298 is where this card&rsquo;s real market says walk away. Point-price tools leave you negotiating blind.</p>
         </div>
-        <div style="margin-top:18px"><a class="btn btn-sell" href="mailto:localcardhouse@gmail.com?subject=ListRight%20free%205">Run 5 cards free</a></div>
+        <div style="margin-top:18px"><a class="btn btn-sell" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20run%20my%205%20free%20cards&body=Attach%20photos%20of%20up%20to%205%20cards%20(front%2C%20plus%20back%20if%20graded)%20and%20hit%20send%20%E2%80%94%20the%20full%20audit%20comes%20back%3A%20title%2C%20price%2C%20range%2C%20receipts.">Run 5 cards free</a></div>
       </div>
     </div>
   </div>
@@ -408,6 +431,10 @@
       <button class="btn btn-buy btn-sm" onclick="stampIt()" type="button">Stamp it</button>
       <div id="tryout"></div>
       <div class="trynote">Illustrative demo scored against this run's $355 raw median (Jul 28 2026) — not a live quote.</div>
+    </div>
+    <div style="margin-top:22px;display:flex;gap:12px;flex-wrap:wrap">
+      <a class="btn btn-buy" href="https://buy.stripe.com/28E5kDcRw6mcbc0dFN1Fe00">$19/mo founding &mdash; stamp real asks</a>
+      <a class="btn btn-ghost" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20run%20my%205%20free%20cards&body=Attach%20photos%20of%20up%20to%205%20cards%20(front%2C%20plus%20back%20if%20graded)%20and%20hit%20send%20%E2%80%94%20the%20full%20audit%20comes%20back%3A%20title%2C%20price%2C%20range%2C%20receipts.">Run 5 cards free</a>
     </div>
   </div>
 </section>
@@ -485,75 +512,19 @@
       </table>
     </div>
     <p style="font:12px/1.6 var(--mono);color:var(--gray);margin:14px 0 0">&ldquo;Most card apps&rdquo; = the scan-and-price category as verified in a ~35-tool teardown, Jul 2026. No single competitor is claimed to fail every row.</p>
+    <p style="font:15px/1.6 var(--body);color:#c9c5bb;margin:20px 0 0;max-width:62ch">Already do all of this by hand in six 130point tabs? Then you already believe in the discipline &mdash; this is the same audit, plus the title, the price and the description, in one shot per card, five hundred times a month.</p>
+    <div style="margin-top:18px"><a class="btn btn-sell" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20run%20my%205%20free%20cards&body=Attach%20photos%20of%20up%20to%205%20cards%20(front%2C%20plus%20back%20if%20graded)%20and%20hit%20send%20%E2%80%94%20the%20full%20audit%20comes%20back%3A%20title%2C%20price%2C%20range%2C%20receipts.">Run 5 cards free</a></div>
   </div>
 </section>
 
 
-<section class="showcase" id="decision">
-  <div class="sc-wrap">
-    <div class="sec-label" style="color:var(--amber)">One card, every signal</div>
-    <h2>Everything you need to make the call.</h2>
-    <p class="lede">This is one real card through ListRight — identity, the eBay title, the audited price with its receipts, the buy verdict, and the grading ladder. Every number is a live Jul 28 2026 engine run.</p>
 
-    <div class="sc-card" aria-hidden="true">
-      <div class="sc-top">
-        <div class="sc-art"></div>
-        <div class="sc-id"><b>Charizard ex &mdash; 151</b><span>#199/165 SIR &middot; Scarlet &amp; Violet &middot; raw</span></div>
-        <div class="sc-conf"><b>CONFIDENCE HIGH</b><span>40 comps &middot; 35 used</span></div>
-      </div>
-
-      <div class="sc-grid">
-        <div class="sc-cell">
-          <h4>1 &middot; The eBay title</h4>
-          <div class="sc-title">2023 Pokemon SV 151 Charizard ex <b>#199/165</b> <b>SIR</b> Special Illustration Rare</div>
-          <div class="sc-chars">73 / 80 chars &middot; value tokens first &middot; ready to paste</div>
-        </div>
-
-        <div class="sc-cell">
-          <h4>2 &middot; The price &mdash; with receipts</h4>
-          <div class="sc-price">$355<small>RAW MEDIAN &middot; IQR $298&ndash;$395</small></div>
-          <div class="sc-comp"><span class="dot dg"></span><span class="cp">$360</span><span>Raw single &middot; Jul 24</span><span class="cv cg">INCLUDED</span></div>
-          <div class="sc-comp"><span class="dot dg"></span><span class="cp">$349</span><span>Raw single &middot; Jul 21</span><span class="cv cg">INCLUDED</span></div>
-          <div class="sc-comp"><span class="dot dr"></span><span class="cp">$410</span><span>PSA 10 slab &mdash; graded &ne; raw</span><span class="cv cr">EXCLUDED</span></div>
-          <div class="sc-comp"><span class="dot dr"></span><span class="cp">$88</span><span>Multi-card lot &mdash; not a single</span><span class="cv cr">EXCLUDED</span></div>
-        </div>
-
-        <div class="sc-cell">
-          <h4>3 &middot; Buying? Score the ask</h4>
-          <div style="margin-bottom:10px"><span class="sc-verdict" style="background:rgba(47,224,122,.14);color:var(--buy)">&#9679; DEAL</span> <span style="font:12px/1 var(--mono);color:var(--gray)">an ask of $318 is 10% under market</span></div>
-          <div class="sc-buyrow"><span class="ba">$318</span><span>10% under the audited market</span><span class="bv cg">DEAL</span></div>
-          <div class="sc-buyrow"><span class="ba">$359</span><span>right at market &mdash; fair either way</span><span class="bv cy">FAIR</span></div>
-          <div class="sc-buyrow"><span class="ba">$449</span><span>26% over &mdash; you&rsquo;re overpaying</span><span class="bv cr">OVER</span></div>
-          <div class="sc-buyrow"><span class="ba">$150</span><span>too good &mdash; check the photos</span><span class="bv cr">VERIFY</span></div>
-        </div>
-
-        <div class="sc-cell">
-          <h4>4 &middot; Should you grade it?</h4>
-          <div class="sc-ladder">
-            <div class="sc-rung"><b>$355</b><div class="sc-rbar" style="height:26px;background:var(--gray)"></div><span>Raw</span></div>
-            <div class="sc-rung"><b>$360</b><div class="sc-rbar" style="height:28px;background:#6b6b74"></div><span>PSA 8</span></div>
-            <div class="sc-rung"><b>$405</b><div class="sc-rbar" style="height:36px;background:var(--amber)"></div><span>PSA 9</span></div>
-            <div class="sc-rung"><b>$1,525</b><div class="sc-rbar" style="height:96px;background:var(--buy)"></div><span>PSA 10</span></div>
-          </div>
-          <div style="margin-top:12px;font:12px/1.5 var(--body);color:#cfcfd6"><b style="color:var(--buy)">$1,170</b> raw&rarr;PSA 10 gap. The pre-screen measures centering and returns a candidate range &mdash; never a promised grade.</div>
-        </div>
-      </div>
-
-      <div class="sc-foot">Real engine output, live runs Jul 28 2026 &mdash; raw n=35, PSA 8 n=40, PSA 9 n=37, PSA 10 n=38, every one confidence HIGH. Buyer rows illustrative vs the $355 median. Title shows the token rules; not a customer result.</div>
-    </div>
-
-    <div class="sc-cta">
-      <a class="btn btn-sell" href="mailto:localcardhouse@gmail.com?subject=ListRight%20free%205%20cards&amp;body=Hi%20%E2%80%94%20I%27d%20like%20to%20run%205%20cards%20free.%0A">Run 5 cards free &mdash; see your own</a>
-      <a class="btn btn-buy" href="https://buy.stripe.com/28E5kDcRw6mcbc0dFN1Fe00">$19/mo founding &mdash; 25 seats</a>
-    </div>
-  </div>
-</section>
 
 <section>
   <div class="wrap">
     <div class="sec-label" style="color:var(--amber)">The third side · Grade</div>
     <h2>The ladder is real.<br>Climb it with your eyes open.</h2>
-    <p class="lede">Same card, four markets — from the same Jul 28 2026 engine run. The distance between raw and PSA 10 is the biggest number on this page.</p>
+    <p class="lede">Same card, four markets — same-day Jul 28 2026 engine runs. The distance between raw and PSA 10 is the biggest number on this page.</p>
 
     <div class="ladder">
       <div class="rung"><div class="r-price">$355</div><div class="r-bar b1"><div class="r-grade">Raw</div><div class="r-n">n=35</div></div></div>
@@ -580,6 +551,66 @@
   </div>
 </section>
 
+<section class="showcase" id="decision">
+  <div class="sc-wrap">
+    <div class="sec-label" style="color:var(--amber)">One card, every signal</div>
+    <h2>Everything you need to make the call.</h2>
+    <p class="lede">This is one real card through ListRight — identity, the eBay title, the audited price with its receipts, the buy verdict, and the grading ladder. The prices, counts and ladder are live Jul 28 2026 engine runs; the comp rows are representative of the audit.</p>
+
+    <div class="sc-card">
+      <div class="sc-top">
+        <div class="sc-art"></div>
+        <div class="sc-id"><b>Charizard ex &mdash; 151</b><span>#199/165 SIR &middot; Scarlet &amp; Violet &middot; raw</span></div>
+        <div class="sc-conf"><b>CONFIDENCE HIGH</b><span>40 comps &middot; 35 used</span></div>
+      </div>
+
+      <div class="sc-grid">
+        <div class="sc-cell">
+          <h4>1 &middot; The eBay title</h4>
+          <div class="sc-title">2023 Pokemon SV 151 Charizard ex <b>#199/165</b> <b>SIR</b> Special Illustration Rare</div>
+          <div class="sc-chars">71 / 80 chars &middot; value tokens first &middot; ready to paste</div>
+        </div>
+
+        <div class="sc-cell">
+          <h4>2 &middot; The price &mdash; with receipts</h4>
+          <div class="sc-price">$355<small>RAW MEDIAN &middot; IQR $298&ndash;$395</small></div>
+          <div class="sc-comp"><span class="dot dg"></span><span class="cp">$360</span><span>Raw single &mdash; exact card</span><span class="cv cg">INCLUDED</span></div>
+          <div class="sc-comp"><span class="dot dg"></span><span class="cp">$349</span><span>Raw single &mdash; exact card</span><span class="cv cg">INCLUDED</span></div>
+          <div class="sc-comp"><span class="dot dr"></span><span class="cp">$410</span><span>Graded slab &mdash; graded &ne; raw</span><span class="cv cr">EXCLUDED</span></div>
+          <div class="sc-comp"><span class="dot dr"></span><span class="cp">$88</span><span>Multi-card lot &mdash; not a single</span><span class="cv cr">EXCLUDED</span></div>
+        </div>
+
+        <div class="sc-cell">
+          <h4>3 &middot; Buying? Score the ask</h4>
+          <div style="margin-bottom:10px"><span class="sc-verdict" style="background:rgba(47,224,122,.14);color:var(--buy)">&#9679; DEAL</span> <span style="font:12px/1 var(--mono);color:var(--gray)">an ask of $318 is 10% under market</span></div>
+          <div class="sc-buyrow"><span class="ba">$318</span><span>10% under the audited market</span><span class="bv cg">DEAL</span></div>
+          <div class="sc-buyrow"><span class="ba">$359</span><span>right at market &mdash; fair either way</span><span class="bv cw">FAIR</span></div>
+          <div class="sc-buyrow"><span class="ba">$449</span><span>26% over &mdash; you&rsquo;re overpaying</span><span class="bv cr">OVER</span></div>
+          <div class="sc-buyrow"><span class="ba">$150</span><span>too good &mdash; check the photos</span><span class="bv cy">VERIFY</span></div>
+        </div>
+
+        <div class="sc-cell">
+          <h4>4 &middot; Should you grade it?</h4>
+          <div class="sc-ladder">
+            <div class="sc-rung"><b>$355</b><div class="sc-rbar" style="height:26px;background:var(--gray)"></div><span>Raw</span></div>
+            <div class="sc-rung"><b>$360</b><div class="sc-rbar" style="height:28px;background:#6b6b74"></div><span>PSA 8</span></div>
+            <div class="sc-rung"><b>$405</b><div class="sc-rbar" style="height:36px;background:var(--amber)"></div><span>PSA 9</span></div>
+            <div class="sc-rung"><b>$1,525</b><div class="sc-rbar" style="height:96px;background:var(--buy)"></div><span>PSA 10</span></div>
+          </div>
+          <div style="margin-top:12px;font:12px/1.5 var(--body);color:#cfcfd6"><b style="color:var(--buy)">$1,170</b> raw&rarr;PSA 10 gap. The pre-screen measures centering and returns a candidate range &mdash; never a promised grade.</div>
+        </div>
+      </div>
+
+      <div class="sc-foot">Real engine output, live runs Jul 28 2026 &mdash; raw n=35, PSA 8 n=40, PSA 9 n=37, PSA 10 n=38, every one confidence HIGH. Buyer rows illustrative vs the $355 median. Title shows the token rules; not a customer result.</div>
+    </div>
+
+    <div class="sc-cta">
+      <a class="btn btn-sell" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20run%20my%205%20free%20cards&body=Attach%20photos%20of%20up%20to%205%20cards%20(front%2C%20plus%20back%20if%20graded)%20and%20hit%20send%20%E2%80%94%20the%20full%20audit%20comes%20back%3A%20title%2C%20price%2C%20range%2C%20receipts.">Run 5 cards free &mdash; see your own</a>
+      <a class="btn btn-buy" href="https://buy.stripe.com/28E5kDcRw6mcbc0dFN1Fe00">$19/mo founding &mdash; 25 seats</a>
+    </div>
+  </div>
+</section>
+
 <!-- ============ PRICING ============ -->
 <section>
   <div class="wrap">
@@ -595,12 +626,13 @@
           <li>Buy verdicts included</li>
           <li>No card number required</li>
         </ul>
-        <a class="btn btn-sell" href="mailto:localcardhouse@gmail.com?subject=ListRight%20free%205">Run 5 cards free</a>
+        <a class="btn btn-sell" href="mailto:localcardhouse@gmail.com?subject=ListRight%20%E2%80%94%20run%20my%205%20free%20cards&body=Attach%20photos%20of%20up%20to%205%20cards%20(front%2C%20plus%20back%20if%20graded)%20and%20hit%20send%20%E2%80%94%20the%20full%20audit%20comes%20back%3A%20title%2C%20price%2C%20range%2C%20receipts.">Run 5 cards free</a>
+        <div style="font:11px/1.5 var(--mono);color:var(--gray)">Opens an email &mdash; attach card photos, the full audit comes back to you.</div>
       </div>
       <div class="price-card price-paid">
         <div class="p-name">Founding member</div>
-        <div><span class="p-num">$19<small>/mo</small></span><span class="p-was">$39</span></div>
-        <div class="founding">25 founding seats · price locked for life</div>
+        <div><span class="p-num">$19<small>/mo</small></span></div>
+        <div class="founding">25 founding seats · $39/mo after they fill · founding price locked for life<br>dodging one OVER like the $449 example covers months of the fee</div>
         <ul>
           <li>500 scans per month</li>
           <li>Sell: title + price + description, comp-audited</li>
@@ -617,7 +649,7 @@
 <!-- ============ FINE PRINT / FOOTER ============ -->
 <div class="fine">
   <div class="wrap">
-    <p>Honest fine print: every number on this page comes from one real ListRight engine run on Jul 28 2026 (Charizard ex, Pokemon 151 #199/165 SIR) — 40 comps fetched, 1 lot and 4 graded slabs excluded, 35 kept, median $355, IQR $298–$395. These are engine outputs, not customer results, and no accuracy rate is claimed. The buyer verdict rows are illustrative asking prices scored against that run's median. Card names appear as text identification only; no card artwork is shown.</p>
+    <p>Honest fine print: the numbers on this page come from real ListRight engine runs on Jul 28 2026, all on one card (Charizard ex, Pokemon 151 #199/165 SIR). Raw run: 40 comps fetched, 1 lot and 4 graded slabs excluded, 35 kept, median $355, IQR $298–$395, confidence HIGH. Same-day grade-ladder runs: PSA 8 $360 (n=40), PSA 9 $405 (n=37), PSA 10 $1,525 (n=38); the +$1,170 is the raw-to-PSA-10 gap before grading fees. The hero contrast is the graded median ($409.65, shown as $410) versus the raw median ($355) — the gap you're exposed to when slab sales anchor a raw price. Buyer verdict rows are illustrative asks scored against the $355 median; showcase comp rows are representative. These are engine outputs, not customer results, and no accuracy rate is claimed. Card names appear as text identification only; no card artwork is shown.</p>
   </div>
 </div>
 
