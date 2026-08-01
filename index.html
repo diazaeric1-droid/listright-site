@@ -261,32 +261,98 @@
   <a class="btn btn-ghost btn-sm" href="https://listright.onrender.com/">Run 5 cards free</a>
 </header>
 
-<!-- ============ HERO: THE DELTA ============ -->
-<div class="dhero">
-  <div class="kicker">Card pricing &mdash; the difference, in dollars</div>
-  <h1 class="disp">Stop pricing off<br>the wrong number.</h1>
-  <p class="sub">Scanner apps and price guides quote slab and look-alike sales as if they were your card&rsquo;s market. ListRight prices the <b>exact card</b> off real eBay solds — best range to list, best price to buy — and shows every receipt.</p>
+<!-- ============ HERO: THE STAMP (chosen from the 5-concept panel, 2026-08-01) ============ -->
+<div class="dhero sh-hero">
+<style>
+  .dhero.sh-hero{text-align:left}
+  .sh-hero h1{margin:14px 0;max-width:none}
+  .sh-hero .sub{margin:0;max-width:50ch}
+  .sh-hero .dcta{justify-content:flex-start;margin-top:26px}
+  .sh-grid{position:relative;display:grid;grid-template-columns:1.04fr .96fr;gap:48px;align-items:center;max-width:1080px;margin:0 auto}
+  .sh-proof{margin:20px 0 0;padding:10px 14px;border-left:3px solid var(--amber);background:rgba(255,176,32,.05);font-family:var(--mono);font-size:.72rem;color:#c9c5bb;line-height:1.7}
+  .sh-proof b{color:var(--paper);font-weight:700}
+  .sh-trust{margin-top:12px;font-family:var(--mono);font-size:.68rem;color:var(--gray)}
+  .sh-stage{position:relative}
+  .sh-tik{position:relative;background:var(--paper);color:var(--ink);border-radius:10px;padding:18px 20px 16px;box-shadow:0 24px 48px rgba(0,0,0,.55);transform:rotate(-1.4deg)}
+  .sh-toprow{display:flex;justify-content:space-between;gap:10px;font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.16em;font-size:.6rem;color:#8a877e;border-bottom:1px solid rgba(11,11,14,.12);padding-bottom:8px}
+  .sh-card{font-family:var(--mono);font-size:.78rem;color:#3b3a35;margin:10px 0 2px}
+  .sh-askzone{position:relative;padding:2px 0 4px}
+  .sh-ask{font-family:var(--disp);font-weight:800;font-size:clamp(3.4rem,10vw,4.8rem);line-height:1;letter-spacing:-.01em}
+  .sh-ask small{display:block;font-family:var(--disp);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:#8a877e;margin-top:4px}
+  .sh-stamp{--rot:-11deg;position:absolute;right:2px;top:-16px;color:var(--sell-deep);font-family:var(--disp);font-weight:800;text-transform:uppercase;text-align:center;line-height:.9;padding:12px 18px 13px;border:5px solid currentColor;border-radius:10px;transform:rotate(var(--rot));letter-spacing:.04em;font-size:clamp(2.1rem,6vw,3.1rem);animation:sh-slam .5s cubic-bezier(.16,.85,.3,1) .45s both}
+  .sh-stamp::before{content:"";position:absolute;inset:4px;border:2px solid currentColor;border-radius:6px}
+  .sh-stamp::after{content:"";position:absolute;inset:-6px;pointer-events:none;background-image:radial-gradient(rgba(244,241,234,.65) 1px,transparent 1.6px),radial-gradient(rgba(244,241,234,.45) 1px,transparent 1.5px),radial-gradient(30px 20px at 76% 16%,rgba(244,241,234,.5),transparent 72%),radial-gradient(24px 16px at 14% 80%,rgba(244,241,234,.42),transparent 72%);background-size:7px 5px,11px 9px,100% 100%,100% 100%;background-position:0 0,4px 3px,0 0,0 0}
+  .sh-stamp small{display:block;font-size:.62rem;letter-spacing:.18em;margin-top:6px}
+  @keyframes sh-slam{0%{opacity:0;transform:rotate(var(--rot)) scale(2)}55%{opacity:1;transform:rotate(var(--rot)) scale(.94)}75%{transform:rotate(var(--rot)) scale(1.05)}100%{transform:rotate(var(--rot)) scale(1)}}
+  .sh-marketrow{display:flex;gap:18px;row-gap:10px;flex-wrap:wrap;align-items:flex-end;border-top:2px dashed rgba(11,11,14,.16);margin-top:10px;padding-top:12px}
+  .sh-stat b{display:block;font-family:var(--disp);font-weight:800;font-size:1.25rem;line-height:1}
+  .sh-stat span{font-size:.56rem;text-transform:uppercase;letter-spacing:.14em;color:#8a877e;font-weight:700}
+  .sh-runtag{margin-left:auto;font-family:var(--mono);font-size:.6rem;color:#8a877e}
+  .sh-tik2{margin:16px 6px 0;transform:rotate(1.3deg);display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 16px}
+  .sh-ask2{font-family:var(--disp);font-weight:800;font-size:1.9rem;line-height:1}
+  .sh-ask2 small{display:block;font-size:.54rem;letter-spacing:.16em;text-transform:uppercase;color:#8a877e;font-weight:800;margin-top:4px}
+  .sh-why{flex:1;min-width:140px;font-size:.73rem;color:#55534d;line-height:1.45}
+  .sh-stamp-mini{--rot:-6deg;position:relative;right:auto;top:auto;font-size:1.1rem;padding:7px 11px 8px;border-width:3px;color:#8a5a00;animation-delay:.9s}
+  .sh-stamp-mini::before{inset:3px;border-width:1.5px;border-radius:5px}
+  .sh-stamp-mini small{font-size:.5rem;letter-spacing:.12em;margin-top:3px}
+  .sh-saved{margin-top:18px;font-family:var(--mono);font-size:.74rem;color:#c9c5bb;line-height:1.7}
+  .sh-saved b{font-family:var(--disp);font-size:1.15rem;color:var(--sell);letter-spacing:.02em;margin-right:2px}
+  .sh-saved a{color:var(--buy);text-decoration:none;border-bottom:1px solid rgba(47,224,122,.45)}
+  .sh-fine{margin-top:8px;font-family:var(--mono);font-size:.62rem;color:var(--gray)}
+  .sh-flip{max-width:1080px;margin:46px auto 0;border-top:1px solid var(--line);padding-top:22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .sh-flab{font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.2em;font-size:.72rem;color:var(--sell);flex:none}
+  .sh-flip p{flex:1;min-width:260px;font-size:.85rem;color:#c9c5bb}
+  .sh-flip p b{color:var(--paper)}
+  @media(max-width:920px){.sh-grid{grid-template-columns:1fr;gap:40px}}
+  @media(max-width:480px){.sh-stamp{right:0;top:-10px;padding:10px 14px 11px;border-width:4px}.sh-tik{padding:16px 14px 14px}}
+  @media(prefers-reduced-motion:reduce){.sh-stamp{animation:none}}
+</style>
 
-  <div class="delta" aria-label="the pricing mistake, caught">
-    <div class="ticket t-wrong">
-      <div class="t-label">The slab number</div>
-      <div class="t-num">$410</div>
-      <div class="t-sub">what the graded slabs sold for &mdash; a different market</div>
+  <div class="sh-grid">
+    <div class="sh-copy">
+      <div class="kicker">Buy check &mdash; every ask stamped, receipts attached</div>
+      <h1 class="disp">Verdict first.<br>Money second.</h1>
+      <p class="sub">Paste an asking price. ListRight audits the <b>exact card</b> off real eBay solds and stamps the ask &mdash; <b>DEAL</b>, <b>FAIR</b>, <b>OVER</b>, or <b>TOO CHEAP &mdash; VERIFY</b> &mdash; with the recent sales behind it and every comp kept or cut with the reason. Thin evidence? It refuses to call it.</p>
+      <div class="sh-proof"><b>Jul 28 2026, live run</b> &mdash; Charizard ex 151 #199/165: raw median <b>$355</b> &middot; 35/40 comps kept &middot; IQR $298&ndash;$395 &middot; HIGH. Re-audited <b>Aug 1</b>: median <b>$376</b> &middot; 31/40 kept &middot; IQR $314&ndash;$395. The market moved <b>$21</b> in four days &mdash; the stamp moved with it.</div>
+      <div class="dcta">
+        <a class="btn btn-sell" href="https://listright.onrender.com/">Run 5 cards free</a>
+        <a class="btn btn-buy" href="https://buy.stripe.com/28E5kDcRw6mcbc0dFN1Fe00">$19/mo founding</a>
+      </div>
+      <div class="sh-trust">Free = 5 full audits, no email, no card &middot; Founding = $19/mo, 100 cards</div>
     </div>
-    <div class="dstamp">−$54<small>caught on one card</small></div>
-    <div class="ticket t-right">
-      <div class="t-label">The exact-card number</div>
-      <div class="t-num">$355</div>
-      <div class="t-sub">35 raw sales · IQR $298–$395 · HIGH</div>
+
+    <div class="sh-stage">
+      <div class="sh-tik">
+        <div class="sh-toprow"><span>Somebody&rsquo;s ask &middot; raw single</span><span>Buy check</span></div>
+        <div class="sh-card">Charizard ex &middot; Pokemon 151 &middot; #199/165 SIR</div>
+        <div class="sh-askzone">
+          <div class="sh-ask">$449<small>asking price</small></div>
+          <div class="sh-stamp">Over<small>+26.5% vs audit</small></div>
+        </div>
+        <div class="sh-marketrow">
+          <div class="sh-stat"><b>$355</b><span>audited median</span></div>
+          <div class="sh-stat"><b>$298&ndash;$395</b><span>IQR</span></div>
+          <div class="sh-stat"><b>35/40</b><span>kept &middot; HIGH</span></div>
+          <div class="sh-runtag">live run &middot; Jul 28 2026</div>
+        </div>
+      </div>
+
+      <div class="sh-tik sh-tik2">
+        <div class="sh-ask2">$150<small>ask &middot; same card</small></div>
+        <div class="sh-why">57.7% under isn&rsquo;t a gift until the photos say so &mdash; centering measured from the listing pics before you pay.</div>
+        <div class="sh-stamp sh-stamp-mini">Too cheap<small>verify &middot; &minus;57.7%</small></div>
+      </div>
+
+      <div class="sh-saved"><b>&minus;$94</b> &mdash; the distance between that $449 ask and the audited market. Stamped before the money moved, not explained after. <a href="https://listright.onrender.com/#buy">Stamp an ask free &rarr;</a></div>
+      <div class="sh-fine">Asks illustrative; every market number is a real engine run (Jul 28 &amp; Aug 1 2026). Engine output, not customer results.</div>
     </div>
   </div>
-  <div class="dproof">One live engine run, Jul 28 2026 &mdash; graded median $409.65 vs raw median $355. 40 comps, 5 thrown out with reasons. Receipts below&nbsp;&darr;</div>
 
-  <div class="dcta">
-    <a class="btn btn-sell" href="https://listright.onrender.com/">Run 5 cards free</a>
-    <a class="btn btn-buy" href="https://buy.stripe.com/28E5kDcRw6mcbc0dFN1Fe00">$19/mo founding</a>
+  <div class="sh-flip">
+    <span class="sh-flab">Flip it &mdash; selling?</span>
+    <p>Same audit, pointed at your price. Slabs in this pool sold at <b>$410</b>; the raw market clears at <b>$355</b> &mdash; price off the slab number and the card sits. Sell hands you the kit: title, description, cropped photos, PSA centering, and the range &mdash; <b>list $355, floor $298</b>. One photo or a whole stack.</p>
+    <a class="btn btn-ghost btn-sm" href="https://listright.onrender.com/">Open Sell</a>
   </div>
-  <div class="dproof" style="margin:14px auto 0">No email, no card &mdash; 5 real audits right now. Pre-screen included.</div>
 </div>
 
 <div class="marquee" aria-hidden="true">
