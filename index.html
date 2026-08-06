@@ -245,6 +245,27 @@
 .sc-foot{padding:14px 22px;border-top:1px solid var(--line);font:11px/1.6 var(--mono);color:var(--gray)}
 .sc-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
 @media(max-width:720px){.sc-grid{grid-template-columns:1fr}.sc-top{grid-template-columns:auto 1fr}.sc-conf{grid-column:1/-1;text-align:left}}
+
+  :root[data-theme="light"]{
+    --ink:#f6f4ee;
+    --ink2:#ffffff;
+    --paper:#1c1c22;
+    --line:rgba(28,28,34,.16);
+    --sell:#d2273a;
+    --sell-deep:#a01020;
+    --buy:#178a4c;
+    --buy-deep:#0d6b38;
+    --amber:#a86f00;
+    --gray:#6b6b76;
+  }
+  #themeToggle{position:fixed;top:14px;right:14px;z-index:99;background:var(--ink2);color:var(--paper);
+    border:1px solid var(--line);border-radius:99px;width:40px;height:40px;font-size:17px;cursor:pointer}
+  #appBar{position:fixed;top:0;left:0;right:0;z-index:98;display:flex;gap:14px;align-items:center;
+    padding:10px 64px 10px 18px;background:color-mix(in srgb,var(--ink) 88%,transparent);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);font-weight:800;letter-spacing:.04em}
+  #appBar .open{margin-left:auto;background:var(--buy);color:#04170d;border:none;border-radius:7px;
+    padding:9px 16px;font-weight:800;cursor:pointer;text-decoration:none;font-size:13px}
+  body{padding-top:52px}
 </style>
 <meta name="description" content="ListRight prices the exact card off real eBay solds and hands over the audit — every comp counted or cut, with the reason. Best range to list, best price to buy, and a refusal when the evidence is thin.">
 <meta property="og:title" content="ListRight — everyone shows a number. We show the work.">
@@ -254,6 +275,29 @@
 <link rel="canonical" href="https://listrightapp.com/">
 </head>
 <body>
+<div id="appBar">
+  <span><span style="color:var(--sell)">LIST</span><span style="color:var(--buy)">RIGHT</span></span>
+  <a href="https://listright.onrender.com/" style="color:var(--gray);text-decoration:none;font-weight:600;font-size:13px">Sell</a>
+  <a href="https://listright.onrender.com/#price" style="color:var(--gray);text-decoration:none;font-weight:600;font-size:13px">Price</a>
+  <a href="https://listright.onrender.com/#buy" style="color:var(--gray);text-decoration:none;font-weight:600;font-size:13px">Buy</a>
+  <a class="open" href="https://listright.onrender.com/">Open the app — 5 free</a>
+</div>
+<button id="themeToggle" aria-label="Switch light/dark theme" title="Light / dark">◐</button>
+<script>
+(function(){
+  var t=null;try{t=localStorage.getItem('lr_theme')}catch(e){}
+  if(!t){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark'}
+  document.documentElement.setAttribute('data-theme',t);
+  document.addEventListener('DOMContentLoaded',function(){
+    var b=document.getElementById('themeToggle');
+    if(b)b.onclick=function(){
+      var n=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+      document.documentElement.setAttribute('data-theme',n);
+      try{localStorage.setItem('lr_theme',n)}catch(e){}
+    };
+  });
+})();
+</script>
 
 <header class="topbar">
   <div class="logo"><span class="l">List</span><span class="r">Right</span></div>
@@ -825,7 +869,7 @@
         <div><span class="p-num">$19<small>/mo</small></span></div>
         <div class="founding">Founding plan · $19/mo · cancel anytime<br>dodging one OVER like the $449 example covers months of the fee</div>
         <ul>
-          <li>100 audited cards per month</li>
+          <li><b>500</b> audited cards per month</li>
           <li>Sell: title + price + description, comp-audited</li>
           <li>Batch a whole stack — full audit per card, CSV out</li>
           <li>Buy: DEAL / FAIR / OVER / TOO CHEAP on any ask, with the sales behind it</li>
