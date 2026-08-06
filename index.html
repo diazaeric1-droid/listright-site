@@ -351,7 +351,7 @@
   <div style="margin:24px 0 4px">
   <div class="dcta">
     <a class="btn btn-sell" href="https://listright.onrender.com/">Run 5 cards free</a>
-    <a class="btn btn-buy" href="https://buy.stripe.com/28E5kDcRw6mcbc0dFN1Fe00">$19/mo founding</a>
+    <a class="btn btn-buy" href="https://listright.onrender.com/checkout?src=site">$19/mo founding</a>
   </div>
   <div class="dproof" style="margin:14px auto 0">5 audits free &mdash; no email, no card. Founding: $19/mo, 100 cards a month.</div>
   </div>
@@ -614,7 +614,7 @@
     </div>
     <div style="margin-top:22px;display:flex;gap:12px;flex-wrap:wrap">
       <a class="btn btn-buy" href="https://listright.onrender.com/#buy">Try Buy check free</a>
-      <a class="btn btn-ghost" href="https://buy.stripe.com/28E5kDcRw6mcbc0dFN1Fe00">$19/mo founding &mdash; stamp real asks</a>
+      <a class="btn btn-ghost" href="https://listright.onrender.com/checkout?src=site">$19/mo founding &mdash; stamp real asks</a>
     </div>
   </div>
 </section>
@@ -796,7 +796,7 @@
 
     <div class="sc-cta">
       <a class="btn btn-sell" href="https://listright.onrender.com/">Run 5 cards free &mdash; see your own</a>
-      <a class="btn btn-buy" href="https://buy.stripe.com/28E5kDcRw6mcbc0dFN1Fe00">$19/mo founding &mdash; 25 seats</a>
+      <a class="btn btn-buy" href="https://listright.onrender.com/checkout?src=site">$19/mo founding</a>
     </div>
   </div>
 </section>
@@ -823,7 +823,7 @@
       <div class="price-card price-paid">
         <div class="p-name">Founding member</div>
         <div><span class="p-num">$19<small>/mo</small></span></div>
-        <div class="founding">25 founding seats · $39/mo after they fill · founding price locked for life<br>dodging one OVER like the $449 example covers months of the fee</div>
+        <div class="founding">Founding plan · $19/mo · cancel anytime<br>dodging one OVER like the $449 example covers months of the fee</div>
         <ul>
           <li>100 audited cards per month</li>
           <li>Sell: title + price + description, comp-audited</li>
@@ -832,7 +832,7 @@
           <li>PSA centering measured on every scan + pre-screen (beta)</li>
           <li>Cancel anytime</li>
         </ul>
-        <a class="btn btn-buy" href="https://buy.stripe.com/28E5kDcRw6mcbc0dFN1Fe00">$19/mo founding</a>
+        <a class="btn btn-buy" href="https://listright.onrender.com/checkout?src=site">$19/mo founding</a>
       </div>
     </div>
   </div>
@@ -877,8 +877,10 @@ document.getElementById('askin').addEventListener('keydown',function(e){if(e.key
     var src = new URLSearchParams(location.search).get('src');
     if (!src) return;
     src = src.replace(/[^\w-]/g, '').slice(0, 60);
-    document.querySelectorAll('a[href*="buy.stripe.com"]').forEach(function(a){
-      a.href += (a.href.indexOf('?') > -1 ? '&' : '?') + 'client_reference_id=' + src;
+    document.querySelectorAll('a[href*="/checkout"]').forEach(function(a){
+      var checkout = new URL(a.href);
+      checkout.searchParams.set('src', src);
+      a.href = checkout.toString();
     });
   } catch(e){}
 })();
